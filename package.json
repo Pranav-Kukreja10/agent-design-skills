@@ -1,0 +1,9 @@
+{
+  "name": "agent-design-skills-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix packages/cli run dev",
+    "build": "npm --prefix packages/cli run build",
+    "start": "node packages/cli/dist/index.js"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "0.1.0",
+  "core": [
+    {
+      "id": "anti-ai-cliches",
+      "name": "Anti-AI Cliché Ruleset (Always Included)",
+      "path": "core/anti-ai-cliches.md"
+    }
+  ],
+  "themes": [
+    {
+      "id": "minimal-saas",
+      "name": "Minimal SaaS (Linear / Vercel Obsidian)",
+      "hint": "1px hairline borders, Zinc-950 depth, Geist/Inter typography",
+      "path": "themes/minimal-saas",
+      "files": [
+        "01-palette-surfaces.md",
+        "02-typography.md",
+        "03-layout-composition.md",
+        "04-tactile-motion.md"
+      ]
+    },
+    {
+      "id": "high-contrast-monochrome",
+      "name": "High-Contrast Monochrome (Editorial Black & White)",
+      "hint": "Stark B&W contrast, architectural grids, razor-sharp hierarchy",
+      "path": "themes/high-contrast-monochrome",
+      "files": [
+        "01-palette-surfaces.md",
+        "02-typography.md",
+        "03-layout-composition.md",
+        "04-tactile-motion.md"
+      ]
+    },
+    {
+      "id": "neo-brutalist",
+      "name": "Neo-Brutalist Studio",
+      "hint": "Hard offset shadows, 2px solid borders, high-saturation accents",
+      "path": "themes/neo-brutalist",
+      "files": [
+        "01-palette-surfaces.md",
+        "02-typography.md",
+        "03-layout-composition.md",
+        "04-tactile-motion.md"
+      ]
+    }
+  ]
+}
