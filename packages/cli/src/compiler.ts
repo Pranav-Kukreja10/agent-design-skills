@@ -139,6 +139,12 @@ You are the design governance engine for this codebase. Every UI decision must p
   - **Numeric & Tabular Typography Law:** NEVER use coding monospace fonts (\`--font-mono\`) or \`slashed-zero\` on hero numbers, counters, or KPI figures. Always use \`var(--font-display)\` or \`var(--font-sans)\` with \`font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;\` so digits have clean, open-oval zeros (\`0\`) with zero horizontal jitter. Reserve \`var(--font-mono)\` strictly for code snippets, file paths, or git hashes.
   - **Zero Sci-Fi & Hardware Telemetry Cosplay:** Ban inventing fake brand names, fake tier badges (\`[PRO v2.4]\`, \`[BETA]\`), fake hardware telemetry (\`60 FPS\`, \`SUB-10MS\`), and unrequested Unix \`EPOCH\` readouts.
   - **Zero Fake Status Dots:** Colored status dots (static or animated) are banned in headers and footers unless wired to a real, user-toggleable live connection state.
+  - **Clean Media & Artwork Law (Never Overlay Corner Status Pills on Images, Artwork, or Video Thumbnails):**
+    - **Keep Media Uncluttered:** NEVER place floating \`position: absolute\` top-left or top-right status pills, tier tags, or promotional badges on top of album art, video thumbnails, avatars, or e-commerce product photography (e.g., ban \`• PLAYING\`, \`NOW PLAYING\`, \`HD 1080P\`, \`4K HDR\`, \`LIVE\`, \`NEW\`, \`BESTSELLER\`, \`FEATURED\`, \`HOT\`, \`IN STOCK\`).
+    - **How to Show Active or Metadata States Instead:**
+      - For active media/playback: Use a single centered icon overlay (Play/Pause/Equalizer) on the thumbnail or a quiet indicator inside the text row—never a corner text pill (\`• PLAYING\`).
+      - For product/content metadata (like \`"New Arrival"\`, \`"Limited Edition"\`, or discounts): Render it as clean, quiet plain text (\`var(--text-secondary)\`) below the image alongside the title/price—never as a colored sticker slapped onto the corner of the photograph.
+      - **Only Permitted Media Overlay:** A plain bottom-right numeric video duration timestamp (\`3:51\`) or a single subtle top-right icon action (like a quiet heart/bookmark icon on hover).
 
 ---
 
@@ -146,18 +152,21 @@ You are the design governance engine for this codebase. Every UI decision must p
 - **Proportional Canvas Sizing Architecture:**
   - *Focused Utilities & Compact Views:* Compact centered layout (\`max-w-3xl\` / \`768px–880px\` on desktop) with centered segmented control dock; never a 1440px corporate enterprise header with an invented brand logo.
   - *Data-Dense Workspaces (ledgers, financial consoles, multi-column tables):* Standard wide container (\`max-w-6xl\` / \`1152px–1280px\`) or fluid responsive workspace (\`w-full px-6\`).
+  - *Universal Container Cardinality & Overview Row Discipline (Match Data Slice to Container Intent):* In overview screens, summary sections, or any section with directional navigation (\`< >\` / \`View all\`), constrain the rendered items to a **single row** that matches the grid column count (e.g., \`.slice(0, columns)\` or a single-row \`flex overflow-x-auto\` track). Reserve multi-row wrapping strictly for dedicated full-index or catalog views.
 - **Data Ban:** Never use \`"John Doe"\`, \`"Jane Doe"\`, \`"Lorem ipsum"\`, \`"foo"\`, or \`"$99.99"\`.
 - **Realistic Diversity (\`// SAMPLE DATA\`):**
   - Use realistic domain entities with varying character lengths.
   - Include at least 1 long entity name that explicitly exercises truncation (\`text-overflow: ellipsis\`).
   - Include at least 1 null avatar / fallback monogram.
   - Include at least 1 zero / pending / unverified state.
+  - **Universal Asset Uniqueness:** Every distinct record in a UI dataset must have a unique visual asset/URL — never reuse the exact same image URL across two different records in sample data fixtures.
 - **The 5 Mandatory States:** Every interactive component must handle:
   1. Default
   2. Interactive (Hover / Active / Focus-visible)
   3. Loading (\`aria-busy="true"\` skeleton matching geometry)
   4. Empty (with contextual empty-state handoff for the primary CTA)
   5. Inline Error (clear, actionable, non-destructive feedback)
+- **Universal Composite Input Focus Law:** For form fields and composite inputs (inputs with icons, prefixes, or action buttons), never allow a raw inner \`<input>\` focus box to clip inside a rounded wrapper; use \`outline: none\` on the inner input and apply focus feedback (\`border-color\` or ring) to the outer field container via \`:focus-within\`.
 - **Mobile Bottom-Dock Safe Clearance & Thumb Zone:** On \`mobile-first\` or \`adaptive-hybrid\` layouts, mobile bottom navigation (\`< 768px\`) MUST use \`position: fixed; bottom: 0; left: 0; right: 0; z-index: 50\`, and the scroll container MUST reserve \`padding-bottom: calc(5rem + env(safe-area-inset-bottom))\` (or \`calc(dock-height + 2rem)\`) so scrollable content is never sliced or trapped behind floating controls. Primary action triggers must remain anchored in the lower thumb zone.
 - **Smooth State Transitions:** Tab switches, view toggles, and progress indicators must animate smoothly using \`var(--ease-primary)\` and \`var(--duration-normal)\` (or \`.view-transition\`). Interactive triggers must include \`.spring-interactive\` tactile press states.
 

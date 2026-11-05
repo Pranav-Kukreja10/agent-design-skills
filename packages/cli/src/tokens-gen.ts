@@ -1031,36 +1031,35 @@ h1, h2, h3, h4 {
 }
 
 .spring-interactive {
-  transition: transform var(--duration-fast) var(--ease-spring, var(--ease-primary));
+  transition: scale var(--duration-fast) var(--ease-spring, var(--ease-primary)), transform var(--duration-fast) var(--ease-spring, var(--ease-primary));
 }
 
 .spring-interactive:active {
-  transform: scale(0.96);
+  scale: 0.96;
 }
 
-/* Tactile Card Hover & Tap Physics */
+/* Tactile Card Physics (Zero transform drift on layout shells, headers, or cards) */
 .glass-panel, .surface-card, [data-interactive-card="true"] {
-  transition: transform var(--duration-fast) var(--ease-spring, var(--ease-primary)), border-color var(--duration-fast) var(--ease-primary), box-shadow var(--duration-fast) var(--ease-primary);
+  transition: border-color var(--duration-fast) var(--ease-primary), box-shadow var(--duration-fast) var(--ease-primary);
 }
 
 .glass-panel:hover, .surface-card:hover, [data-interactive-card="true"]:hover {
-  transform: translateY(-2px) scale(1.008);
   border-color: var(--highlight-specular);
 }
 
-.glass-panel:active, .surface-card:active, [data-interactive-card="true"]:active {
-  transform: scale(0.99);
+/* Universal Input Reset: Prevent inner rectangular outlines inside composite input wrappers */
+input, textarea, select {
+  outline: none;
 }
 
-/* Focus visibility reset adhering to technical hairline styling */
-:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 1px;
+button:focus-visible, a:focus-visible, [role="button"]:focus-visible, [role="tab"]:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 `;
 
   const json = {
-    version: '1.1.0',
+    version: '1.1.1',
     archetype,
     polarity,
     feeling,

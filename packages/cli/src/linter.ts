@@ -40,6 +40,13 @@ const AI_GRADIENT_REGEX = /(?:from-purple|to-pink|from-indigo.*to-purple|from-cy
 const FAKE_TIER_REGEX = /\[(PRO|BETA|v\d+\.\d+)\]/i;
 const FAKE_COSPLAY_REGEX = /\b(SUB-\d+MS|TEMPORAL ENGINE|MASTER CHRONOMETER|CHRONO SYNC|LOCAL REFERENCE|\d+\s*FPS|EPOCH)\b/i;
 
+// Regex for hardcoded overlay badge text on images/media/products
+const OVERLAY_BADGE_TEXT_REGEX = /\b(NOW PLAYING|•\s*PLAYING|HD\s*1080P|4K\s*HDR|120\s*FPS|HI-RES\s*AUDIO|LIVE\s*CINEMATIC|BESTSELLER|HOT\s*SALE|LIMITED\s*TIME)\b/i;
+
+// Regex for absolute-positioned corner badge/pill overlay classes
+const CORNER_BADGE_CLASS_REGEX = /\babsolute\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b|\babsolute\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b/i;
+const CORNER_PILL_TRAIT_REGEX = /\b(rounded-full|uppercase|tracking-[a-z0-9_-]+|text-xs|badge|pill|chip)\b/i;
+
 // Regex for slashed-zero numeric styling
 const SLASHED_ZERO_REGEX = /slashed-zero|font-feature-settings:[^;]*["']zero["']\s*1/i;
 
@@ -54,6 +61,17 @@ const MICRO_TEXT_REGEX = /(?:\btext-\[(?:8|9|10|11)px\]|\bfont-size:\s*(?:8|9|10
 
 // Regex for low-contrast / dim opacity text classes
 const LOW_OPACITY_TEXT_REGEX = /\b(text-zinc-500|text-slate-500|text-gray-500|opacity-30|opacity-40)\b/i;
+
+// Regex for external image URLs (Unsplash or direct image extensions)
+const EXTERNAL_IMAGE_URL_REGEX = /https?:\/\/[^\s"'`]+\.(?:png|jpe?g|webp|avif|svg)(?:\?[^\s"'`]*)?|https?:\/\/(?:images\.)?unsplash\.com\/[^\s"'`]+/gi;
+
+function extractImageAssetKey(url: string): string {
+  const unsplashMatch = url.match(/(?:premium_)?photo-[a-zA-Z0-9_-]+/i);
+  if (unsplashMatch) {
+    return unsplashMatch[0].toLowerCase();
+  }
+  return url.split('?')[0].split('#')[0].toLowerCase();
+}
 
 export async function lintDirectory(targetDir: string): Promise<LintReport> {
   const violations: LintViolation[] = [];
@@ -120,6 +138,7 @@ async function lintFile(
   let uppercaseCount = 0;
   let firstUppercaseLine = 0;
   let firstUppercaseSnippet = '';
+  const seenImageAssets = new Map<string, number>();
 
   for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
     const line = lines[lineIndex];
@@ -261,6 +280,47 @@ async function lintFile(
           message: 'Fake hardware telemetry or sci-fi cosplay copy detected',
           severity: 'error'
         });
+      }
+    }
+
+    // Rule: slop/no-image-corner-badges (Flag floating corner badge slop on images/media/products)
+    if (!hasException && !isRuleOrDoc && !line.includes('rule') && !line.includes('banned') && !line.includes('ban')) {
+      const hasOverlayText = OVERLAY_BADGE_TEXT_REGEX.test(line);
+      const hasCornerPillClass = CORNER_BADGE_CLASS_REGEX.test(line) && CORNER_PILL_TRAIT_REGEX.test(line);
+      if (hasOverlayText || hasCornerPillClass) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-image-corner-badges',
+          line: lineNumber,
+          snippet: trimmed,
+          message: hasOverlayText
+            ? 'Banned media/product overlay badge text detected. Keep media uncluttered without floating corner status pills.'
+            : 'Floating corner badge/pill overlay detected. Never place floating status pills on top of cards, media, or product images.',
+          severity: 'error'
+        });
+      }
+    }
+
+    // Rule: data/no-duplicate-image-urls (scans for external image URLs duplicated across multiple records)
+    if (!hasException && !isRuleOrDoc && !line.includes('rule') && !line.includes('banned')) {
+      const imgMatches = line.match(EXTERNAL_IMAGE_URL_REGEX);
+      if (imgMatches) {
+        for (const url of imgMatches) {
+          const assetKey = extractImageAssetKey(url);
+          if (seenImageAssets.has(assetKey)) {
+            const originalLine = seenImageAssets.get(assetKey);
+            violations.push({
+              file: relPath,
+              rule: 'data/no-duplicate-image-urls',
+              line: lineNumber,
+              snippet: trimmed,
+              message: `Duplicate image asset detected ("${assetKey}", originally defined on line ${originalLine}). Every distinct record in a UI dataset must have a unique visual asset/URL.`,
+              severity: 'warning'
+            });
+          } else {
+            seenImageAssets.set(assetKey, lineNumber);
+          }
+        }
       }
     }
 
