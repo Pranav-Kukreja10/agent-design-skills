@@ -1,6 +1,6 @@
 # Core Module 04: UX Ergonomics, Realistic Seed Data & Component States
 
-**Version:** 4.2  
+**Version:** 1.0  
 **Target Archetype:** `{{ARCHETYPE_NAME}}`  
 **Token Contract:** `{{TOKENS_PATH}}`  
 **Design Specification:** `{{DESIGN_DOC_PATH}}`
@@ -42,14 +42,17 @@ When authoring seed data fixtures (annotated with `// SAMPLE DATA`):
 
 ---
 
-## 3. Tabular Numeric Figures
+## 3. Numeric & Tabular Typography Law
 
-In data tables, accounting views, ledger sheets, and KPI counters:
-- All numeric displays, balances, percentages, and timestamps **must** enforce:
-  ```css
-  font-variant-numeric: tabular-nums;
-  ```
-- This ensures fixed-width character alignment across rows, preventing visual jitter and column drift as numbers change or sort.
+All numbers, financial quantities, telemetry counters, metrics, and timestamps must consume lining tabular figures with open zeros:
+```css
+.tabular-nums, time, [data-numeric="true"], table, [data-tabular="true"] {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;
+}
+```
+- NEVER use coding monospace fonts (`--font-mono`) or `slashed-zero` on hero numbers, counters, or KPI figures. Always use `var(--font-display)` or `var(--font-sans)` with `font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;` so digits have clean, open-oval zeros (`0`) with zero horizontal jitter.
+- Reserve `var(--font-mono)` strictly for code snippets, file paths, or git hashes.
 
 ---
 
@@ -65,4 +68,30 @@ In data tables, accounting views, ledger sheets, and KPI counters:
 - Table headers must include `scope="col"`.
 - Sorting headers must declare `aria-sort="ascending" | "descending" | "none"`.
 - Interactive action triggers must use `<button>` elements, never clickable `<div>` or `<span>` elements without full keyboard event handlers and ARIA semantics.
+
+---
+
+## 5. Mobile Bottom-Dock Safe Clearance & Thumb Zone Ergonomics
+
+On `mobile-first` or `adaptive-hybrid` layouts:
+- Mobile bottom navigation (`< 768px`) MUST use `position: fixed; bottom: 0; left: 0; right: 0; z-index: 50`.
+- The scroll container MUST reserve `padding-bottom: calc(5rem + env(safe-area-inset-bottom))` (or `calc(dock-height + 2rem)`) so scrollable content is never sliced or trapped behind floating controls.
+- Primary action triggers (e.g., primary transaction CTAs, submission buttons) must remain anchored in the lower thumb zone (bottom 35% of the mobile viewport) for ergonomic one-handed operation.
+
+---
+
+## 6. Proportional Canvas Sizing Architecture
+
+A primary giveaway of AI-generated frontends is stretching single-purpose tools into 1440px corporate enterprise SaaS layouts with invented brand logos and edge-to-edge container boxes. Layout width must strictly reflect application intent:
+
+### 1. Focused Utilities & Compact Views
+- **Applicable Domains:** Single-purpose utilities, compact calculators, modal inspectors, conversion tools, or dedicated single-task panels.
+- **Desktop Sizing:** Compact, centered layout capped at `max-w-3xl` (`768px`–`880px`) on desktop with ample canvas breathing room.
+- **Header & Navigation:** Centered segmented control dock or quiet tab pills directly integrated with the view; never invent a 1440px corporate enterprise header, unprompted brand logos, or multi-tier navigation bars for a focused utility.
+
+### 2. Data-Dense Operational Workspaces
+- **Applicable Domains:** Financial ledgers, multi-column reconciliation tables, IDEs, pipeline monitors, or complex accounting settings consoles.
+- **Desktop Sizing:** Wide structured container (`max-w-6xl` / `1152px`–`1280px`) or fluid responsive workspace (`w-full px-6`) to comfortably accommodate dense columns without awkward horizontal scrolling.
+
+
 

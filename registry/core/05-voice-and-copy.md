@@ -1,6 +1,6 @@
 # Core Module 05: Voice, Copy Honesty & Typographic Discipline
 
-**Version:** 4.2  
+**Version:** 1.0  
 **Target Archetype:** `{{ARCHETYPE_NAME}}`  
 **Token Contract:** `{{TOKENS_PATH}}`  
 **Design Specification:** `{{DESIGN_DOC_PATH}}`
@@ -39,9 +39,11 @@ Never place a subheading immediately beneath a heading if it simply restates the
   - All headings (`h1`–`h6`), table headers, input labels, tooltips, and button labels must use **sentence case**:
     - Correct: *"Reconcile batch entries"*, *"Download audit report"*
     - Incorrect: *"Reconcile Batch Entries"*, *"DOWNLOAD AUDIT REPORT"*
-- **Eyebrow Ban & Technical Tags:**
-  - **Banned:** Never put numbered labels (`01 / ...`, `02 / ...`) or redundant category eyebrows above `<h1>` page titles.
-  - Uppercase is permitted **only** on short functional technical tags of $\le 3$ words rendered in `var(--font-mono)` (e.g., `STATUS: ACTIVE`, `REF: 0x4B2`), never as decorative numbered prefixes above titles.
+- **Cure "UPPERCASE MICRO-LABEL Disease":**
+  - **Maximum 1 Uppercase Eyebrow Per View:** AI models compulsively label every card and metric with an all-caps, tracked micro-label (`text-[10px] uppercase tracking-widest`). This creates visual noise. Cap uppercase eyebrows at strictly **$\le 1$ per entire view**.
+  - **Ban Self-Evident & Narrating Labels:** Never put uppercase labels above self-evident elements (e.g., redundant status descriptions, obvious format tags, or narrating what an adjacent button/control does). Obvious controls, metrics, and displays speak for themselves.
+  - **Numbered Eyebrow Ban:** Never put numbered labels (`01 / ...`, `02 / ...`) or redundant category eyebrows above `<h1>` page titles.
+  - Uppercase is permitted **only** on short functional technical tags of $\le 3$ words rendered in `var(--font-mono)` (e.g., `STATUS: ACTIVE`, `REF: 0x4B2`), never as decorative card-header or section filler.
 - **Typesetting Hygiene:**
   - `text-wrap: balance` on all headings to eliminate orphan words.
   - `text-wrap: pretty` on all body paragraphs.
@@ -58,4 +60,7 @@ Never place a subheading immediately beneath a heading if it simply restates the
 - **Verified Facts Mandate:**
   - Never fabricate metrics, uptime guarantees, compliance certifications, or throughput stats.
   - All quantitative assertions must be cited directly from `{{DESIGN_DOC_PATH}}` under `## 2. Voice & Content Brief` (Verified Facts).
+- **Zero Sci-Fi & Hardware Telemetry Cosplay:**
+  - Ban inventing fake brand names, fake tier badges (`[PRO v2.4]`, `[BETA]`), fake hardware telemetry (`60 FPS`, `SUB-10MS`), and unrequested Unix `EPOCH` readouts.
+  - Interfaces must sound like focused, professional software designed by domain experts, not a science-fiction movie prop.
 

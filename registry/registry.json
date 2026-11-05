@@ -1,5 +1,5 @@
 {
-  "version": "4.2.0",
+  "version": "1.1.0",
   "name": "agent-design-skills",
   "description": "Design governance registry eliminating AI UI slop and enforcing cross-page unity",
   "core": [
@@ -248,9 +248,10 @@
     "playful-tactile": {
       "id": "playful-tactile",
       "name": "Playful & Tactile",
-      "ease": "cubic-bezier(0, 0, 0.2, 1)",
-      "durationFast": "80ms",
-      "durationNormal": "150ms",
+      "ease": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "easeSpring": "cubic-bezier(0.22, 1.35, 0.36, 1)",
+      "durationFast": "120ms",
+      "durationNormal": "240ms",
       "description": "Crisp springy press states and punchy responses"
     },
     "authoritative": {

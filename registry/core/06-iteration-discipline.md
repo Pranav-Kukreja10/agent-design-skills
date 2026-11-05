@@ -1,6 +1,6 @@
 # Core Module 06: Iteration Discipline, Revision Budget & Polish Backlog
 
-**Version:** 4.2  
+**Version:** 1.0  
 **Target Archetype:** `{{ARCHETYPE_NAME}}`  
 **Token Contract:** `{{TOKENS_PATH}}`  
 **Design Specification:** `{{DESIGN_DOC_PATH}}`

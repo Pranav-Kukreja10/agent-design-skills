@@ -1,8 +1,8 @@
-# agent-design-skills (v4.2)
+# agent-design-skills (v1.1)
 
 > **Eliminate AI UI Slop.** Enforce cross-page geometric unity, copy honesty, and iteration discipline across AI coding agents.
 
-[![Version](https://img.shields.io/badge/version-4.2.0-blue.svg)](https://github.com/agent-design-skills)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Pranav-Kukreja10/agent-design-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Zero-Slop Certified](https://img.shields.io/badge/Anti--Slop-Enforced-indigo.svg)](evals/rubric.md)
 
@@ -22,7 +22,7 @@ Left to their own devices, LLMs generate virtually indistinguishable user interf
 
 ---
 
-## Architectural Highlights (v4.2)
+## Architectural Highlights (v1.0)
 
 ### 1. Two-Tier Context Routing
 - **Tier 1 (Always-On Core Rule):** Under 1,500 tokens. Loaded on every single inference pass. Enforces the Anti-Slop Firewall, 5 mandatory UI states, sentence case casing, concentric corner math, and the active design token contract.
@@ -208,5 +208,5 @@ The repository includes a rigorous 11-prompt evaluation suite and automated grad
 
 ## License
 
-MIT © Google Antigravity & the `agent-design-skills` contributors.
+MIT © Pranav Kukreja & the `agent-design-skills` contributors.
 

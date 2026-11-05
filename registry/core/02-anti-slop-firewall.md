@@ -1,6 +1,6 @@
 # Core Module 02: Anti-Slop Firewall & Aesthetic Sanity
 
-**Version:** 4.2  
+**Version:** 1.0  
 **Target Archetype:** `{{ARCHETYPE_NAME}}`  
 **Token Contract:** `{{TOKENS_PATH}}`  
 **Design Specification:** `{{DESIGN_DOC_PATH}}`
@@ -18,6 +18,11 @@ Generative models produce predictable UI clichés that compromise professional c
 | **Mesh Gradients** | Purple/pink/cyan radial glows behind cards, headers, or buttons | Solid neutral surfaces (`var(--bg-canvas)`, `var(--bg-elevated)`) with 1px hairlines (`var(--border-hairline)`) |
 | **Glowing Outlines** | Neon borders with `box-shadow: 0 0 15px rgba(120, 0, 255, 0.5)` | Crisp 1px borders (`var(--border-hairline)`) with specular top highlights (`var(--highlight-specular)`) |
 | **Floating Badges** | Pill chips containing `"✨ AI-Powered"`, `"⚡ Supercharged"`, or `"Magic"` | Informative technical status pills referencing actual system state (e.g., `MERKLE LOG VERIFIED`) |
+| **Card & Header Badges** | Pill badges, status chips, or uppercase tag boxes inside app headers, navbars, hero sections, or card headers (e.g., `PRO v2.4`, `STABLE`, `SUB-10MS`, `60 FPS`) | Cards must use plain text headings or no header at all. Tags/badges are ONLY permitted inside repeating data table cells or list rows to indicate item-level record status (strictly max 1 badge per row) |
+| **Nested Bordered Cards (Box-in-a-Box)** | Nesting smaller bordered cards inside a bordered card container (e.g., sub-cards trapped inside a parent card) | Choose ONE container level: Grouped panel with borderless rows divided ONLY by a quiet 1px line (`border-bottom: 1px solid var(--border-hairline)`), or open canvas grid. Unbox hero elements directly onto canvas |
+| **Empty-Space Panic Widgets** | Inventing fake progress bars, format tags, or telemetry to fill empty vertical space | Allow asymmetrical columns and breathing whitespace (`align-items: start`). Whitespace is a luxury feature, never a bug to fill with widgets |
+| **Fake Brand & Telemetry Cosplay** | Inventing fake brand names, fake tier badges (`[PRO v2.4]`, `[BETA]`), fake hardware telemetry (`60 FPS`, `SUB-10MS`), and unrequested Unix `EPOCH` readouts | Focused, professional software copy designed by domain experts without sci-fi roleplay or hardware cosplay |
+| **Slashed-Zero Numbers** | Monospace coding fonts with slashed zeros (`0̸`) on hero numbers, counters, or KPI figures | `var(--font-display)` or `var(--font-sans)` with `font-variant-numeric: tabular-nums lining-nums; font-feature-settings: 'tnum' 1, 'lnum' 1, 'zero' 0;` for clean open-oval zeros (`0`) |
 | **Fabricated Metrics** | Stat cards showing random `+24.8% from last month` with green arrows | Domain-grounded figures derived from Verified Facts in `{{DESIGN_DOC_PATH}}` |
 | **3-Equal-Card Rows** | 3 identical-width stat/KPI cards placed in a row across a workspace | Compact inline horizontal metric strip with 1px vertical dividers (`var(--border-hairline)`) or asymmetric 2-pane split |
 | **Marketing in App UI** | Static compliance badges (SOC2/ISO) or marketing throughput claims inside active console workspaces | Operational workspace data only (real batch volumes, pending counts, active deltas); reserve marketing claims for landing/onboarding |

@@ -1,6 +1,6 @@
 # Core Module 01: Smart Override & Divergence Protocol
 
-**Version:** 4.2  
+**Version:** 1.0  
 **Target Archetype:** `{{ARCHETYPE_NAME}}`  
 **Token Contract:** `{{TOKENS_PATH}}`  
 **Design Specification:** `{{DESIGN_DOC_PATH}}`

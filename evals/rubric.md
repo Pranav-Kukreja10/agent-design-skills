@@ -1,6 +1,6 @@
-# Benchmark Evaluation Rubric (v4.2)
+# Benchmark Evaluation Rubric (v1.0)
 
-This document specifies the grading criteria, automated gates, and empirical evaluation rubric for validating AI agent UI code generation against the **agent-design-skills** v4.2 specification.
+This document specifies the grading criteria, automated gates, and empirical evaluation rubric for validating AI agent UI code generation against the **agent-design-skills** v1.0 specification.
 
 ---
 

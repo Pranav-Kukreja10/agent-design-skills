@@ -1,5 +1,5 @@
 {
-  "version": "4.2.0",
+  "version": "1.0.0",
   "description": "Agent Design Skills Benchmark Evaluation Suite. 11 empirical prompts covering 4 archetype families, complex workspace views, and cross-page continuity.",
   "gates": [
     "zero_lint_errors",
@@ -237,7 +237,7 @@
       "archetype": "dark-obsidian-technical",
       "title": "Page 2 Continuity Test: Audit Trail & Exception Resolution",
       "category": "workspace",
-      "user_prompt": "We have an existing workspace with Page 1 at /reconciliation-console generated using agent-design-skills v4.2 under dark-obsidian-technical. Now generate Page 2: the Audit Trail & Exception Resolution View (/audit-trail). Page 2 must be a distinct operational screen (displaying immutable audit logs, operator sign-offs, and discrepancy resolution workflows) while demonstrating 100% geometric and stylistic unity with Page 1. Strictly consume existing tokens.css without redefining colors or corner radii. Inherit the identical top utility bar height (48px), table row density, typography hierarchy, and hairline dividers. Do not introduce new font families, new accent colors, or unprompted navigation menus.",
+      "user_prompt": "We have an existing workspace with Page 1 at /reconciliation-console generated using agent-design-skills v1.0 under dark-obsidian-technical. Now generate Page 2: the Audit Trail & Exception Resolution View (/audit-trail). Page 2 must be a distinct operational screen (displaying immutable audit logs, operator sign-offs, and discrepancy resolution workflows) while demonstrating 100% geometric and stylistic unity with Page 1. Strictly consume existing tokens.css without redefining colors or corner radii. Inherit the identical top utility bar height (48px), table row density, typography hierarchy, and hairline dividers. Do not introduce new font families, new accent colors, or unprompted navigation menus.",
       "required_checks": {
         "token_compliance": "Must link to and reuse identical ./tokens.css; zero new CSS custom properties redefined in style tags",
         "geometric_unity": "Concentric corner radii must match Page 1 exactly: outer 6px, inner 4px, badge 4px. Container max-width: 1280px.",
