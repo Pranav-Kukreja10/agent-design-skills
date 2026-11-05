@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'pathe';
+import { fileURLToPath } from 'node:url';
 import { GeneratorOptions } from './types.js';
 import { generateTokens } from './tokens-gen.js';
 import { generateDesignMd } from './design-md-gen.js';
@@ -7,6 +8,24 @@ import { writeAntigravityAdapter } from './adapters/antigravity.js';
 import { writeCursorAdapter } from './adapters/cursor.js';
 import { writeClaudeCodexAdapter } from './adapters/claude-codex.js';
 import { writeWebBuildersAdapter } from './adapters/web-builders.js';
+
+async function findRegistryDir(): Promise<string> {
+  const cwdRegistry = path.resolve(process.cwd(), 'registry');
+  if (await fs.pathExists(cwdRegistry)) return cwdRegistry;
+
+  const currentFile = fileURLToPath(import.meta.url);
+  const dirname = path.dirname(currentFile);
+  const candidates = [
+    path.resolve(dirname, '../../../registry'),
+    path.resolve(dirname, '../../registry'),
+    path.resolve(dirname, '../registry')
+  ];
+
+  for (const c of candidates) {
+    if (await fs.pathExists(c)) return c;
+  }
+  return cwdRegistry;
+}
 
 /**
  * Builds the compressed (<1,500 tokens) Always-On Core Rule content
@@ -145,16 +164,27 @@ export async function compileDesignSystem(options: GeneratorOptions): Promise<{
   await fs.writeFile(designMdPath, designMd, 'utf-8');
   createdFiles.push(designMdPath);
 
-  // 3. Generate Agent Rules via Adapters
+  // 3. Optional Starter Kit Copy (template.html -> starter-preview.html)
+  if (options.starterKit) {
+    const registryDir = await findRegistryDir();
+    const starterTemplate = path.resolve(registryDir, 'starter-kits', options.starterKit, 'template.html');
+    if (await fs.pathExists(starterTemplate)) {
+      const previewPath = path.resolve(targetDir, 'starter-preview.html');
+      await fs.copy(starterTemplate, previewPath);
+      createdFiles.push(previewPath);
+    }
+  }
+
+  // 4. Generate Agent Rules via Adapters
   const coreRuleContent = buildCoreRuleContent(options);
 
   for (const agent of agents) {
     if (agent === 'antigravity') {
-      const p = await writeAntigravityAdapter(targetDir, options, coreRuleContent);
-      createdFiles.push(p);
+      const ps = await writeAntigravityAdapter(targetDir, options, coreRuleContent);
+      createdFiles.push(...ps);
     } else if (agent === 'cursor') {
-      const p = await writeCursorAdapter(targetDir, options, coreRuleContent);
-      createdFiles.push(p);
+      const ps = await writeCursorAdapter(targetDir, options, coreRuleContent);
+      createdFiles.push(...ps);
     } else if (agent === 'claude-codex') {
       const ps = await writeClaudeCodexAdapter(targetDir, options, coreRuleContent);
       createdFiles.push(...ps);
@@ -166,4 +196,3 @@ export async function compileDesignSystem(options: GeneratorOptions): Promise<{
 
   return { createdFiles };
 }
-

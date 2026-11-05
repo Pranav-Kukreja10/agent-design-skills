@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Tool Starter Kit — Agent Design Skills</title>
+  <link rel="stylesheet" href="./tokens.css">
+  <style>
+    /* =========================================================================
+       DATA TOOL & QUERY EXPLORER STYLES (v4.2)
+       Split-pane query/inspector, ⌘K command bar, tabular figures, zero slop
+       ========================================================================= */
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: var(--weight-body);
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Fixed Command Bar Header */
+    .command-header {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .query-input-box {
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-inner);
+      padding: 0.4rem 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .query-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      outline: none;
+    }
+
+    .kbd-chip {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-badge);
+      padding: 0.15rem 0.4rem;
+      color: var(--text-subtle);
+    }
+
+    /* Split-Pane Main Layout */
+    .split-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      overflow: hidden;
+    }
+
+    /* Left Pane: Query Results Grid */
+    .results-pane {
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Right Pane: Inspector Telemetry */
+    .inspector-pane {
+      background-color: var(--bg-elevated);
+      border-left: 1px solid var(--border-hairline);
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .pane-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-subtle);
+      letter-spacing: 0.05em;
+      margin: 0 0 1rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.5rem;
+    }
+
+    /* Compact Hairline Summary Strip */
+    .tool-summary-strip {
+      display: flex;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .summary-unit {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-right: 1px solid var(--border-hairline);
+    }
+
+    .summary-unit:last-child {
+      border-right: none;
+    }
+
+    .unit-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-subtle);
+    }
+
+    .unit-val {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Inline Error Recovery Banner */
+    .error-recovery-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--status-danger);
+      border-radius: var(--radius-inner);
+      padding: 0.75rem 1rem;
+      font-size: var(--text-sm);
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-heading);
+      border-radius: var(--radius-inner);
+      padding: 0.45rem 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .btn-subtle {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: var(--text-inverse);
+      border: 1px solid var(--accent-primary);
+    }
+
+    /* Data Grid */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-xs);
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      overflow: hidden;
+    }
+
+    .data-table th {
+      background-color: var(--bg-sunken);
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border-hairline);
+      text-align: left;
+    }
+
+    .data-table td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: var(--bg-surface-active);
+      cursor: pointer;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .truncate-entity {
+      max-width: 190px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      font-weight: var(--weight-heading);
+    }
+
+    .monogram-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-inner);
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.5rem;
+    }
+
+    .code-tag {
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    .tabular-val {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .inspector-block {
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Fixed Command Bar -->
+  <header class="command-header">
+    <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle);">
+      QUERY ENGINE / V4.2
+    </div>
+
+    <div class="query-input-box">
+      <input type="text" id="query-input" class="query-input" value="SELECT * FROM ledger_audit WHERE delta != 0 ORDER BY timestamp DESC" aria-label="Query input">
+      <span class="kbd-chip">⌘K</span>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-primary" onclick="executeQuery()">Execute query</button>
+    </div>
+  </header>
+
+  <!-- Split Pane Layout -->
+  <div class="split-layout">
+
+    <!-- Left Pane: Results -->
+    <main class="results-pane">
+      <div class="tool-summary-strip">
+        <div class="summary-unit">
+          <div class="unit-label">ROWS RETURNED</div>
+          <div class="unit-val">5 entries</div>
+        </div>
+        <div class="summary-unit">
+          <div class="unit-label">EXECUTION TIME</div>
+          <div class="unit-val">18 ms</div>
+        </div>
+        <div class="summary-unit">
+          <div class="unit-label">UNRECONCILED DELTA</div>
+          <div class="unit-val" style="color: var(--status-danger);">+$412.50</div>
+        </div>
+      </div>
+
+      <!-- Inline Error Recovery Banner -->
+      <aside class="error-recovery-banner" role="alert">
+        <div>
+          <strong>Row 4,812 Mismatch:</strong> Hash divergence between ledger row and nodal account.
+        </div>
+        <button type="button" class="btn btn-subtle" onclick="inspectRow('ICICI Bank Nodal Settlement', '0x8F2D...c41a', '+$412.50')">
+          Inspect diff
+        </button>
+      </aside>
+
+      <!-- Results Table with // SAMPLE DATA -->
+      <table class="data-table" aria-label="Query results">
+        <thead>
+          <tr>
+            <th scope="col">ENTITY</th>
+            <th scope="col">PARTITION KEY</th>
+            <th scope="col" style="text-align: right;">AMOUNT</th>
+            <th scope="col" style="text-align: right;">VARIANCE</th>
+            <th scope="col">STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Edge Case 1: Standard Reconciled -->
+          <tr onclick="inspectRow('Stripe Payments Europe Ltd', '0x7c4e...89a1', '$0.00')">
+            <td>
+              <span class="monogram-avatar">SE</span>
+              <span class="truncate-entity">Stripe Payments Europe Ltd</span>
+            </td>
+            <td><code class="code-tag">EU528001048</code></td>
+            <td class="tabular-val">$184,200.00</td>
+            <td class="tabular-val" style="color: var(--text-subtle);">$0.00</td>
+            <td><span style="color: var(--status-success);">Settled</span></td>
+          </tr>
+
+          <!-- Edge Case 2: Discrepancy Record -->
+          <tr onclick="inspectRow('ICICI Bank Nodal Settlement', '0x8F2D...c41a', '+$412.50')">
+            <td>
+              <span class="monogram-avatar" style="color: var(--status-danger);">IC</span>
+              <span class="truncate-entity">ICICI Bank Nodal Settlement</span>
+            </td>
+            <td><code class="code-tag">27AAACI1234D1ZP</code></td>
+            <td class="tabular-val">$48,920.00</td>
+            <td class="tabular-val" style="color: var(--status-danger);">+$412.50</td>
+            <td><span style="color: var(--status-danger);">Discrepancy</span></td>
+          </tr>
+
+          <!-- Edge Case 3: Truncated Long Entity -->
+          <tr onclick="inspectRow('State Bank of India — Commercial Branch Mumbai Nariman Point', '0x3b11...99ef', '₹0.00')">
+            <td>
+              <span class="monogram-avatar">SB</span>
+              <span class="truncate-entity" title="State Bank of India — Commercial Branch Mumbai Nariman Point">
+                State Bank of India — Commercial Branch Mumbai Nariman Point
+              </span>
+            </td>
+            <td><code class="code-tag">27AAAPL1234C1ZV</code></td>
+            <td class="tabular-val">₹12,450,000.00</td>
+            <td class="tabular-val" style="color: var(--text-subtle);">₹0.00</td>
+            <td><span style="color: var(--status-success);">Settled</span></td>
+          </tr>
+
+          <!-- Edge Case 4: Null Avatar Monogram Fallback -->
+          <tr onclick="inspectRow('Paytm Payments Bank', '0x9a02...41bd', '₹0.00')">
+            <td>
+              <span class="monogram-avatar">PP</span>
+              <span class="truncate-entity">Paytm Payments Bank</span>
+            </td>
+            <td><code class="code-tag">07AABCP5678Q1Z2</code></td>
+            <td class="tabular-val">₹842,100.00</td>
+            <td class="tabular-val" style="color: var(--text-subtle);">₹0.00</td>
+            <td><span style="color: var(--status-success);">Settled</span></td>
+          </tr>
+
+          <!-- Edge Case 5: Zero/Pending State -->
+          <tr onclick="inspectRow('HSBC Global Custody UK', '0x0000...0000', '£0.00')">
+            <td>
+              <span class="monogram-avatar">HS</span>
+              <span class="truncate-entity">HSBC Global Custody UK</span>
+            </td>
+            <td><code class="code-tag">GB123456780</code></td>
+            <td class="tabular-val">£0.00</td>
+            <td class="tabular-val" style="color: var(--text-subtle);">£0.00</td>
+            <td><span style="color: var(--status-warning);">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <!-- Right Pane: Telemetry Inspector -->
+    <aside class="inspector-pane">
+      <h2 class="pane-title">ROW INSPECTOR</h2>
+      <p id="target-entity" style="font-size: var(--text-sm); font-weight: var(--weight-heading); margin: 0 0 0.5rem 0;">
+        ICICI Bank Nodal Settlement
+      </p>
+
+      <div class="inspector-block">
+        <pre id="json-preview" style="margin: 0;">{
+  "entity": "ICICI Nodal",
+  "hash": "0x8F2D...c41a",
+  "variance": 412.50,
+  "consensus": "MISMATCH_DETECTED"
+}</pre>
+      </div>
+
+      <div style="font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6;">
+        <p><strong>Latency:</strong> 18ms</p>
+        <p><strong>Partition Root:</strong> Merkle block #10842</p>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    function inspectRow(entity, hash, variance) {
+      document.getElementById('target-entity').textContent = entity;
+      const preview = {
+        entity,
+        hash,
+        variance,
+        timestamp: new Date().toISOString()
+      };
+      document.getElementById('json-preview').textContent = JSON.stringify(preview, null, 2);
+    }
+
+    function executeQuery() {
+      console.info('Query executed against forensic ledger.');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('query-input').focus();
+      }
+    });
+  </script>
+</body>
+</html>
+

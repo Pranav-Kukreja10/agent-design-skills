@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile App Starter Kit — Agent Design Skills</title>
+  <link rel="stylesheet" href="./tokens.css">
+  <style>
+    /* =========================================================================
+       MOBILE APP STARTER STYLES (v4.2)
+       Mobile-first 375px–430px frame, >=44px touch targets, zero hover traps
+       ========================================================================= */
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: var(--weight-body);
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Centered Mobile Device Viewport Frame */
+    .mobile-frame {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      background-color: var(--bg-elevated);
+      border-left: 1px solid var(--border-hairline);
+      border-right: 1px solid var(--border-hairline);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Mobile Top App Header */
+    .mobile-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-elevated);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .eyebrow-text {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-subtle);
+    }
+
+    /* Main Scrollable Content Area */
+    .mobile-content {
+      flex: 1;
+      padding: 1.25rem;
+      padding-bottom: 5.5rem; /* space for bottom navigation */
+      overflow-y: auto;
+    }
+
+    .screen-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-heading);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .screen-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin: 0 0 1.25rem 0;
+    }
+
+    /* Compact Mobile Summary Strip */
+    .mobile-summary {
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .summary-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-subtle);
+    }
+
+    .summary-stat {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Touch-Friendly List (>=44px target) */
+    .touch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .touch-item {
+      min-height: 48px;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color var(--duration-fast) var(--ease-primary);
+    }
+
+    .touch-item:active {
+      background-color: var(--bg-surface-active);
+    }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .monogram-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-inner);
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      min-width: 0;
+    }
+
+    .truncate-entity {
+      max-width: 170px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-heading);
+      display: block;
+    }
+
+    .item-sub {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+
+    .item-amount {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    /* Bottom Thumb-Zone Navigation Bar (>=48px height) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 420px;
+      height: 60px;
+      background-color: var(--bg-elevated);
+      border-top: 1px solid var(--border-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 20;
+    }
+
+    .nav-tab {
+      min-width: 48px;
+      min-height: 48px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .nav-tab.active {
+      color: var(--accent-primary);
+      font-weight: var(--weight-heading);
+    }
+
+    /* Interactive Bottom Sheet Modal */
+    .bottom-sheet {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      max-width: 420px;
+      margin: 0 auto;
+      background-color: var(--bg-canvas);
+      border-top: 1px solid var(--border-hairline);
+      border-top-left-radius: var(--radius-outer);
+      border-top-right-radius: var(--radius-outer);
+      box-shadow: var(--shadow-elevated);
+      padding: 1.5rem;
+      transition: bottom var(--duration-normal) var(--ease-primary);
+      z-index: 30;
+    }
+
+    .bottom-sheet.open {
+      bottom: 0;
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background-color: var(--border-hairline);
+      margin: 0 auto 1.25rem auto;
+    }
+
+    .btn {
+      min-height: 44px;
+      width: 100%;
+      border-radius: var(--radius-inner);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-heading);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: var(--text-inverse);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-hairline);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-frame">
+
+    <header class="mobile-header">
+      <span class="eyebrow-text">01 / MOBILE SETTLEMENT</span>
+      <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle);">
+        SYNC: LIVE
+      </span>
+    </header>
+
+    <main class="mobile-content">
+      <h1 class="screen-title">Reconciliation records</h1>
+      <p class="screen-desc">
+        Touch an item below to inspect cryptographic signatures and tax identifiers.
+      </p>
+
+      <div class="mobile-summary">
+        <div>
+          <div class="summary-title">PENDING BATCH</div>
+          <div class="summary-stat">12 records</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="summary-title">TOTAL DELTA</div>
+          <div class="summary-stat" style="color: var(--status-danger);">+$412.50</div>
+        </div>
+      </div>
+
+      <!-- Touch List with // SAMPLE DATA -->
+      <div class="touch-list" role="list">
+        <!-- Edge Case 1: Standard Reconciled Record -->
+        <div class="touch-item" role="listitem" onclick="openSheet('Stripe Payments Europe Ltd', '$184,200.00', '0x7c4e...89a1')">
+          <div class="item-left">
+            <span class="monogram-avatar">SE</span>
+            <div class="item-info">
+              <span class="truncate-entity">Stripe Payments Europe Ltd</span>
+              <span class="item-sub">EUR / USD Settled</span>
+            </div>
+          </div>
+          <div class="item-amount">$184,200.00</div>
+        </div>
+
+        <!-- Edge Case 2: Discrepancy Record -->
+        <div class="touch-item" role="listitem" style="border-color: var(--status-danger);" onclick="openSheet('ICICI Bank Nodal Settlement', '+$412.50 Discrepancy', '0x8F2D...c41a')">
+          <div class="item-left">
+            <span class="monogram-avatar" style="color: var(--status-danger);">IC</span>
+            <div class="item-info">
+              <span class="truncate-entity">ICICI Bank Nodal Settlement</span>
+              <span class="item-sub" style="color: var(--status-danger);">Row 4,812 mismatch</span>
+            </div>
+          </div>
+          <div class="item-amount" style="color: var(--status-danger);">+$412.50</div>
+        </div>
+
+        <!-- Edge Case 3: Truncated Long Entity -->
+        <div class="touch-item" role="listitem" onclick="openSheet('State Bank of India — Commercial Branch Mumbai Nariman Point', '₹12,450,000.00', '0x3b11...99ef')">
+          <div class="item-left">
+            <span class="monogram-avatar">SB</span>
+            <div class="item-info">
+              <span class="truncate-entity">State Bank of India — Commercial Branch Mumbai Nariman Point</span>
+              <span class="item-sub">GSTIN 27AAAPL1234C1ZV</span>
+            </div>
+          </div>
+          <div class="item-amount">₹12.4M</div>
+        </div>
+
+        <!-- Edge Case 4: Null Avatar Fallback -->
+        <div class="touch-item" role="listitem" onclick="openSheet('Paytm Payments Bank', '₹842,100.00', '0x9a02...41bd')">
+          <div class="item-left">
+            <span class="monogram-avatar">PP</span>
+            <div class="item-info">
+              <span class="truncate-entity">Paytm Payments Bank</span>
+              <span class="item-sub">Escrow verified</span>
+            </div>
+          </div>
+          <div class="item-amount">₹842.1K</div>
+        </div>
+
+        <!-- Edge Case 5: Zero/Pending State -->
+        <div class="touch-item" role="listitem" onclick="openSheet('HSBC Global Custody UK', '£0.00 Pending', '0x0000...0000')">
+          <div class="item-left">
+            <span class="monogram-avatar">HS</span>
+            <div class="item-info">
+              <span class="truncate-entity">HSBC Global Custody UK</span>
+              <span class="item-sub">GBP clearing</span>
+            </div>
+          </div>
+          <div class="item-amount" style="color: var(--status-warning);">£0.00</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Thumb Navigation Bar -->
+    <nav class="bottom-nav" aria-label="Mobile Navigation">
+      <button type="button" class="nav-tab active">
+        <span>Ledger</span>
+      </button>
+      <button type="button" class="nav-tab">
+        <span>Batches</span>
+      </button>
+      <button type="button" class="nav-tab">
+        <span>Audit</span>
+      </button>
+    </nav>
+
+    <!-- Interactive Bottom Sheet -->
+    <aside class="bottom-sheet" id="sheet" aria-modal="true" role="dialog">
+      <div class="sheet-handle"></div>
+      <h2 id="sheet-title" style="font-size: var(--text-lg); margin: 0 0 0.5rem 0;">Batch details</h2>
+      <p id="sheet-amount" style="font-family: var(--font-mono); color: var(--text-muted); margin: 0 0 0.5rem 0;"></p>
+      <p id="sheet-hash" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle); margin: 0 0 1.5rem 0;"></p>
+
+      <button type="button" class="btn btn-primary" onclick="closeSheet()">Verify partition</button>
+      <button type="button" class="btn btn-secondary" onclick="closeSheet()">Dismiss</button>
+    </aside>
+
+  </div>
+
+  <script>
+    const sheet = document.getElementById('sheet');
+    const sheetTitle = document.getElementById('sheet-title');
+    const sheetAmount = document.getElementById('sheet-amount');
+    const sheetHash = document.getElementById('sheet-hash');
+
+    function openSheet(title, amount, hash) {
+      sheetTitle.textContent = title;
+      sheetAmount.textContent = 'Amount: ' + amount;
+      sheetHash.textContent = 'Root hash: ' + hash;
+      sheet.classList.add('open');
+    }
+
+    function closeSheet() {
+      sheet.classList.remove('open');
+    }
+  </script>
+</body>
+</html>
+

@@ -8,6 +8,10 @@ export type RadiusScaleId = 'sharp' | 'subtle' | 'medium' | 'high' | 'pill';
 
 export type BlurScaleId = 'flat' | 'subtle-frost' | 'deep-glass';
 
+export type StarterKitId = 'dashboard' | 'landing-waitlist' | 'mobile-app' | 'data-tool';
+
+export type InstallMode = 'modular' | 'single';
+
 export interface FontDefinition {
   name: string;
   provider: 'google' | 'fontshare';
@@ -57,6 +61,8 @@ export interface GeneratorOptions {
   accentPaletteId?: string;
   customDirection?: string;
   productBrief?: string;
+  mode?: InstallMode;
+  starterKit?: StarterKitId;
   fast?: boolean;
 }
 

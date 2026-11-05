@@ -3,11 +3,19 @@ import { Command } from 'commander';
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
 import path from 'pathe';
-import { AgentType, ArchetypeId, FeelingVectorId, RadiusScaleId, BlurScaleId, GeneratorOptions } from './types.js';
+import {
+  AgentType,
+  ArchetypeId,
+  FeelingVectorId,
+  RadiusScaleId,
+  BlurScaleId,
+  InstallMode,
+  StarterKitId,
+  GeneratorOptions
+} from './types.js';
 import { compileDesignSystem } from './compiler.js';
 import { lintDirectory } from './linter.js';
 import { freezeProject, unfreezeProject } from './freeze.js';
-import { mapFeelingFromText } from './feeling-mapper.js';
 
 const program = new Command();
 
@@ -19,8 +27,10 @@ program
 // Default action: Interactive Scaffold or Fast Mode
 program
   .command('init', { isDefault: true })
-  .description('Scaffold a design token contract and agent governance rules')
+  .description('Scaffold a design token contract, starter kit, and agent governance rules')
   .option('-f, --fast', 'Fast mode with sensible defaults (dark-obsidian-technical, antigravity)')
+  .option('-s, --starter-kit <kit>', 'Pre-baked starter kit: dashboard, landing-waitlist, mobile-app, data-tool')
+  .option('-m, --mode <mode>', 'Installation mode: modular or single', 'modular')
   .option('-d, --dir <dir>', 'Target directory', '.')
   .action(async (opts) => {
     const targetDir = path.resolve(process.cwd(), opts.dir || '.');
@@ -31,6 +41,8 @@ program
       const s = p.spinner();
       s.start(`Compiling default design system in ${targetDir}...`);
 
+      const starterKit = (opts.starterKit as StarterKitId) || 'dashboard';
+
       const options: GeneratorOptions = {
         projectName,
         targetDir,
@@ -39,6 +51,8 @@ program
         feeling: 'urgent-precise',
         radius: 'subtle',
         blur: 'subtle-frost',
+        mode: (opts.mode as InstallMode) || 'modular',
+        starterKit,
         customDirection: 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
         productBrief: 'High-precision operational workspace and data reconciliation platform',
         fast: true
@@ -51,7 +65,7 @@ program
         console.log(`  ${pc.green('✔')} ${pc.dim(path.relative(targetDir, file))}`);
       }
 
-      p.outro(pc.green('✨ Fast initialization complete. Token contract active.'));
+      p.outro(pc.green('✨ Fast initialization complete. Token contract & starter preview active.'));
       return;
     }
 
@@ -64,10 +78,10 @@ program
           p.multiselect({
             message: 'Which AI coding agent(s) are you using?',
             options: [
-              { value: 'antigravity', label: 'Antigravity', hint: '.agent/rules/design-core.md' },
-              { value: 'cursor', label: 'Cursor', hint: '.cursor/rules/design-core.mdc' },
+              { value: 'antigravity', label: 'Antigravity', hint: '.agent/rules/ & .agent/skills/' },
+              { value: 'cursor', label: 'Cursor', hint: '.cursor/rules/' },
               { value: 'claude-codex', label: 'Codex / Claude Code', hint: 'CLAUDE.md / AGENTS.md' },
-              { value: 'web-builders', label: 'Web Builders (v0 / Bolt / Lovable)', hint: 'DESIGN_RULES.md' }
+              { value: 'web-builders', label: 'Web Builders (v0 / Bolt / Lovable)', hint: 'DESIGN-PROMPT.md' }
             ],
             required: true,
           }),
@@ -90,6 +104,25 @@ program
                 label: 'Neo-Brutalist Studio',
                 hint: 'Hard 2px borders, stark offset shadows, raw tactile accents',
               },
+            ],
+          }),
+        starterKit: () =>
+          p.select({
+            message: 'Choose a token-wired starter kit preview:',
+            options: [
+              { value: 'dashboard', label: 'High-Density Workspace Dashboard', hint: 'Workspace shell, summary strip, data table, drawer' },
+              { value: 'landing-waitlist', label: 'Editorial Landing & Waitlist', hint: 'Narrative hero, live preview artifact, waitlist form' },
+              { value: 'mobile-app', label: 'Mobile-First Application', hint: '375px–430px frame, thumb nav, bottom sheet' },
+              { value: 'data-tool', label: 'Split-Pane Query Explorer & Tool', hint: 'Split query/inspector, ⌘K command bar, tabular nums' },
+              { value: 'none', label: 'None (Blank Token Contract)', hint: 'Pure tokens and governance rules only' }
+            ],
+          }),
+        mode: () =>
+          p.select({
+            message: 'Installation mode for skills & rules:',
+            options: [
+              { value: 'modular', label: 'Modular Skills (Recommended)', hint: 'Core rules + task-scoped reference guides' },
+              { value: 'single', label: 'Single Master File', hint: 'Combined master reference file' }
             ],
           }),
         feeling: () =>
@@ -148,6 +181,8 @@ program
       feeling: answers.feeling as FeelingVectorId,
       radius: answers.radius as RadiusScaleId,
       blur: answers.blur as BlurScaleId,
+      mode: answers.mode as InstallMode,
+      starterKit: answers.starterKit !== 'none' ? (answers.starterKit as StarterKitId) : undefined,
       customDirection: answers.customDirection as string,
     };
 
@@ -228,4 +263,27 @@ program
     }
   });
 
-program.parse();
+import { fileURLToPath } from 'node:url';
+
+const isDirectRun = Boolean(
+  process.argv[1] &&
+  process.argv[1] !== '[eval]' &&
+  (
+    path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url)) ||
+    process.argv[1].endsWith('index.js') ||
+    process.argv[1].endsWith('agent-design-skills') ||
+    process.argv[1].endsWith('design-skills')
+  )
+);
+
+if (isDirectRun) {
+  program.parse();
+}
+
+export {
+  compileDesignSystem,
+  lintDirectory,
+  freezeProject,
+  unfreezeProject
+};
+export * from './types.js';

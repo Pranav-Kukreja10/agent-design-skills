@@ -21,7 +21,12 @@ export async function freezeProject(targetDir: string): Promise<FreezeManifest> 
     'tokens.css',
     'tokens.json',
     'DESIGN.md',
+    'DESIGN-PROMPT.md',
     '.agent/rules/design-core.md',
+    '.agents/rules/design-core.md',
+    '.agent/skills/design-system/SKILL.md',
+    '.agents/skills/design-system/SKILL.md',
+    '.cursor/rules/00-design-core.mdc',
     '.cursor/rules/design-core.mdc',
     'CLAUDE.md',
     'AGENTS.md'

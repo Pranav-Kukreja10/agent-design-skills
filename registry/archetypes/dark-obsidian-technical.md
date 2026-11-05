@@ -44,10 +44,10 @@
   - `display`: `Geist`, provider: `google`, package: `@fontsource/geist-sans`
   - `sans`: `Instrument Sans`, provider: `google`, package: `@fontsource/instrument-sans`
   - `mono`: `Geist Mono`, provider: `google`, package: `@fontsource/geist-mono`
-- **Pairing B (Architectural Density):**
-  - `display`: `Plus Jakarta Sans`, provider: `google`, package: `@fontsource/plus-jakarta-sans`
-  - `sans`: `Inter`, provider: `google`, package: `@fontsource/inter`
-  - `mono`: `JetBrains Mono`, provider: `google`, package: `@fontsource/jetbrains-mono`
+- **Pairing B (Geometric Density):**
+  - `display`: `Sora`, provider: `google`, package: `@fontsource/sora`
+  - `sans`: `Public Sans`, provider: `google`, package: `@fontsource/public-sans`
+  - `mono`: `Fira Code`, provider: `google`, package: `@fontsource/fira-code`
 - **Pairing C (Industrial Precision):**
   - `display`: `Satoshi`, provider: `fontshare`, package: `@fontsource/satoshi`
   - `sans`: `General Sans`, provider: `fontshare`, package: `@fontsource/general-sans`

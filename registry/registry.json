@@ -143,5 +143,31 @@
     "flat": "0px",
     "subtle-frost": "8px",
     "deep-glass": "20px"
-  }
+  },
+  "starter_kits": [
+    {
+      "id": "dashboard",
+      "name": "High-Density Workspace Dashboard",
+      "path": "starter-kits/dashboard/template.html",
+      "description": "High-density workspace shell, hairline-divided summary strip, filterable data table, slide-over inspector drawer"
+    },
+    {
+      "id": "landing-waitlist",
+      "name": "Editorial Landing & Waitlist",
+      "path": "starter-kits/landing-waitlist/template.html",
+      "description": "Product narrative hero, interactive live preview artifact, verified proof strip, waitlist capture form"
+    },
+    {
+      "id": "mobile-app",
+      "name": "Mobile-First Application",
+      "path": "starter-kits/mobile-app/template.html",
+      "description": "Mobile-first 375px–430px frame, thumb-zone bottom navigation, interactive bottom sheet modal"
+    },
+    {
+      "id": "data-tool",
+      "name": "Split-Pane Query Explorer & Tool",
+      "path": "starter-kits/data-tool/template.html",
+      "description": "Split-pane query/inspector, ⌘K command bar, dense tabular numbers, inline error recovery"
+    }
+  ]
 }
