@@ -1,48 +1,147 @@
 {
-  "version": "0.1.0",
+  "version": "4.2.0",
+  "name": "agent-design-skills",
+  "description": "Design governance registry eliminating AI UI slop and enforcing cross-page unity",
   "core": [
     {
-      "id": "anti-ai-cliches",
-      "name": "Anti-AI Cliché Ruleset (Always Included)",
-      "path": "core/anti-ai-cliches.md"
+      "id": "00-workflow-and-scope",
+      "name": "Workflow Lifecycle & Strict Scope Lock",
+      "path": "core/00-workflow-and-scope.md",
+      "required": true
+    },
+    {
+      "id": "01-override-protocol",
+      "name": "Smart Override & Divergence Protocol",
+      "path": "core/01-override-protocol.md",
+      "required": true
+    },
+    {
+      "id": "02-anti-slop-firewall",
+      "name": "Anti-Slop Firewall & Aesthetic Sanity",
+      "path": "core/02-anti-slop-firewall.md",
+      "required": true
+    },
+    {
+      "id": "03-cross-page-unity",
+      "name": "Cross-Page Geometric Unity & Token Contract",
+      "path": "core/03-cross-page-unity.md",
+      "required": true
+    },
+    {
+      "id": "04-ux-and-ergonomics",
+      "name": "UX Ergonomics, Seed Data & Component States",
+      "path": "core/04-ux-and-ergonomics.md",
+      "required": true
+    },
+    {
+      "id": "05-voice-and-copy",
+      "name": "Voice, Copy Honesty & Typographic Discipline",
+      "path": "core/05-voice-and-copy.md",
+      "required": true
+    },
+    {
+      "id": "06-iteration-discipline",
+      "name": "Iteration Discipline, Revision Budget & Polish Backlog",
+      "path": "core/06-iteration-discipline.md",
+      "required": true
     }
   ],
-  "themes": [
+  "archetypes": [
     {
-      "id": "minimal-saas",
-      "name": "Minimal SaaS (Linear / Vercel Obsidian)",
-      "hint": "1px hairline borders, Zinc-950 depth, Geist/Inter typography",
-      "path": "themes/minimal-saas",
-      "files": [
-        "01-palette-surfaces.md",
-        "02-typography.md",
-        "03-layout-composition.md",
-        "04-tactile-motion.md"
-      ]
+      "id": "dark-obsidian-technical",
+      "name": "Dark Obsidian Technical",
+      "polarity": "dark",
+      "path": "archetypes/dark-obsidian-technical.md",
+      "hint": "Crisp 1px hairlines, carbon surfaces hue 250, forensic developer/settlement consoles",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "subtle",
+      "defaultBlur": "subtle-frost"
     },
     {
-      "id": "high-contrast-monochrome",
-      "name": "High-Contrast Monochrome (Editorial Black & White)",
-      "hint": "Stark B&W contrast, architectural grids, razor-sharp hierarchy",
-      "path": "themes/high-contrast-monochrome",
-      "files": [
-        "01-palette-surfaces.md",
-        "02-typography.md",
-        "03-layout-composition.md",
-        "04-tactile-motion.md"
-      ]
+      "id": "editorial-serif-paper",
+      "name": "Editorial Serif Paper",
+      "polarity": "light",
+      "path": "archetypes/editorial-serif-paper.md",
+      "hint": "Warm bone/alabaster paper, high-contrast serif typography, literary craft",
+      "defaultFeeling": "calm",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
     },
     {
-      "id": "neo-brutalist",
+      "id": "neo-brutalism",
       "name": "Neo-Brutalist Studio",
-      "hint": "Hard offset shadows, 2px solid borders, high-saturation accents",
-      "path": "themes/neo-brutalist",
-      "files": [
-        "01-palette-surfaces.md",
-        "02-typography.md",
-        "03-layout-composition.md",
-        "04-tactile-motion.md"
-      ]
+      "polarity": "light",
+      "path": "archetypes/neo-brutalism.md",
+      "hint": "Hard 2px black borders, hard offset shadows, zero radius, saturated tactile accents",
+      "defaultFeeling": "playful-tactile",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
     }
-  ]
+  ],
+  "feeling_vectors": {
+    "calm": {
+      "id": "calm",
+      "name": "Calm & Literary",
+      "ease": "cubic-bezier(0.25, 1, 0.5, 1)",
+      "durationFast": "140ms",
+      "durationNormal": "240ms",
+      "description": "Unhurried, measured, literary ease"
+    },
+    "urgent-precise": {
+      "id": "urgent-precise",
+      "name": "Urgent & Forensic Precision",
+      "ease": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "durationFast": "110ms",
+      "durationNormal": "180ms",
+      "description": "Snappy, clinical precision with zero bounce"
+    },
+    "playful-tactile": {
+      "id": "playful-tactile",
+      "name": "Playful & Tactile",
+      "ease": "cubic-bezier(0, 0, 0.2, 1)",
+      "durationFast": "80ms",
+      "durationNormal": "150ms",
+      "description": "Crisp springy press states and punchy responses"
+    },
+    "authoritative": {
+      "id": "authoritative",
+      "name": "Authoritative & Institutional",
+      "ease": "cubic-bezier(0.2, 0, 0, 1)",
+      "durationFast": "120ms",
+      "durationNormal": "200ms",
+      "description": "Grounded, stable, institutional transitions"
+    }
+  },
+  "radius_scales": {
+    "sharp": {
+      "radiusOuter": "0px",
+      "radiusInner": "0px",
+      "radiusBadge": "0px"
+    },
+    "subtle": {
+      "radiusOuter": "6px",
+      "radiusInner": "4px",
+      "radiusBadge": "4px"
+    },
+    "medium": {
+      "radiusOuter": "10px",
+      "radiusInner": "6px",
+      "radiusBadge": "6px"
+    },
+    "high": {
+      "radiusOuter": "16px",
+      "radiusInner": "10px",
+      "radiusBadge": "8px"
+    },
+    "pill": {
+      "radiusOuter": "9999px",
+      "radiusInner": "9999px",
+      "radiusBadge": "9999px"
+    }
+  },
+  "blur_scales": {
+    "flat": "0px",
+    "subtle-frost": "8px",
+    "deep-glass": "20px"
+  }
 }

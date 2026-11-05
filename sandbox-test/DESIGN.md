@@ -111,22 +111,28 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 
 | Component | Selector / Element | Role | Default Token Binding |
 |---|---|---|---|
-| **Settlement Table** | `table.settlement-grid` | Forensic record display | `var(--bg-elevated)`, `var(--border-hairline)` |
-| **Audit Drawer** | `aside.audit-feed-drawer` | Event telemetry & logs | `var(--bg-glass)`, `backdrop-filter: blur(var(--surface-blur))` |
-| **Filter Toolbar** | `header.filter-bar` | Batch query controls | `var(--bg-canvas)`, `var(--border-subtle)` |
-| **Action CTA** | `button.action-primary` | Execute reconciliation | `var(--accent-primary)`, `var(--radius-inner)` |
-| **Status Tag** | `span.status-pill` | Mismatch / Reconciled | `var(--radius-badge)`, `var(--font-mono)` |
-| **Payload Inspector** | `pre.payload-block` | JSON diff & Merkle hash | `var(--bg-sunken)`, `var(--font-mono)` |
+| **Top Utility Bar & State Controller** | `header.top-utility-bar`, `nav.state-switcher` | View metadata & 5-state test controller | `var(--bg-sunken)`, `var(--border-hairline)`, `var(--radius-outer)` |
+| **Workspace Summary Bar** | `div.workspace-summary-bar`, `.summary-segment` | Operational batch totals & variance strip | `var(--bg-elevated)`, `var(--border-hairline)`, `var(--highlight-specular)` |
+| **Inline Error Banner** | `aside.inline-error-banner` | Forensic discrepancy alert banner | `var(--bg-sunken)`, `var(--status-danger)`, `var(--radius-outer)` |
+| **Action Bar & Primary CTA** | `section.action-bar`, `button.btn-primary` | Batch controls & single primary CTA | `var(--accent-primary)`, `var(--text-inverse)`, `var(--radius-inner)` |
+| **Settlement Card Container** | `article.settlement-card` | Concentric bounded workspace card | `var(--bg-elevated)`, `var(--border-hairline)`, `var(--radius-outer)` |
+| **Scanline Pulse Signature Moment** | `div.scanline-pulse` | 180ms commitment confirmation effect | `var(--accent-primary)`, `var(--ease-primary)`, `var(--duration-normal)` |
+| **Settlement Table Grid** | `table.settlement-grid` | Forensic record display & truncation | `var(--bg-elevated)`, `var(--border-subtle)`, `var(--font-mono)` |
+| **Monogram Avatar Fallback** | `span.monogram-avatar` | Null avatar 2-letter fallback box | `var(--bg-sunken)`, `var(--border-subtle)`, `var(--radius-inner)` |
+| **Loading Skeleton View** | `div.skeleton-view[aria-busy="true"]` | Zero-CLS layout-matching skeleton | `var(--bg-sunken)`, `var(--radius-inner)` |
+| **Zero-Data Empty State** | `div.empty-view`, `button.empty-cta-handoff` | Hand-off target absorbing Primary CTA | `var(--text-muted)`, `var(--accent-primary)`, `var(--radius-inner)` |
+| **Cryptographic Audit Footer** | `footer.audit-footer-strip` | Merkle append-only consensus status | `var(--border-hairline)`, `var(--font-mono)` |
 
 ---
 
 ## 6. Active Revision Passes
 
-**Budget:** 0 of 2 passes used.
+**Budget:** 2 of 2 passes used.
 
 | Pass # | Target Component | Modification | Tokens Touched | Verification |
 |---|---|---|---|---|
-| *None* | — | Initial baseline lock | Baseline | Verified against spec |
+| **Pass 1** | `sandbox-test/index.html` | Implemented single-file forensic settlement workspace verifying all 5 UI states (Default, Interactive, Loading Skeleton `[aria-busy="true"]`, Zero-Data Empty State with CTA handoff, and Inline Error Banner). Incorporated realistic seed data with 4 edge cases (SBI long-string truncation, Paytm null monogram fallback, zero/pending state, and ICICI FX discrepancy). Applied concentric corner math and 180ms scanline signature moment. | `--bg-canvas`, `--bg-elevated`, `--bg-surface-active`, `--bg-sunken`, `--text-primary`, `--text-muted`, `--text-subtle`, `--text-inverse`, `--accent-primary`, `--accent-hover`, `--border-hairline`, `--border-subtle`, `--highlight-specular`, `--status-success`, `--status-warning`, `--status-danger`, `--radius-outer`, `--radius-inner`, `--radius-badge`, `--section-py-tight`, `--section-py-normal`, `--container-max`, `--duration-fast`, `--duration-normal`, `--ease-primary`, modular typography scale | Zero raw hex/oklch/rgb literals; strictly 1 Primary CTA visible per viewport; concentric corner math verified; all 5 states switchable via utility controller. |
+| **Pass 2** | `sandbox-test/index.html` | Closed 3 subtle AI slop loopholes: purged 2 decorative header pill chips next to eyebrow; removed decorative green footer dot; replaced 3 equal-width marketing KPI boxes with an operational, compact workspace summary bar showing real batch totals ($233K & ₹13.2M), variance (+$412.50), and pending status (1 of 5) separated by 1px hairlines. | `--bg-elevated`, `--border-hairline`, `--highlight-specular`, `--shadow-surface`, `--font-mono`, `--text-xs`, `--text-lg`, `--status-danger`, `--text-subtle`, `--text-primary`, `--text-muted` | Verified clean elimination of static marketing in app UI; eyebrow stands alone; zero fake status dots; metric strip follows 1px divider rule. |
 
 ---
 

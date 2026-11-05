@@ -69,6 +69,10 @@ You are the design governance engine for this codebase. Every UI decision must p
   - Zero purple/pink/cyan AI mesh gradients or glowing border outlines.
   - Zero emojis used as icons (no 🚀, 💡, 🔥, ✨). Use SVGs or monospaced glyphs.
   - Zero decorative floating orbs or ungrounded card drop shadows.
+  - **Zero 3-Equal-Card KPI Rows:** Never place 3 equal-width stat boxes in a row. Use an inline horizontal metric strip with 1px vertical dividers (`var(--border-hairline)`) or an asymmetric 2-pane split instead.
+  - **Zero Marketing Claims in App Workspaces:** Never place static marketing, throughput capacity, or compliance claims (e.g., "SOC2 Type II", "250K TX/S") inside active operational workspace consoles. Reserve these exclusively for landing/onboarding pages. Workspaces must only display live operational batch totals.
+  - **Zero Decorative Header Chips:** Never place decorative pill tags/chips next to section eyebrows or headers. Pill badges are strictly reserved for record status inside data views (e.g., `Settled`, `Discrepancy`).
+  - **Zero Fake Status Dots:** Colored status dots (static or animated) are banned in headers and footers unless wired to a real, user-toggleable live connection state.
 
 ---
 

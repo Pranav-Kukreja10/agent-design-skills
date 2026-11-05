@@ -73,4 +73,7 @@ Every generated screen must respect these strict viewport budgets:
 - **Primary CTA Budget ($\le 1$):** Exactly one primary CTA button is permitted per viewport. Secondary actions must be styled as subtle or outline buttons.
   - **Empty-State Handoff:** When a data view has zero records, the table controls hide and the empty-state container absorbs the single primary CTA.
 - **Animation Budget ($\le 2$):** No more than 2 decorative animated elements may be active simultaneously in the viewport. `[aria-busy="true"]` loading skeletons are functional and exempt.
+- **Metric Strip Architecture:** Strictly ban 3 equal-width stat boxes in a row. Workspaces must use an inline horizontal metric strip with 1px vertical hairlines (`var(--border-hairline)`) or an asymmetric 2-pane split.
+- **Context Boundary (Operational vs. Marketing):** Active app consoles must render live operational data (batch volume, unreconciled variance, pending row count). Never embed static marketing or compliance statements (e.g. SOC2 certifications or throughput capacity claims) inside workspace views.
+- **Badge & Indicator Discipline:** Eyebrows must stand alone as plain monospace text without adjacent decorative pill tags. Colored status dots (static or animated) are forbidden in headers and footers unless tied to a live, user-switchable connection status.
 

@@ -19,6 +19,10 @@ Generative models produce predictable UI clichés that compromise professional c
 | **Glowing Outlines** | Neon borders with `box-shadow: 0 0 15px rgba(120, 0, 255, 0.5)` | Crisp 1px borders (`var(--border-hairline)`) with specular top highlights (`var(--highlight-specular)`) |
 | **Floating Badges** | Pill chips containing `"✨ AI-Powered"`, `"⚡ Supercharged"`, or `"Magic"` | Informative technical status pills referencing actual system state (e.g., `01 / MERKLE LOG`) |
 | **Fabricated Metrics** | Stat cards showing random `+24.8% from last month` with green arrows | Domain-grounded figures derived from Verified Facts in `{{DESIGN_DOC_PATH}}` |
+| **3-Equal-Card Rows** | 3 identical-width stat/KPI cards placed in a row across a workspace | Compact inline horizontal metric strip with 1px vertical dividers (`var(--border-hairline)`) or asymmetric 2-pane split |
+| **Marketing in App UI** | Static compliance badges (SOC2/ISO) or marketing throughput claims inside active console workspaces | Operational workspace data only (real batch volumes, pending counts, active deltas); reserve marketing claims for landing/onboarding |
+| **Decorative Header Chips**| Decorative pills or tags placed adjacent to section eyebrows or view headers | Eyebrows must stand alone as plain uppercase monospace text; pill badges are strictly reserved for record status in data views |
+| **Fake Status Dots** | Green/amber/red static colored dots in headers or footers as decorative accents | Colored status dots (static or animated) are banned unless wired to a real, user-toggleable connection state |
 | **Emoji Icons** | Using emojis (🚀, 💡, 🔥, ✨, 🧠, ⚡) inside buttons, cards, or titles | Crisp inline SVGs or clean monospaced characters from `var(--font-mono)` |
 | **Floating Orbs** | Blurred colored circles floating in the background without layout purpose | Grounded, structured architectural grid surfaces aligned to `--container-max` |
 
