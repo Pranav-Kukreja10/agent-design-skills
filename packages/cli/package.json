@@ -1,7 +1,7 @@
 {
   "name": "agent-design-skills",
-  "version": "0.1.0",
-  "description": "Scaffold human-crafted frontend design system skills for AI coding agents",
+  "version": "1.0.0",
+  "description": "v4.2 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity",
   "type": "module",
   "bin": {
     "agent-design-skills": "./dist/index.js",
@@ -10,12 +10,37 @@
   "files": [
     "dist",
     "registry",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "tsup src/index.ts --format esm --watch",
     "build": "tsup src/index.ts --format esm --clean --minify && node scripts/copy-assets.mjs",
     "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "antigravity",
+    "cursor",
+    "claude",
+    "codex",
+    "design-system",
+    "design-tokens",
+    "oklch",
+    "frontend",
+    "cli",
+    "governance"
+  ],
+  "author": "Pranav Kukreja",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pranav-Kukreja10/agent-design-skills.git"
+  },
+  "homepage": "https://github.com/Pranav-Kukreja10/agent-design-skills#readme",
+  "bugs": {
+    "url": "https://github.com/Pranav-Kukreja10/agent-design-skills/issues"
   },
   "dependencies": {
     "@clack/prompts": "^0.9.1",

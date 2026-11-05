@@ -30,7 +30,7 @@ const program = new Command();
 program
   .name('agent-design-skills')
   .description('v4.2 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity')
-  .version('4.2.0');
+  .version('1.0.0');
 
 async function detectWorkspaceAgents(targetDir: string): Promise<AgentType[]> {
   const detected: AgentType[] = [];
@@ -122,7 +122,7 @@ program
     }
 
     if (opts.fast || opts.yes) {
-      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v4.2.0 [EXPRESS MODE]')}`);
+      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.0.0 [EXPRESS MODE]')}`);
       const s = p.spinner();
       s.start(`Compiling design system in ${targetDir}...`);
 
@@ -158,7 +158,7 @@ program
     }
 
     console.clear();
-    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v4.2.0')}`);
+    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.0.0')}`);
 
     const defaultAgents = await detectWorkspaceAgents(targetDir);
     const detectedFonts = await detectProjectFonts(targetDir);

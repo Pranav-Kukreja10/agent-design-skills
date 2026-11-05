@@ -24,3 +24,10 @@ if (fs.existsSync(srcReadme)) {
 } else {
   console.error('Source README.md not found at:', srcReadme);
 }
+
+const srcLicense = path.resolve(rootDir, 'LICENSE');
+const destLicense = path.resolve(cliDir, 'LICENSE');
+if (fs.existsSync(srcLicense)) {
+  fs.copyFileSync(srcLicense, destLicense);
+  console.log('✓ Copied root LICENSE -> packages/cli/LICENSE');
+}
