@@ -36,6 +36,19 @@ const RAW_COLOR_FN_REGEX = /\b(?:rgba?|hsla?|oklch)\s*\(/i;
 // Regex for AI gradient patterns
 const AI_GRADIENT_REGEX = /(?:from-purple|to-pink|from-indigo.*to-purple|from-cyan.*to-purple|radial-gradient\([^)]*(?:purple|#7[0-9a-f]{5}|oklch\([^)]*290\)))/i;
 
+// Regex for fake tier/status/cosplay badges
+const FAKE_TIER_REGEX = /\[(PRO|BETA|v\d+\.\d+)\]/i;
+const FAKE_COSPLAY_REGEX = /\b(SUB-\d+MS|TEMPORAL ENGINE|MASTER CHRONOMETER|CHRONO SYNC|LOCAL REFERENCE|\d+\s*FPS|EPOCH)\b/i;
+
+// Regex for slashed-zero numeric styling
+const SLASHED_ZERO_REGEX = /slashed-zero|font-feature-settings:[^;]*["']zero["']\s*1/i;
+
+// Regex for decorative badge/pill classes in header/nav
+const BADGE_PILL_CLASS_REGEX = /class(?:Name)?=["'][^"']*\b(badge|pill|chip|tag-chip|status-badge|header-badge)\b[^"']*["']/i;
+
+// Regex for uppercase + tracking micro-labels
+const UPPERCASE_TRACKING_REGEX = /(?:class(?:Name)?=["'][^"']*\buppercase\b[^"']*\btracking-[^"']*["']|class(?:Name)?=["'][^"']*\btracking-[^"']*\buppercase\b[^"']*["']|\btext-transform:\s*uppercase\b[^;]*letter-spacing)/i;
+
 export async function lintDirectory(targetDir: string): Promise<LintReport> {
   const violations: LintViolation[] = [];
   let filesScanned = 0;
@@ -94,13 +107,25 @@ async function lintFile(
 ): Promise<void> {
   const relPath = path.relative(targetDir, fullPath);
   const isTokensCss = path.basename(fullPath) === 'tokens.css';
+  const isRuleOrDoc = fullPath.includes('.agent') || fullPath.includes('.cursor') || fullPath.includes('DESIGN.md') || fullPath.includes('README.md') || fullPath.includes('core');
   const content = await fs.readFile(fullPath, 'utf-8');
   const lines = content.split('\n');
+  let inHeaderOrNav = false;
+  let uppercaseCount = 0;
+  let firstUppercaseLine = 0;
+  let firstUppercaseSnippet = '';
 
   for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
     const line = lines[lineIndex];
     const lineNumber = lineIndex + 1;
     const trimmed = line.trim();
+
+    if (/<(?:header|nav)\b/i.test(line)) {
+      inHeaderOrNav = true;
+    }
+    if (/<\/(?:header|nav)>/i.test(line)) {
+      inHeaderOrNav = false;
+    }
 
     // Check for explicit design exceptions or signatures
     const hasException =
@@ -187,13 +212,60 @@ async function lintFile(
     }
 
     // Check for banned numbered slash eyebrows (e.g., 01 / LEDGER)
-    if (!line.includes('regex') && !line.includes('banned') && !line.includes('Banned') && !line.includes('Rule') && />?\s*0[1-9]\s*\/\s*[A-Z]/.test(line)) {
+    if (!line.includes('regex') && !line.includes('banned') && !line.includes('Banned') && !line.includes('Rule') && (/^\s*0[1-9]\s*\/\s*[A-Z]/.test(trimmed) || />?\s*0[1-9]\s*\/\s*[A-Z]/.test(line))) {
       violations.push({
         file: relPath,
         rule: 'copy/banned-phrases-and-leakage',
         line: lineNumber,
         snippet: trimmed,
         message: 'Numbered slash eyebrow (e.g. "01 / ...") detected above headings or in UI markup',
+        severity: 'error'
+      });
+    }
+
+    // Rule: slop/no-decorative-badges (Bans badge/pill in <header> or <nav>)
+    if (inHeaderOrNav && BADGE_PILL_CLASS_REGEX.test(line) && !hasException && !isRuleOrDoc) {
+      violations.push({
+        file: relPath,
+        rule: 'slop/no-decorative-badges',
+        line: lineNumber,
+        snippet: trimmed,
+        message: 'Banned decorative badge/pill/chip detected inside <header> or <nav>',
+        severity: 'error'
+      });
+    }
+
+    // Rule: slop/no-fake-telemetry-cosplay
+    if (!hasException && !isRuleOrDoc && !line.includes('rule') && !line.includes('banned')) {
+      if (FAKE_TIER_REGEX.test(line)) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-fake-telemetry-cosplay',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Fake product tier/version badge (e.g. [PRO v2.4], [BETA]) detected',
+          severity: 'error'
+        });
+      } else if (FAKE_COSPLAY_REGEX.test(line)) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-fake-telemetry-cosplay',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Fake hardware telemetry or sci-fi cosplay copy detected',
+          severity: 'error'
+        });
+      }
+    }
+
+    // Rule: slop/no-slashed-zero
+    if (SLASHED_ZERO_REGEX.test(line) && !hasException && !line.includes('"zero" 0') && !isTokensCss && !isRuleOrDoc) {
+      violations.push({
+        file: relPath,
+        rule: 'slop/no-slashed-zero',
+        line: lineNumber,
+        snippet: trimmed,
+        message: 'Banned slashed-zero numeric styling detected. Use open-oval zeros with "zero" 0',
         severity: 'error'
       });
     }
@@ -212,6 +284,27 @@ async function lintFile(
         });
       }
     }
+
+    // Check uppercase micro-labels count
+    if (UPPERCASE_TRACKING_REGEX.test(line) && !hasException && !isRuleOrDoc) {
+      uppercaseCount++;
+      if (!firstUppercaseLine) {
+        firstUppercaseLine = lineNumber;
+        firstUppercaseSnippet = trimmed;
+      }
+    }
+  }
+
+  // Rule: slop/excessive-uppercase-labels (Warns if > 3 uppercase tracking micro-labels)
+  if (uppercaseCount > 3) {
+    violations.push({
+      file: relPath,
+      rule: 'slop/excessive-uppercase-labels',
+      line: firstUppercaseLine,
+      snippet: firstUppercaseSnippet,
+      message: `Excessive uppercase micro-labels detected (${uppercaseCount} occurrences, maximum allowed is 3). Cure UPPERCASE MICRO-LABEL disease by using normal sentence case.`,
+      severity: 'warning'
+    });
   }
 }
 

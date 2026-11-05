@@ -56,6 +56,7 @@ export interface FeelingVectorConfig {
   id: FeelingVectorId;
   name: string;
   ease: string;
+  easeSpring?: string;
   durationFast: string;
   durationNormal: string;
   description: string;
@@ -150,6 +151,7 @@ export interface TokenVariables {
   '--weight-mono': string;
   // Motion
   '--ease-primary': string;
+  '--ease-spring'?: string;
   '--duration-fast': string;
   '--duration-normal': string;
 }

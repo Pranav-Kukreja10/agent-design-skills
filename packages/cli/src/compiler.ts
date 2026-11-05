@@ -32,13 +32,41 @@ async function findRegistryDir(): Promise<string> {
 export function buildCoreRuleContent(options: GeneratorOptions): string {
   const { archetype } = options;
 
-  return `# Always-On Design Governance Rule (v4.2)
+  return `# Always-On Design Governance Rule (v1.1)
 
-You are the design governance engine for this codebase. Every UI decision must preserve geometric unity, copy honesty, and token integrity across every turn.
+You are the design governance engine for this codebase. Every UI decision must preserve geometric unity, copy honesty, and visual calm across every turn.
 
 ---
 
-### 1. Mandatory Pre-Flight & Token Contract
+### 1. Foundational Philosophy: Subtraction Over Addition (Do Less, Better)
+- **Cure Additive Over-Engineering:** AI models default to adding extra wrapper boxes, borders, micro-labels, status badges, metadata strips, and color splashes to make a UI look "complex." To the human eye, unnecessary complexity looks cheap and exhausting. **Basic and clean always beats complex and busy.**
+- **The Subtraction Test (Mandatory Self-Check):** Before rendering any container box, border, label, subheading, icon, or secondary widget, ask: *"If I remove this element, does the screen still work and make sense?"* If the answer is YES, **do not render it.**
+
+---
+
+### 2. The 5 Universal Laws of Visual Calm (Applies to Every UI)
+1. **Proximity Over Containers (Stop Boxing Everything):**
+   - Do not wrap every section, focal element, or list item inside a bordered card. Let primary content sit directly on the open background canvas with generous whitespace around it.
+   - Use spacing and alignment to group related elements naturally for the eye. Only introduce a visible card/surface container when necessary to group interactive lists or forms, and **never nest bordered boxes inside bordered boxes** (*Pattern A (Grouped Panel):* A single outer surface with borderless child rows separated ONLY by a quiet 1px line \`border-bottom: 1px solid var(--border-hairline)\`, or *Pattern B (Open Canvas Grid):* A borderless section sitting directly on \`--bg-canvas\` with individual cards below it).
+   - **Unbox the Hero:** Primary focal elements (headlines, hero numbers, primary display meters) should sit directly on the open canvas without a heavy box trapping them.
+2. **One Signal Per Hierarchy Step (No Visual Shouting):**
+   - Never stack multiple visual treatments on the same element (e.g., do not combine colored text + colored background tint + border + badge all at once; never paint half of a heading or number in an accent color).
+   - Establish hierarchy quietly using **scale (size) and weight first**, **neutral opacity (\`--text-muted\`) second**, and reserve \`--accent-primary\` strictly for the single primary interactive focal point on screen.
+   - On large display text or numerals (\`>= 3rem\`), prefer clean, lighter weights (\`300\`–\`500\`) and open letterforms (\`font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1, "zero" 0;\`) rather than heavy, aggressive blocks or coding slashed zeros.
+3. **Self-Evident UI Needs Zero Labels:**
+   - If a piece of data, a control, or a view is already obvious from its format or context, render it directly without an \`UPPERCASE\` micro-label above it, a redundant explainer subheading below it, or a status pill beside it. Cap uppercase eyebrows at strictly **<= 1 per entire view**.
+   - Never invent fake brand headers, fake version/tier tags (\`PRO\`, \`v2.0\`, \`BETA\`), fake hardware telemetry, or unrequested status chips just to fill space.
+4. **Progressive Presence (Show Only What Matters Right Now):**
+   - Do not crowd the initial viewport with empty secondary panels, permanent split-screen boxes, or auxiliary toolbars before the user needs them.
+   - Keep the initial view focused on the primary task with abundant breathing room, and reveal secondary lists or details progressively as data is created.
+   - **The "No Empty-Space Panic" Law:** Whitespace is an intentional, premium design feature. NEVER invent decorative filler widgets (e.g., fake progress bars, metadata footers, telemetry strips, unprompted mini-cards) just to fill container height or balance asymmetric columns.
+5. **Whisper-Quiet Chrome & Borders:**
+   - Application navigation and secondary controls should recede into the background so the user's content is the hero.
+   - Rely on subtle surface luminance shifts (\`--bg-canvas\` vs \`--bg-elevated\` / \`--bg-surface\`) rather than drawing high-contrast wireframe borders around every element. Borders (\`var(--border-hairline)\`, \`var(--border-subtle)\`) are subtle hairlines (7% opacity), never thick wireframe frames.
+
+---
+
+### 3. Mandatory Pre-Flight & Token Contract
 - **Read First:** Read \`./DESIGN.md\` and verify that \`./tokens.css\` is imported before generating or editing any UI markup or styling.
 - **Adaptive Pre-Flight Gate:**
   - If \`BRIEF STATUS: DRAFT\` or the user prompt is structurally ambiguous: Stop immediately, ask 2–4 targeted design questions, and provide a 5–10 line text/ASCII wireframe layout plan before writing code.
@@ -47,20 +75,20 @@ You are the design governance engine for this codebase. Every UI decision must p
 
 ---
 
-### 2. Section 0 Anti-Drift Mandate
+### 4. Section 0 Anti-Drift Mandate
 - Honor the user's custom creative direction in \`DESIGN.md\` Section 0 exclusively through \`var(--*)\` tokens.
 - Creative direction is never an excuse to inject AI tropes, decorative fluff, or sloppy ad-hoc styles.
 - The specified aesthetic (\`${archetype}\`) is immutable and must persist uniformly across all views, drawers, modals, and states.
 
 ---
 
-### 3. Strict Scope Lock
+### 5. Strict Scope Lock
 - Build **only** what was explicitly requested.
 - **Prohibited unprompted additions:** Never add unrequested dark/light theme toggles, notification bells, search bars, account profile dropdowns, multi-step wizards, or decorative marketing footers. If a feature was not asked for, do not generate it.
 
 ---
 
-### 4. Smart Override Protocol
+### 6. Smart Override Protocol & User Style Supremacy
 - **Singular Intent** (e.g., *"make this button pill"*, *"make that card border amber"*):
   - Treat as a **Scoped Local Exception**.
   - Mark inline in code: \`/* @design-exception: [reason] */\`.
@@ -76,7 +104,7 @@ You are the design governance engine for this codebase. Every UI decision must p
 
 ---
 
-### 5. Scoped \`var()\` Mandate & Concentric Corner Math
+### 7. Scoped \`var()\` Mandate & Concentric Corner Math
 - **Token Law:** All colors, border radii, backdrop blurs, box shadows, font families, font sizes, font weights, and section vertical paddings (\`--section-py-*\`) **must** consume \`var(--*)\` tokens from \`tokens.css\`.
 - **Zero Raw Literals:** No hardcoded hex (\`#111\`), rgb, oklch, or arbitrary pixel radius values in component markup or styles.
 - **Concentric Corner Math:** Whenever nesting a rounded element inside another:  
@@ -85,7 +113,7 @@ You are the design governance engine for this codebase. Every UI decision must p
 
 ---
 
-### 6. Typography & Anti-Slop Firewall
+### 8. Typography, Numeric Hygiene & Anti-Slop Firewall
 - **Casing:** Headings, button labels, and navigation items must use **sentence case** ("Reconcile batch", not "Reconcile Batch").
 - **Banned Numbered Eyebrows:** Never put numbered labels (\`01 / ...\`, \`02 / ...\`) or redundant category eyebrows above \`<h1>\` page titles. Eyebrows are prohibited if they merely paraphrase the heading or add decorative numbering.
 - **Workspace vs. Marketing Font Routing:** Never override a user's existing project fonts in \`tokens.css\`. When \`--font-display\` is an editorial/high-contrast serif, reserve \`var(--font-display)\` strictly for marketing heroes and editorial reading views; inside functional application workspaces, data tables, and settings consoles, style \`h1–h4\` headings with \`var(--font-sans)\` so dense UI remains crisp.
@@ -102,11 +130,17 @@ You are the design governance engine for this codebase. Every UI decision must p
   - **Zero 3-Equal-Card KPI Rows:** Never place 3 equal-width stat boxes in a row. Use an inline horizontal metric strip with 1px vertical dividers (\`var(--border-hairline)\`) or an asymmetric 2-pane split instead.
   - **Zero Marketing Claims in App Workspaces:** Never place static marketing, throughput capacity, or compliance claims (e.g., "SOC2 Type II", "250K TX/S") inside active operational workspace consoles. Reserve these exclusively for landing/onboarding pages. Workspaces must only display live operational batch totals.
   - **Zero Decorative Header Chips & Numbered Eyebrows:** Never place decorative pill tags/chips or numbered prefixes (\`01 / ...\`) next to or above section headers. Pill badges are strictly reserved for record status inside data views (e.g., \`Settled\`, \`Discrepancy\`).
+  - **Zero Unrequested Badges Law:** NEVER place pill badges, status chips, or uppercase tag boxes inside app headers, navbars, hero sections, or card headers (e.g., ban \`PRO v2.4\`, \`STABLE\`, \`SUB-10MS\`, \`60 FPS\`). Cards must use plain text headings or no header at all. Tags/badges are ONLY permitted inside repeating data table cells or list rows to indicate item-level record status (e.g., \`Settled\`, \`Discrepancy\`, \`Active\`), strictly capped at max 1 badge per row.
+  - **Numeric & Tabular Typography Law:** NEVER use coding monospace fonts (\`--font-mono\`) or \`slashed-zero\` on hero numbers, counters, or KPI figures. Always use \`var(--font-display)\` or \`var(--font-sans)\` with \`font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;\` so digits have clean, open-oval zeros (\`0\`) with zero horizontal jitter. Reserve \`var(--font-mono)\` strictly for code snippets, file paths, or git hashes.
+  - **Zero Sci-Fi & Hardware Telemetry Cosplay:** Ban inventing fake brand names, fake tier badges (\`[PRO v2.4]\`, \`[BETA]\`), fake hardware telemetry (\`60 FPS\`, \`SUB-10MS\`), and unrequested Unix \`EPOCH\` readouts.
   - **Zero Fake Status Dots:** Colored status dots (static or animated) are banned in headers and footers unless wired to a real, user-toggleable live connection state.
 
 ---
 
-### 7. Realistic Seed Data & Component State Rigor
+### 9. Proportional Canvas Sizing, Seed Data & Component State Rigor
+- **Proportional Canvas Sizing Architecture:**
+  - *Focused Utilities & Compact Views:* Compact centered layout (\`max-w-3xl\` / \`768px–880px\` on desktop) with centered segmented control dock; never a 1440px corporate enterprise header with an invented brand logo.
+  - *Data-Dense Workspaces (ledgers, financial consoles, multi-column tables):* Standard wide container (\`max-w-6xl\` / \`1152px–1280px\`) or fluid responsive workspace (\`w-full px-6\`).
 - **Data Ban:** Never use \`"John Doe"\`, \`"Jane Doe"\`, \`"Lorem ipsum"\`, \`"foo"\`, or \`"$99.99"\`.
 - **Realistic Diversity (\`// SAMPLE DATA\`):**
   - Use realistic domain entities with varying character lengths.
@@ -119,10 +153,12 @@ You are the design governance engine for this codebase. Every UI decision must p
   3. Loading (\`aria-busy="true"\` skeleton matching geometry)
   4. Empty (with contextual empty-state handoff for the primary CTA)
   5. Inline Error (clear, actionable, non-destructive feedback)
+- **Mobile Bottom-Dock Safe Clearance & Thumb Zone:** On \`mobile-first\` or \`adaptive-hybrid\` layouts, mobile bottom navigation (\`< 768px\`) MUST use \`position: fixed; bottom: 0; left: 0; right: 0; z-index: 50\`, and the scroll container MUST reserve \`padding-bottom: calc(5rem + env(safe-area-inset-bottom))\` (or \`calc(dock-height + 2rem)\`) so scrollable content is never sliced or trapped behind floating controls. Primary action triggers must remain anchored in the lower thumb zone.
+- **Smooth State Transitions:** Tab switches, view toggles, and progress indicators must animate smoothly using \`var(--ease-primary)\` and \`var(--duration-normal)\` (or \`.view-transition\`). Interactive triggers must include \`.spring-interactive\` tactile press states.
 
 ---
 
-### 8. Brochure & Swap Tests (Copy Honesty)
+### 10. Brochure & Swap Tests (Copy Honesty)
 - **Brochure Test:** Ban UI self-description (e.g., *"Hover to reveal details"*, *"One-click reconciliation"*, *"Smooth animations"*, *"Powered by modern React"*).
 - **Swap Test:** If replacing the product name with a competitor makes the copy still make sense, rewrite it to be concrete, technical, and domain-grounded.
 - **Redundant Subheadings:** Purge any subheading that merely paraphrases its parent heading.
@@ -130,7 +166,7 @@ You are the design governance engine for this codebase. Every UI decision must p
 
 ---
 
-### 9. Fix-Forward & 2-Pass Revision Budget
+### 11. Fix-Forward & 2-Pass Revision Budget
 - **Fix-Forward:** Resolve visual or ergonomic issues by updating \`./tokens.css\` or removing clutter—**never** by adding wrapper elements, extra containers, or ad-hoc overrides.
 - **Revision Budget:** Maximum **2 iterative revision passes** per feature. Track each pass in \`DESIGN.md\` Section 6.
 - Log non-blocking enhancements into \`DESIGN.md\` Section 8 (**Polish Backlog**) rather than burning turns on infinite micro-tweaks.`;

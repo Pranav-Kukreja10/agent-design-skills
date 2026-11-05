@@ -45,9 +45,8 @@ export async function writeAntigravityAdapter(
 
   const ruleFilePath = path.resolve(rulesDir, 'design-core.md');
   const ruleContent = `---
-description: Always-On Core Design Governance Rule for Antigravity (v4.2)
-globs: ["**/*.{html,css,js,jsx,ts,tsx,vue,svelte}"]
-alwaysApply: true
+trigger: always_on
+description: "Always-On Core Design Governance Rule (v1.0)"
 ---
 
 ${coreRuleContent}
@@ -79,10 +78,10 @@ ${coreRuleContent}
     // Single combined master skill file
     let combinedContent = `---
 name: design-system
-description: Master frontend design system, token contract, and aesthetic governance guidelines
+description: "Complete design system tokens, UX ergonomics, and archetype specifications"
 ---
 
-# Master Design System (v4.2)
+# Master Design System (v1.0)
 
 Target Archetype: \`${options.archetype}\`  
 Token Contract: \`./tokens.css\`  
@@ -132,10 +131,10 @@ ${coreRuleContent}
 
     const skillContent = `---
 name: design-system
-description: Design system governance, token contracts, and aesthetic anti-slop rules for this project
+description: "Complete design system tokens, UX ergonomics, and archetype specifications"
 ---
 
-# Design System Skill (v4.2)
+# Design System Skill (v1.0)
 
 Target Archetype: \`${options.archetype}\`  
 Token Contract: \`./tokens.css\`  

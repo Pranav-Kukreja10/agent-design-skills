@@ -15,8 +15,7 @@ export async function writeCursorAdapter(
   // 1. Always write 00-design-core.mdc
   const coreFilePath = path.resolve(rulesDir, '00-design-core.mdc');
   const coreContent = `---
-description: Always-On Core Design Governance Rule for Cursor (v4.2)
-globs: **/*.{html,css,js,jsx,ts,tsx,vue,svelte}
+description: "Always-On Core Design Governance Rule for Cursor (v1.0)"
 alwaysApply: true
 ---
 
@@ -31,8 +30,8 @@ ${coreRuleContent}
     // 01: UX & Ergonomics
     const uxFilePath = path.resolve(rulesDir, '01-ux-ergonomics.mdc');
     const uxContent = `---
-description: UX Ergonomics, Component States & Realistic Seed Data (v4.2)
-globs: **/*.{jsx,tsx,vue,svelte,html}
+description: "UX Ergonomics, Component States & Realistic Seed Data (v1.0)"
+globs: "**/*.jsx, **/*.tsx, **/*.vue, **/*.svelte, **/*.html"
 alwaysApply: false
 ---
 
@@ -57,8 +56,8 @@ Every interactive component or data view must handle:
     // 02: Voice & Copy
     const copyFilePath = path.resolve(rulesDir, '02-voice-copy.mdc');
     const copyContent = `---
-description: Voice, Copy Honesty, Sentence Casing & Typography Rules (v4.2)
-globs: **/*.{jsx,tsx,vue,svelte,html,md,mdx}
+description: "Voice, Copy Honesty, Sentence Casing & Typography Rules (v1.0)"
+globs: "**/*.jsx, **/*.tsx, **/*.vue, **/*.svelte, **/*.html, **/*.md, **/*.mdx"
 alwaysApply: false
 ---
 
@@ -71,7 +70,7 @@ alwaysApply: false
 
 ### Typographic Rules
 - **Sentence Case:** Strict sentence case on headings, table columns, tooltips, and buttons.
-- **Eyebrow Exception:** Uppercase permitted only on \`--font-mono\` eyebrows of $\\le 3$ words separated by \`/\`.
+- **Cure "UPPERCASE MICRO-LABEL Disease":** Max 1 uppercase eyebrow per view. Ban self-evident labels (redundant status descriptions, section format labels, or narrating obvious controls). Uppercase permitted only on short functional technical tags (<= 3 words in \`var(--font-mono)\`, e.g., STATUS: ACTIVE, REF: 0x4B2).
 - **Punctuation:** Zero em-dashes in headings; maximum 1 em-dash per page in body copy.
 `;
     await fs.writeFile(copyFilePath, copyContent, 'utf-8');
@@ -80,8 +79,8 @@ alwaysApply: false
     // 03: Archetype Recipe
     const recipeFilePath = path.resolve(rulesDir, '03-archetype-recipe.mdc');
     const recipeContent = `---
-description: Archetype Recipe & Geometric Token Contract for ${options.archetype} (v4.2)
-globs: **/*.{css,scss,less,html,jsx,tsx}
+description: "Archetype Recipe & Geometric Token Contract for ${options.archetype} (v1.0)"
+globs: "**/*.css, **/*.scss, **/*.less, **/*.html, **/*.jsx, **/*.tsx"
 alwaysApply: false
 ---
 

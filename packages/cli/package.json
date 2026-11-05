@@ -1,7 +1,7 @@
 {
   "name": "agent-design-skills",
-  "version": "1.0.0",
-  "description": "v4.2 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity",
+  "version": "1.1.0",
+  "description": "v1.1 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity",
   "type": "module",
   "bin": {
     "agent-design-skills": "./dist/index.js",
@@ -46,7 +46,6 @@
     "@clack/prompts": "^0.9.1",
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
-    "giget": "^1.2.3",
     "pathe": "^1.1.2",
     "picocolors": "^1.1.0"
   },
@@ -58,8 +57,5 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "overrides": {
-    "tar": "^7.4.3"
   }
 }

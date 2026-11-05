@@ -42,7 +42,7 @@ export async function freezeProject(targetDir: string): Promise<FreezeManifest> 
   }
 
   const manifest: FreezeManifest = {
-    version: '4.2.0',
+    version: '1.1.0',
     generatedAt: new Date().toISOString(),
     hashes
   };

@@ -121,10 +121,10 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - **Surfaces & Layout:** \`var(--bg-canvas)\`, \`var(--bg-elevated)\`, \`var(--bg-surface-active)\`, \`var(--bg-glass)\`, \`var(--bg-sunken)\`
 - **Typography & Foreground:** \`var(--text-primary)\`, \`var(--text-muted)\`, \`var(--text-subtle)\`, \`var(--text-inverse)\`
 - **Accents & Hairlines:** \`var(--accent-primary)\`, \`var(--accent-subtle)\`, \`var(--accent-hover)\`, \`var(--border-hairline)\`, \`var(--border-subtle)\`, \`var(--border-focus)\`, \`var(--highlight-specular)\`
-- **Geometry & Elevation:** \`var(--radius-outer)\`, \`var(--radius-inner)\`, \`var(--radius-badge)\`, \`var(--surface-blur)\`, \`var(--shadow-surface)\`, \`var(--shadow-elevated)\`
+- **Geometry & Elevation:** \`var(--radius-outer)\`, \`var(--radius-inner)\`, \`var(--radius-badge)\` (Strictly for data-row status cells — NEVER create decorative header or card badges), \`var(--surface-blur)\`, \`var(--shadow-surface)\`, \`var(--shadow-elevated)\`
 - **Section Rhythm & Container:** \`var(--section-py-tight)\`, \`var(--section-py-normal)\`, \`var(--section-py-breathing)\`, \`var(--container-max)\`
 - **Typography Scale:** \`var(--font-display)\`, \`var(--font-sans)\`, \`var(--font-mono)\`, \`var(--text-xs)\` through \`var(--text-4xl)\`, \`var(--weight-heading)\`, \`var(--weight-body)\`, \`var(--weight-mono)\`
-- **Motion:** \`var(--ease-primary)\`, \`var(--duration-fast)\`, \`var(--duration-normal)\`
+- **Motion:** \`var(--ease-primary)\`, \`var(--ease-spring)\`, \`var(--duration-fast)\`, \`var(--duration-normal)\`
 
 ---
 
@@ -135,6 +135,8 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - **Motion Budget:** Maximum **2 decorative animated elements** running simultaneously per viewport. \`[aria-busy="true"]\` loading skeletons are exempt.
 - **Metric Strip Architecture:** Strictly ban 3 equal-width stat boxes in a row. Workspaces must use an inline horizontal metric strip with 1px vertical hairlines (\`var(--border-hairline)\`) or an asymmetric 2-pane split.
 - **Context Boundary:** Workspaces must display live operational data. Never place static marketing or compliance statements in active console views.
+- **Zero Unrequested Badges Law:** NEVER place pill badges, status chips, or uppercase tag boxes inside app headers, navbars, hero sections, or card headers (e.g., ban \`PRO v2.4\`, \`STABLE\`, \`SUB-10MS\`, \`60 FPS\`). Cards must use plain text headings or no header at all. Tags/badges are ONLY permitted inside repeating data table cells or list rows to indicate item-level record status (e.g., \`Settled\`, \`Discrepancy\`, \`Active\`), strictly capped at max 1 badge per row.
+- **Numeric & Tabular Typography Law:** NEVER use coding monospace fonts (\`--font-mono\`) or \`slashed-zero\` on hero numbers, counters, or KPI figures. Always use \`var(--font-display)\` or \`var(--font-sans)\` with \`font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;\` so digits have clean, open-oval zeros (\`0\`) with zero horizontal jitter. Reserve \`var(--font-mono)\` strictly for code snippets, file paths, or git hashes.
 - **Badge & Indicator Discipline:** Eyebrows must stand alone as plain monospace text. Colored status dots are forbidden unless tied to a live connection status.
 - **Signature Moment:** ${signatureMoment}
 `;

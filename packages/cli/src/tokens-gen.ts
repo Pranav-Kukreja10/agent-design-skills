@@ -148,6 +148,33 @@ export const ARCHETYPE_FONT_PAIRINGS: Record<ArchetypeId, { A: FontTriple; B: Fo
   }
 };
 
+export const FEELING_VECTORS_MAP: Record<FeelingVectorId, { ease: string; easeSpring: string; durationFast: string; durationNormal: string }> = {
+  'calm': {
+    ease: 'cubic-bezier(0.25, 1, 0.5, 1)',
+    easeSpring: 'cubic-bezier(0.25, 1, 0.5, 1)',
+    durationFast: '140ms',
+    durationNormal: '240ms'
+  },
+  'urgent-precise': {
+    ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    easeSpring: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    durationFast: '110ms',
+    durationNormal: '180ms'
+  },
+  'playful-tactile': {
+    ease: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    easeSpring: 'cubic-bezier(0.22, 1.35, 0.36, 1)',
+    durationFast: '120ms',
+    durationNormal: '240ms'
+  },
+  'authoritative': {
+    ease: 'cubic-bezier(0.2, 0, 0, 1)',
+    easeSpring: 'cubic-bezier(0.2, 0, 0, 1)',
+    durationFast: '120ms',
+    durationNormal: '200ms'
+  }
+};
+
 const GOOGLE_WEIGHTS_MAP: Record<string, string> = {
   'instrument sans': 'wght@400;500;600;700',
   'space grotesk': 'wght@400;500;600;700',
@@ -708,22 +735,11 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   else if (blur === 'deep-glass') surfaceBlur = '20px';
 
   // Motion mapping
-  let easePrimary = 'cubic-bezier(0.16, 1, 0.3, 1)';
-  let durationFast = '110ms';
-  let durationNormal = '180ms';
-  if (feeling === 'calm') {
-    easePrimary = 'cubic-bezier(0.25, 1, 0.5, 1)';
-    durationFast = '140ms';
-    durationNormal = '240ms';
-  } else if (feeling === 'playful-tactile') {
-    easePrimary = 'cubic-bezier(0, 0, 0.2, 1)';
-    durationFast = '80ms';
-    durationNormal = '150ms';
-  } else if (feeling === 'authoritative') {
-    easePrimary = 'cubic-bezier(0.2, 0, 0, 1)';
-    durationFast = '120ms';
-    durationNormal = '200ms';
-  }
+  const feelingConfig = FEELING_VECTORS_MAP[feeling] || FEELING_VECTORS_MAP['urgent-precise'];
+  const easePrimary = feelingConfig.ease;
+  const easeSpring = feelingConfig.easeSpring;
+  const durationFast = feelingConfig.durationFast;
+  const durationNormal = feelingConfig.durationNormal;
 
   // Shadow surface calculation
   let shadowSurface = `0 1px 2px 0 oklch(0 0 0 / 0.45), 0 0 0 1px var(--border-hairline)`;
@@ -790,8 +806,8 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--accent-primary': accentOklch,
     '--accent-subtle': accentSubtle,
     '--accent-hover': accentHover,
-    '--border-hairline': `oklch(${borderHairlineL} 0.015 ${effectiveHue})`,
-    '--border-subtle': `oklch(${borderHairlineL - (polarity === 'dark' ? 0.06 : -0.05)} 0.012 ${effectiveHue})`,
+    '--border-hairline': polarity === 'dark' ? `oklch(1 0 0 / 0.07)` : `oklch(0 0 0 / 0.07)`,
+    '--border-subtle': polarity === 'dark' ? `oklch(1 0 0 / 0.04)` : `oklch(0 0 0 / 0.04)`,
     '--border-focus': `oklch(0.65 0.20 ${effectiveHue} / 0.75)`,
     '--highlight-specular': polarity === 'dark' ? `oklch(1 0 0 / 0.18)` : `oklch(1 0 0 / 0.60)`,
     '--status-success': `oklch(0.72 0.16 145)`,
@@ -823,6 +839,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--weight-body': `400`,
     '--weight-mono': `500`,
     '--ease-primary': easePrimary,
+    '--ease-spring': easeSpring,
     '--duration-fast': durationFast,
     '--duration-normal': durationNormal,
   };
@@ -830,7 +847,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   const fontImports = buildFontImports(chosenDisplay, chosenSans, chosenMono, options.fontOverride?.importUrl);
 
   const css = `${fontImports}/* =============================================================================
-   AGENT DESIGN SKILLS — TOKEN CONTRACT (v4.2)
+   AGENT DESIGN SKILLS — TOKEN CONTRACT (v1.1)
    Archetype: ${archetype}
    Polarity: ${polarity}
    Feeling Vector: ${feeling}
@@ -898,9 +915,52 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
 
   /* Motion Vector */
   --ease-primary: ${variables['--ease-primary']};
+  --ease-spring: ${variables['--ease-spring']};
   --duration-fast: ${variables['--duration-fast']};
   --duration-normal: ${variables['--duration-normal']};
 }
+
+/* =============================================================================
+   DUAL-POLARITY THEME OVERRIDES (Calibrated Light & Dark)
+   ============================================================================= */
+
+[data-theme="light"], .light {
+  --bg-canvas: oklch(0.97 0.015 ${effectiveHue});
+  --bg-elevated: oklch(0.99 0.015 ${effectiveHue});
+  --bg-surface-active: oklch(0.95 0.018 ${effectiveHue});
+  --bg-glass: oklch(0.99 0.015 ${effectiveHue} / 0.72);
+  --bg-sunken: oklch(0.92 0.012 ${effectiveHue});
+  --text-primary: oklch(0.18 0.005 ${effectiveHue});
+  --text-muted: oklch(0.46 0.015 ${effectiveHue});
+  --text-subtle: oklch(0.60 0.018 ${effectiveHue});
+  --text-inverse: oklch(0.98 0.005 ${effectiveHue});
+  --border-hairline: oklch(0 0 0 / 0.07);
+  --border-subtle: oklch(0 0 0 / 0.04);
+  --highlight-specular: oklch(1 0 0 / 0.60);
+  --shadow-surface: 0 1px 3px 0 oklch(0.20 0.012 50 / 0.06), 0 0 0 1px var(--border-hairline);
+  --shadow-elevated: 0 6px 16px -2px oklch(0.20 0.012 50 / 0.08), 0 0 0 1px var(--border-hairline);
+}
+
+[data-theme="dark"], .dark {
+  --bg-canvas: oklch(0.12 0.015 ${effectiveHue});
+  --bg-elevated: oklch(0.18 0.015 ${effectiveHue});
+  --bg-surface-active: oklch(0.22 0.018 ${effectiveHue});
+  --bg-glass: oklch(0.18 0.015 ${effectiveHue} / 0.72);
+  --bg-sunken: oklch(0.09 0.012 ${effectiveHue});
+  --text-primary: oklch(0.96 0.005 ${effectiveHue});
+  --text-muted: oklch(0.68 0.015 ${effectiveHue});
+  --text-subtle: oklch(0.52 0.018 ${effectiveHue});
+  --text-inverse: oklch(0.12 0.015 ${effectiveHue});
+  --border-hairline: oklch(1 0 0 / 0.07);
+  --border-subtle: oklch(1 0 0 / 0.04);
+  --highlight-specular: oklch(1 0 0 / 0.18);
+  --shadow-surface: 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 0 0 1px var(--border-hairline);
+  --shadow-elevated: 0 4px 12px 0 oklch(0 0 0 / 0.50), 0 0 0 1px var(--border-hairline);
+}
+
+/* =============================================================================
+   BASE CANONICAL STYLES & ERGONOMIC LAWS
+   ============================================================================= */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -925,12 +985,37 @@ h1, h2, h3, h4 {
   font-weight: var(--weight-heading);
 }
 
-.font-tabular,
-table,
-[data-tabular="true"] {
-  font-variant-numeric: tabular-nums;
+/* Numeric & Tabular Typography Law (Clean open-oval zeros, zero horizontal jitter) */
+.tabular-nums, time, [data-numeric="true"], table, [data-tabular="true"] {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;
 }
 
+/* Motion & Physics Classes */
+.view-transition {
+  animation: ads-view-enter var(--duration-normal) var(--ease-primary) both;
+}
+
+@keyframes ads-view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spring-interactive {
+  transition: transform var(--duration-fast) var(--ease-spring, var(--ease-primary));
+}
+
+.spring-interactive:active {
+  transform: scale(0.96);
+}
+
+/* Focus visibility reset adhering to technical hairline styling */
 :focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 1px;
@@ -938,7 +1023,7 @@ table,
 `;
 
   const json = {
-    version: '4.2.0',
+    version: '1.1.0',
     archetype,
     polarity,
     feeling,
