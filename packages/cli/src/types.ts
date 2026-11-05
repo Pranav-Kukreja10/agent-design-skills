@@ -106,6 +106,7 @@ export interface TokenVariables {
   '--bg-sunken': string;
   // Foregrounds
   '--text-primary': string;
+  '--text-secondary': string;
   '--text-muted': string;
   '--text-subtle': string;
   '--text-inverse': string;

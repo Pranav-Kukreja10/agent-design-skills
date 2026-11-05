@@ -49,6 +49,12 @@ const BADGE_PILL_CLASS_REGEX = /class(?:Name)?=["'][^"']*\b(badge|pill|chip|tag-
 // Regex for uppercase + tracking micro-labels
 const UPPERCASE_TRACKING_REGEX = /(?:class(?:Name)?=["'][^"']*\buppercase\b[^"']*\btracking-[^"']*["']|class(?:Name)?=["'][^"']*\btracking-[^"']*\buppercase\b[^"']*["']|\btext-transform:\s*uppercase\b[^;]*letter-spacing)/i;
 
+// Regex for unreadable micro-text (< 13px)
+const MICRO_TEXT_REGEX = /(?:\btext-\[(?:8|9|10|11)px\]|\bfont-size:\s*(?:8|9|10|11)px\b)/i;
+
+// Regex for low-contrast / dim opacity text classes
+const LOW_OPACITY_TEXT_REGEX = /\b(text-zinc-500|text-slate-500|text-gray-500|opacity-30|opacity-40)\b/i;
+
 export async function lintDirectory(targetDir: string): Promise<LintReport> {
   const violations: LintViolation[] = [];
   let filesScanned = 0;
@@ -268,6 +274,30 @@ async function lintFile(
         message: 'Banned slashed-zero numeric styling detected. Use open-oval zeros with "zero" 0',
         severity: 'error'
       });
+    }
+
+    // Rule: a11y/no-micro-text
+    if (!isTokensCss && !isRuleOrDoc && !hasException) {
+      if (MICRO_TEXT_REGEX.test(line)) {
+        violations.push({
+          file: relPath,
+          rule: 'a11y/no-micro-text',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Unreadable micro-text detected (< 13px). Maintain minimum 13px (0.8125rem) floor for human readability.',
+          severity: 'error'
+        });
+      }
+      if (LOW_OPACITY_TEXT_REGEX.test(line)) {
+        violations.push({
+          file: relPath,
+          rule: 'a11y/no-micro-text',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Low-contrast dim text class detected. Use high-contrast var(--text-secondary) or var(--text-muted) instead of raw gray or low opacity.',
+          severity: 'error'
+        });
+      }
     }
 
     // Rule: slop/no-emoji-icons

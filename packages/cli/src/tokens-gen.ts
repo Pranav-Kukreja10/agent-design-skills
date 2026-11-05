@@ -28,23 +28,29 @@ export function calculateFolderHueJitter(folderName: string): number {
 function clampLightnessForContrast(
   lightness: number,
   polarity: 'dark' | 'light',
-  target: 'primary' | 'muted'
+  target: 'primary' | 'secondary' | 'muted'
 ): number {
   if (polarity === 'dark') {
     if (target === 'primary') {
       // Must maintain >= 7:1 against dark canvas (L ~ 0.12)
-      return Math.max(0.95, lightness);
+      return Math.max(0.97, lightness);
+    } else if (target === 'secondary') {
+      // Effortless bright silver for secondary labels and metadata
+      return Math.max(0.80, lightness);
     } else {
-      // Must maintain >= 4.5:1 against dark elevated (L ~ 0.18)
-      return Math.max(0.66, lightness);
+      // Must maintain >= 5.5:1 against dark elevated (never below 0.68)
+      return Math.max(0.68, lightness);
     }
   } else {
     if (target === 'primary') {
       // Must maintain >= 7:1 against light canvas (L ~ 0.97)
-      return Math.min(0.20, lightness);
+      return Math.min(0.15, lightness);
+    } else if (target === 'secondary') {
+      // Deep, crisp slate readability for sub-labels (>= 6:1)
+      return Math.min(0.34, lightness);
     } else {
-      // Must maintain >= 4.5:1 against light elevated (L ~ 0.99)
-      return Math.min(0.48, lightness);
+      // Must maintain >= 4.5:1 against light elevated (never lighter than 0.44)
+      return Math.min(0.44, lightness);
     }
   }
 }
@@ -713,6 +719,8 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
 
   // Apply WCAG contrast clamping
   const finalPrimaryL = clampLightnessForContrast(textPrimaryL, polarity, 'primary');
+  const defaultSecondaryL = polarity === 'dark' ? 0.80 : 0.34;
+  const finalSecondaryL = clampLightnessForContrast(defaultSecondaryL, polarity, 'secondary');
   const finalMutedL = clampLightnessForContrast(textMutedL, polarity, 'muted');
 
   // Radii mapping
@@ -800,6 +808,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--bg-glass': `oklch(${bgElevatedL} 0.015 ${effectiveHue} / 0.72)`,
     '--bg-sunken': `oklch(${bgSunkenL} 0.012 ${effectiveHue})`,
     '--text-primary': `oklch(${finalPrimaryL} 0.005 ${effectiveHue})`,
+    '--text-secondary': `oklch(${finalSecondaryL} 0.010 ${effectiveHue})`,
     '--text-muted': `oklch(${finalMutedL} 0.015 ${effectiveHue})`,
     '--text-subtle': `oklch(${textSubtleL} 0.018 ${effectiveHue})`,
     '--text-inverse': polarity === 'dark' ? `oklch(0.12 0.015 ${effectiveHue})` : `oklch(0.98 0.005 ${effectiveHue})`,
@@ -827,14 +836,14 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--font-display': fontDisplay,
     '--font-sans': fontSans,
     '--font-mono': fontMono,
-    '--text-xs': `${(0.64).toFixed(3)}rem`,
-    '--text-sm': `${(0.80).toFixed(3)}rem`,
-    '--text-base': `1.000rem`,
-    '--text-lg': `${(modularRatio).toFixed(3)}rem`,
-    '--text-xl': `${(Math.pow(modularRatio, 2)).toFixed(3)}rem`,
-    '--text-2xl': `${(Math.pow(modularRatio, 3)).toFixed(3)}rem`,
-    '--text-3xl': `${(Math.pow(modularRatio, 4)).toFixed(3)}rem`,
-    '--text-4xl': `${(Math.pow(modularRatio, 5)).toFixed(3)}rem`,
+    '--text-xs': '0.8125rem',
+    '--text-sm': '0.9375rem',
+    '--text-base': '1.0625rem',
+    '--text-lg': '1.25rem',
+    '--text-xl': `${(1.25 * modularRatio).toFixed(3)}rem`,
+    '--text-2xl': `${(1.25 * Math.pow(modularRatio, 2)).toFixed(3)}rem`,
+    '--text-3xl': `${(1.25 * Math.pow(modularRatio, 3)).toFixed(3)}rem`,
+    '--text-4xl': `${(1.25 * Math.pow(modularRatio, 4)).toFixed(3)}rem`,
     '--weight-heading': `600`,
     '--weight-body': `400`,
     '--weight-mono': `500`,
@@ -864,6 +873,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
 
   /* Text & Foregrounds */
   --text-primary: ${variables['--text-primary']};
+  --text-secondary: ${variables['--text-secondary']};
   --text-muted: ${variables['--text-muted']};
   --text-subtle: ${variables['--text-subtle']};
   --text-inverse: ${variables['--text-inverse']};
@@ -930,9 +940,10 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   --bg-surface-active: oklch(0.95 0.018 ${effectiveHue});
   --bg-glass: oklch(0.99 0.015 ${effectiveHue} / 0.72);
   --bg-sunken: oklch(0.92 0.012 ${effectiveHue});
-  --text-primary: oklch(0.18 0.005 ${effectiveHue});
-  --text-muted: oklch(0.46 0.015 ${effectiveHue});
-  --text-subtle: oklch(0.60 0.018 ${effectiveHue});
+  --text-primary: oklch(0.15 0.015 ${effectiveHue});
+  --text-secondary: oklch(0.34 0.015 ${effectiveHue});
+  --text-muted: oklch(0.44 0.015 ${effectiveHue});
+  --text-subtle: oklch(0.55 0.018 ${effectiveHue});
   --text-inverse: oklch(0.98 0.005 ${effectiveHue});
   --border-hairline: oklch(0 0 0 / 0.07);
   --border-subtle: oklch(0 0 0 / 0.04);
@@ -947,7 +958,8 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   --bg-surface-active: oklch(0.22 0.018 ${effectiveHue});
   --bg-glass: oklch(0.18 0.015 ${effectiveHue} / 0.72);
   --bg-sunken: oklch(0.09 0.012 ${effectiveHue});
-  --text-primary: oklch(0.96 0.005 ${effectiveHue});
+  --text-primary: oklch(0.97 0.005 ${effectiveHue});
+  --text-secondary: oklch(0.80 0.010 ${effectiveHue});
   --text-muted: oklch(0.68 0.015 ${effectiveHue});
   --text-subtle: oklch(0.52 0.018 ${effectiveHue});
   --text-inverse: oklch(0.12 0.015 ${effectiveHue});
@@ -991,6 +1003,17 @@ h1, h2, h3, h4 {
   font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;
 }
 
+/* Prevent Tailwind text-xs/text-sm from shrinking text into unreadable micro-print */
+.text-xs {
+  font-size: 0.8125rem !important; /* 13px absolute minimum floor */
+  line-height: 1.35 !important;
+}
+
+.text-sm {
+  font-size: 0.9375rem !important; /* 15px comfortable sub-label */
+  line-height: 1.45 !important;
+}
+
 /* Motion & Physics Classes */
 .view-transition {
   animation: ads-view-enter var(--duration-normal) var(--ease-primary) both;
@@ -1013,6 +1036,20 @@ h1, h2, h3, h4 {
 
 .spring-interactive:active {
   transform: scale(0.96);
+}
+
+/* Tactile Card Hover & Tap Physics */
+.glass-panel, .surface-card, [data-interactive-card="true"] {
+  transition: transform var(--duration-fast) var(--ease-spring, var(--ease-primary)), border-color var(--duration-fast) var(--ease-primary), box-shadow var(--duration-fast) var(--ease-primary);
+}
+
+.glass-panel:hover, .surface-card:hover, [data-interactive-card="true"]:hover {
+  transform: translateY(-2px) scale(1.008);
+  border-color: var(--highlight-specular);
+}
+
+.glass-panel:active, .surface-card:active, [data-interactive-card="true"]:active {
+  transform: scale(0.99);
 }
 
 /* Focus visibility reset adhering to technical hairline styling */

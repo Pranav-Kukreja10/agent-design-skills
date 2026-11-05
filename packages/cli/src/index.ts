@@ -30,7 +30,7 @@ const program = new Command();
 program
   .name('agent-design-skills')
   .description('v1.1 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity')
-  .version('1.1.0');
+  .version('1.1.1');
 
 async function detectWorkspaceAgents(targetDir: string): Promise<AgentType[]> {
   const detected: AgentType[] = [];
