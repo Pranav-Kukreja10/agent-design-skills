@@ -1,6 +1,24 @@
 export type AgentType = 'antigravity' | 'cursor' | 'claude-codex' | 'web-builders';
 
-export type ArchetypeId = 'dark-obsidian-technical' | 'editorial-serif-paper' | 'neo-brutalism';
+export type ArchetypeId =
+  | 'dark-obsidian-technical'
+  | 'editorial-serif-paper'
+  | 'neo-brutalism'
+  | 'swiss-typographic-grid'
+  | 'kinetic-industrial-mono'
+  | 'bento-modular-system'
+  | 'spatial-glass-visionos'
+  | 'quiet-luxury-atelier'
+  | 'warm-artisan-craft'
+  | 'japanese-minimal-zen'
+  | 'scandinavian-warm-minimal'
+  | 'retro-tactile-analog'
+  | 'y2k-acid-cyber'
+  | 'playful-clay-consumer'
+  | 'vaporwave-crt-terminal'
+  | 'high-trust-fintech-clarity'
+  | 'clinical-biotech-precision'
+  | 'civic-govtech-accessible';
 
 export type FeelingVectorId = 'calm' | 'urgent-precise' | 'playful-tactile' | 'authoritative';
 

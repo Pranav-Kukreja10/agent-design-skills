@@ -1,6 +1,18 @@
 import { GeneratorOptions } from './types.js';
 
-export function generateDesignMd(options: GeneratorOptions): string {
+/**
+ * Extracts sections 5 through 8 from an existing DESIGN.md document.
+ */
+export function extractPreservedSections(existingContent: string): string | null {
+  const marker = '## 5. Component Inventory';
+  const index = existingContent.indexOf(marker);
+  if (index !== -1) {
+    return existingContent.slice(index).trim();
+  }
+  return null;
+}
+
+export function generateDesignMd(options: GeneratorOptions, existingContent?: string): string {
   const {
     projectName,
     archetype,
@@ -29,7 +41,8 @@ export function generateDesignMd(options: GeneratorOptions): string {
     signatureMoment = 'Hard tactile button depress translating 3px and collapsing shadow.';
   }
 
-  return `# Design Specification & Token Contract
+  // Base Sections 0 through 4
+  const baseSections = `# Design Specification & Token Contract
 
 **STATUS:** ACTIVE  
 **BRIEF STATUS:** LOCKED  
@@ -108,8 +121,18 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - **Context Boundary:** Workspaces must display live operational data. Never place static marketing or compliance statements in active console views.
 - **Badge & Indicator Discipline:** Eyebrows must stand alone as plain monospace text. Colored status dots are forbidden unless tied to a live connection status.
 - **Signature Moment:** ${signatureMoment}
+`;
 
----
+  // Check if existing Sections 5 through 8 can be preserved
+  if (existingContent) {
+    const preserved = extractPreservedSections(existingContent);
+    if (preserved) {
+      return `${baseSections}\n---\n\n${preserved}\n`;
+    }
+  }
+
+  // Default Sections 5 through 8 for fresh initialization
+  const defaultSections = `---
 
 ## 5. Component Inventory
 
@@ -152,5 +175,6 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - [ ] **Tabular Alignment Check:** Ensure all numeric columns right-align with zero jitter.
 - [ ] **Keyboard Navigation:** Bind keyboard shortcut navigation for data grid rows.
 `;
-}
 
+  return `${baseSections}\n${defaultSections}`;
+}

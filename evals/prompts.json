@@ -1,0 +1,260 @@
+{
+  "version": "4.2.0",
+  "description": "Agent Design Skills Benchmark Evaluation Suite. 11 empirical prompts covering 4 archetype families, complex workspace views, and cross-page continuity.",
+  "gates": [
+    "zero_lint_errors",
+    "wcag_aa_contrast",
+    "core_rule_budget_sub_1500_tokens",
+    "strict_scope_lock"
+  ],
+  "prompts": [
+    {
+      "id": "eval-01-fintech-ledger",
+      "family": "Family D (Domain-Specialized)",
+      "archetype": "high-trust-fintech-clarity",
+      "title": "Institutional Multi-Currency FX Settlement Ledger",
+      "category": "workspace",
+      "user_prompt": "Build an institutional multi-currency FX settlement ledger workspace. The view must display real-time batch settlement records between USD, EUR, JPY, and GBP counterparties, with real computed variance columns, batch processing status, and exception resolution actions. Follow the active design tokens and strict governance rules. Include all 5 mandatory UI states (populated table with edge cases, loading skeleton, empty state, inline error banner, and partial reconciliation).",
+      "required_checks": {
+        "token_compliance": "Must consume var(--*) tokens from ./tokens.css exclusively; zero raw hex or inline oklch",
+        "typography": "Sentence case headers and buttons, tabular-nums on all currency amounts, modular scale typography",
+        "anti_slop": [
+          "Banned: 3 equal-width KPI cards in a row. Use a compact summary strip with 1px hairlines.",
+          "Banned: Static compliance badges (e.g. 'SOC2 Compliant') in workspace view.",
+          "Banned: Decorative colored status dots in footer.",
+          "Banned: Purple-to-blue gradient CTA buttons."
+        ],
+        "edge_cases": [
+          "Extreme string length in counterparty institution name (e.g. 'Bayerische Hypotheken- und Wechsel-Bank Aktiengesellschaft AG')",
+          "Zero-decimal currency formatting for JPY (¥142,500,000 vs $12,450.50)",
+          "Negative variance with explicit sign and muted red indicator (-$1,420.00)",
+          "Null / pending value for clearing hash ('—')"
+        ]
+      }
+    },
+    {
+      "id": "eval-02-biotech-assay",
+      "family": "Family D (Domain-Specialized)",
+      "archetype": "clinical-biotech-precision",
+      "title": "Clinical Genomic Assay Plate & PCR Quality Control Console",
+      "category": "workspace",
+      "user_prompt": "Build a clinical genomic assay plate inspection console for high-throughput 96-well PCR screening. The view needs an interactive 8x12 microwell plate map with optical density telemetry, cycle threshold (Ct) readouts, specimen sample IDs, and batch quality control flags. Provide controls to filter wells by amplification status (Positive, Inconclusive, Negative, Contaminated) and view specimen details in an adjacent inspection panel.",
+      "required_checks": {
+        "token_compliance": "Strict adherence to clinical-biotech-precision tokens (light sterile canvas, cold cyan accents, hairlines)",
+        "typography": "Geist Mono / Fira Code for specimen barcodes, plate coordinates (A1-H12), and cycle threshold numbers with font-variant-numeric: tabular-nums",
+        "anti_slop": [
+          "Banned: Decorative glowing neon effects or generic purple charts.",
+          "Banned: Pill-shaped status tags inside well cells; use crisp micro-indicators.",
+          "Banned: Unprompted theme toggle or dark-mode switch in clinical light interface."
+        ],
+        "edge_cases": [
+          "Flagged contaminated well with elevated baseline noise",
+          "Null specimen control well (No Template Control / NTC)",
+          "Extreme barcode string: 'ISO-8601-BRCA2-EXON11-VUS-994821'",
+          "Missing thermal cycler run metadata"
+        ]
+      }
+    },
+    {
+      "id": "eval-03-swiss-architecture",
+      "family": "Family A (Technical & Precision)",
+      "archetype": "swiss-typographic-grid",
+      "title": "Swiss Architectural Studio Monograph & Project Archive",
+      "category": "data-tool",
+      "user_prompt": "Create an architectural archive and monograph index for a Zürich-based studio. The interface must use a rigorous mathematical 12-column grid with exposed 1px borders, high-contrast monochrome typographic hierarchy, and structural metadata for projects (completion year, structural engineer, gross floor area in m², concrete typology). Include a filter bar by typology (Civic, Residential, Infrastructure) and project status, plus a detail drawer.",
+      "required_checks": {
+        "token_compliance": "swiss-typographic-grid tokens: pure white canvas oklch(0.99 0 0), stark carbon text oklch(0.12 0 0), exact 0px border radius (sharp technical edges)",
+        "typography": "Cabinet Grotesk / Space Grotesk, strict modular scale, all uppercase eyebrow labels with letter-spacing: 0.08em",
+        "anti_slop": [
+          "Banned: Any rounded corners (must use var(--radius-outer: 0px) / var(--radius-inner: 0px)).",
+          "Banned: Drop shadows, blur filters, or glassmorphism.",
+          "Banned: Floating card containers without structural dividing grid lines."
+        ],
+        "edge_cases": [
+          "Unbuilt concept project with missing square footage ('N/A — In Planning')",
+          "Long German project title: 'Erweiterungsbau Kunstmuseum Basel Neubau'",
+          "Zero-match filter state with architectural inquiry CTA"
+        ]
+      }
+    },
+    {
+      "id": "eval-04-visionos-spatial",
+      "family": "Family A (Technical & Precision)",
+      "archetype": "spatial-glass-visionos",
+      "title": "Spatial Computing 3D Asset Inspector & Volumetric Telemetry",
+      "category": "workspace",
+      "user_prompt": "Design a spatial 3D asset inspection and volumetric mesh optimizer workspace for XR environments. Display model hierarchy (nodes, materials, draw calls, vertex count), real-time memory footprint, specular lighting controls, and collision bounds. Use translucent glass layers with optical blur and specular rim highlights. Implement a 3D viewport canvas placeholder alongside an asymmetric parameter inspector.",
+      "required_checks": {
+        "token_compliance": "spatial-glass-visionos tokens: deep obsidian background, frosted glass panels with backdrop-filter: blur(var(--surface-blur)), specular hairline highlight: oklch(1 0 0 / 0.16)",
+        "geometry": "Concentric corner radii: outer 18px, inner 10px, badges 6px; padding: 8px",
+        "anti_slop": [
+          "Banned: Over-saturated glowing rainbow borders.",
+          "Banned: Inconsistent blur values across sibling glass surfaces.",
+          "Banned: Uncalibrated contrast (ensure text-primary passes AAA >= 7:1 against translucent glass)."
+        ],
+        "edge_cases": [
+          "Model with 12.4M polygon count triggering memory warning flag",
+          "Zero materials loaded asset with fall-through wireframe state",
+          "Deep node tree hierarchy (8 levels nested)"
+        ]
+      }
+    },
+    {
+      "id": "eval-05-y2k-acid-cyber",
+      "family": "Family C (Expressive, Tactile & Neo-Retro)",
+      "archetype": "y2k-acid-cyber",
+      "title": "16-Step Acid Polyphonic Bassline Synthesizer & Pattern Matrix",
+      "category": "workspace",
+      "user_prompt": "Build an in-browser 16-step polyphonic acid bassline sequencer interface. The view should feature a step grid matrix (pitch, velocity, slide, accent), rotary cutoff and resonance dials, pattern bank selection (Banks A-D, 16 patterns each), and real-time audio playback status. Embrace the y2k-acid-cyber aesthetic with high-contrast electric green on pitch black, scanline overlay, and technical cyber monospaces.",
+      "required_checks": {
+        "token_compliance": "y2k-acid-cyber tokens: pitch black oklch(0.10 0.02 140), electric chartreuse accent oklch(0.88 0.28 135), raw 1px neon borders, zero blur",
+        "typography": "VT323 / Syne Mono display, Syne body, uppercase cybernetic labels",
+        "anti_slop": [
+          "Banned: Soft pastel drop shadows or rounded pill buttons.",
+          "Banned: Generic SaaS layout templates.",
+          "Banned: Low contrast text (maintain punchy legible neon contrast)."
+        ],
+        "edge_cases": [
+          "Active pattern with all 16 steps engaged with slide and accent flags",
+          "Empty user pattern slot with 'INIT_PATCH' prompt",
+          "Audio engine clipping warning indicator"
+        ]
+      }
+    },
+    {
+      "id": "eval-06-scandinavian-furniture",
+      "family": "Family B (Editorial, Luxury & Organic)",
+      "archetype": "scandinavian-warm-minimal",
+      "title": "Scandinavian Heirloom Furniture Catalog & Material Provenance",
+      "category": "landing-waitlist",
+      "user_prompt": "Create an heirloom Scandinavian timber furniture catalog and craft provenance explorer. Present handcrafted solid birch dining tables, chairs, and credenzas with timber harvest provenance (FSC certification, sawmill location, moisture content), joinery diagrams, and bespoke dimension selectors. Emphasize breathing whitespace, quiet warm neutrals, and understated serif typography.",
+      "required_checks": {
+        "token_compliance": "scandinavian-warm-minimal tokens: oat/birch canvas oklch(0.97 0.015 85), warm spruce accent oklch(0.48 0.07 155), subtle rounded corners 4px",
+        "rhythm": "3-step vertical section rhythm using var(--section-py-breathing) for generous whitespace",
+        "anti_slop": [
+          "Banned: Aggressive countdown timers, fake social proof popups, or 'Limited time offer' hype.",
+          "Banned: Black borders or harsh shadows (use soft tinted borders).",
+          "Banned: Generic stock vector illustrations."
+        ],
+        "edge_cases": [
+          "Item crafted to order with 8-12 week lead time notice",
+          "Item out of harvest rotation (seasonal wood availability)",
+          "Bespoke length configuration input (200cm - 340cm)"
+        ]
+      }
+    },
+    {
+      "id": "eval-07-playful-budget",
+      "family": "Family C (Expressive, Tactile & Neo-Retro)",
+      "archetype": "playful-clay-consumer",
+      "title": "Apartment Roommate Expense Tracker & Split Settlement App",
+      "category": "mobile-app",
+      "user_prompt": "Build a responsive mobile-first apartment shared expense tracker and debt settlement view. Roommates need to log utility bills, groceries, and rent, see who owes whom with automatic debt minimization, and trigger instant settlements. Use playful-clay-consumer tokens with tactile physical bevels, soft rounded corners, warm friendly typography, and honest copy without juvenile slop.",
+      "required_checks": {
+        "token_compliance": "playful-clay-consumer tokens: cream canvas, dual-layer tactile shadows, rounded pills (var(--radius-outer: 20px), var(--radius-inner: 14px))",
+        "microcopy": "Direct, empathetic copy ('Alex owes you $42.50 for Wi-Fi') without condescending corporate enthusiasm",
+        "anti_slop": [
+          "Banned: Unresponsive 3-card desktop layouts on mobile viewport.",
+          "Banned: Confusing ambiguous icons without text labels.",
+          "Banned: Fake confetti animations or gamified streaks for routine debt settlements."
+        ],
+        "edge_cases": [
+          "Completely settled state ($0.00 outstanding between all roommates)",
+          "Complex 3-way uneven split with fractional cents",
+          "Single recurring charge with past due notice"
+        ]
+      }
+    },
+    {
+      "id": "eval-08-japanese-ceramics",
+      "family": "Family B (Editorial, Luxury & Organic)",
+      "archetype": "japanese-minimal-zen",
+      "title": "Kyoto Woodfired Ceramics Atelier Gallery & Acquisition Index",
+      "category": "data-tool",
+      "user_prompt": "Design a gallery and collector acquisition console for a traditional Kyoto woodfired ceramics kiln. Display one-of-a-kind tea bowls (chawan) and vases with clay origin (Shigaraki, Bizen), anagama kiln firing duration (120 hours), natural ash glaze descriptions, and acquisition reserve requests. Prioritize Ma (negative space), asymmetric quiet balance, and meditative typography.",
+      "required_checks": {
+        "token_compliance": "japanese-minimal-zen tokens: washi mist canvas oklch(0.96 0.01 75), sumi soot ink oklch(0.18 0.01 50), hairline borders oklch(0.18 0.01 50 / 0.12)",
+        "composition": "Asymmetric layout, generous breathing margins, vertical text accents where appropriate",
+        "anti_slop": [
+          "Banned: Loud 'BUY NOW' or 'ADD TO CART' pushy buttons. Use 'Inquire regarding acquisition'.",
+          "Banned: Fast animated transitions (use calm ease-out curves).",
+          "Banned: Cluttered badges, ratings stars, or fake review counts."
+        ],
+        "edge_cases": [
+          "Piece acquired into permanent museum collection (reserved)",
+          "Piece with unique natural fissure requiring preservation guidelines",
+          "Japanese kanji artist mark alongside Latin romanized name"
+        ]
+      }
+    },
+    {
+      "id": "eval-09-kinetic-logistics",
+      "family": "Family A (Technical & Precision)",
+      "archetype": "kinetic-industrial-mono",
+      "title": "Autonomous Warehouse AGV Fleet Telemetry & Dispatch Queue",
+      "category": "workspace",
+      "user_prompt": "Build an autonomous guided vehicle (AGV) fleet dispatch and telemetry console for an automated logistics fulfillment hub. Show active robot units (ID, battery %, payload status, assigned aisle waypoint, speed m/s), an alert dispatch ticker for obstacle stops, and an actionable priority dispatch queue. The aesthetic must be kinetic-industrial-mono: dense tabular monospace readouts, sharp amber status indicators, and zero fluff.",
+      "required_checks": {
+        "token_compliance": "kinetic-industrial-mono tokens: dark industrial carbon canvas, high-visibility amber accent oklch(0.78 0.19 75), sharp corners (2px)",
+        "density": "Compact tabular density, all numerical readouts aligned with font-variant-numeric: tabular-nums",
+        "anti_slop": [
+          "Banned: 3 equal marketing stat cards across top. Use a horizontal telemetry ribbon.",
+          "Banned: Non-functional decorative spinning radar animations.",
+          "Banned: Decorative status pills without actionable meaning."
+        ],
+        "edge_cases": [
+          "AGV unit with critical battery under 8% returning to inductive charging dock",
+          "Aisle obstruction sensor trigger with override action",
+          "Fleet completely docked in idle off-peak state"
+        ]
+      }
+    },
+    {
+      "id": "eval-10-civic-records",
+      "family": "Family D (Domain-Specialized)",
+      "archetype": "civic-govtech-accessible",
+      "title": "Municipal Property Parcel Deed & Public Zoning Records Search",
+      "category": "data-tool",
+      "user_prompt": "Build a hyper-accessible public municipal property deed and zoning permit search portal for county residents. The interface must provide search by parcel number, street address, or tax assessment range, displaying historical deed transfers, zoning variances, public hearing dates, and downloadable official record PDFs. Follow civic-govtech-accessible tokens with strict WCAG AAA contrast and clear focus rings.",
+      "required_checks": {
+        "token_compliance": "civic-govtech-accessible tokens: clean high-contrast canvas, trusted deep navy oklch(0.32 0.09 250), 3px high-visibility focus rings with 2px offset",
+        "accessibility": "WCAG AAA 7:1 contrast on all body text, full keyboard navigation with visible focus rings, aria-describedby on search inputs",
+        "anti_slop": [
+          "Banned: Low-contrast grey text (text-muted must strictly exceed 4.5:1 AA contrast).",
+          "Banned: Hidden or subtle focus indicators.",
+          "Banned: Ambiguous icon-only buttons without text labels or sr-only text."
+        ],
+        "edge_cases": [
+          "Contested zoning permit under active 30-day public appeal window",
+          "Parcel with unassigned street address ('Lot 4B, Section 12')",
+          "Zero search results state with helpful guidance on parcel PIN formats"
+        ]
+      }
+    },
+    {
+      "id": "eval-11-crosspage-continuity",
+      "family": "Cross-Page Unity Gate",
+      "archetype": "dark-obsidian-technical",
+      "title": "Page 2 Continuity Test: Audit Trail & Exception Resolution",
+      "category": "workspace",
+      "user_prompt": "We have an existing workspace with Page 1 at /reconciliation-console generated using agent-design-skills v4.2 under dark-obsidian-technical. Now generate Page 2: the Audit Trail & Exception Resolution View (/audit-trail). Page 2 must be a distinct operational screen (displaying immutable audit logs, operator sign-offs, and discrepancy resolution workflows) while demonstrating 100% geometric and stylistic unity with Page 1. Strictly consume existing tokens.css without redefining colors or corner radii. Inherit the identical top utility bar height (48px), table row density, typography hierarchy, and hairline dividers. Do not introduce new font families, new accent colors, or unprompted navigation menus.",
+      "required_checks": {
+        "token_compliance": "Must link to and reuse identical ./tokens.css; zero new CSS custom properties redefined in style tags",
+        "geometric_unity": "Concentric corner radii must match Page 1 exactly: outer 6px, inner 4px, badge 4px. Container max-width: 1280px.",
+        "anti_drift": [
+          "Banned: Introducing rounded-full buttons or badges when Page 1 uses 4px/6px.",
+          "Banned: Introducing an unprompted sidebar if Page 1 uses a top utility bar.",
+          "Banned: Changing font family or font size scale between pages.",
+          "Banned: Changing table row heights, border colors, or hover transition durations."
+        ],
+        "state_checks": [
+          "Audit trail populated view with operator signatures and timestamps",
+          "Loading skeleton state matching Page 1 skeleton rhythm",
+          "Empty audit search result with clear reset filter CTA",
+          "Inline resolution confirmation toast/banner"
+        ]
+      }
+    }
+  ]
+}
+

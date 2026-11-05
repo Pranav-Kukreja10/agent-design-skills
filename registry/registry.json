@@ -76,6 +76,156 @@
       "defaultFeeling": "playful-tactile",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
+    },
+    {
+      "id": "swiss-typographic-grid",
+      "name": "Swiss Typographic Grid",
+      "polarity": "light",
+      "path": "archetypes/swiss-typographic-grid.md",
+      "hint": "Cold mathematical exposed hairlines, pure 12-col grid, objective clarity",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "kinetic-industrial-mono",
+      "name": "Kinetic Industrial Mono",
+      "polarity": "dark",
+      "path": "archetypes/kinetic-industrial-mono.md",
+      "hint": "High-velocity tabular monospace telemetry, industrial console instrumentation",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "bento-modular-system",
+      "name": "Bento Modular System",
+      "polarity": "dark",
+      "path": "archetypes/bento-modular-system.md",
+      "hint": "Asymmetric 12-col bento grid, distinct card visual weight, structured hardware depth",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "subtle",
+      "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "spatial-glass-visionos",
+      "name": "Spatial Glass VisionOS",
+      "polarity": "dark",
+      "path": "archetypes/spatial-glass-visionos.md",
+      "hint": "Optical depth, 20px frosted backdrop blur, 1px specular rim reflection highlights",
+      "defaultFeeling": "calm",
+      "defaultRadius": "high",
+      "defaultBlur": "deep-glass"
+    },
+    {
+      "id": "quiet-luxury-atelier",
+      "name": "Quiet Luxury Atelier",
+      "polarity": "light",
+      "path": "archetypes/quiet-luxury-atelier.md",
+      "hint": "Whisper-quiet prestige, warm cashmere bone paper, haute couture serif restraint",
+      "defaultFeeling": "calm",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "warm-artisan-craft",
+      "name": "Warm Artisan Craft",
+      "polarity": "light",
+      "path": "archetypes/warm-artisan-craft.md",
+      "hint": "Earthy raw linen canvas, terracotta clay accents, hand-finished tactile bevels",
+      "defaultFeeling": "calm",
+      "defaultRadius": "subtle",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "japanese-minimal-zen",
+      "name": "Japanese Minimal Zen",
+      "polarity": "light",
+      "path": "archetypes/japanese-minimal-zen.md",
+      "hint": "Ma negative space, washi mist paper, asymmetric tranquil balance, deep sumi ink",
+      "defaultFeeling": "calm",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "scandinavian-warm-minimal",
+      "name": "Scandinavian Warm Minimal",
+      "polarity": "light",
+      "path": "archetypes/scandinavian-warm-minimal.md",
+      "hint": "Soft birch/oat neutrals, natural Nordic daylight, functional humanism",
+      "defaultFeeling": "calm",
+      "defaultRadius": "subtle",
+      "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "retro-tactile-analog",
+      "name": "Retro Tactile Analog",
+      "polarity": "dark",
+      "path": "archetypes/retro-tactile-analog.md",
+      "hint": "Teenage Engineering physical keycap bevels, mechanical clicky toggles, matte grey",
+      "defaultFeeling": "playful-tactile",
+      "defaultRadius": "subtle",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "y2k-acid-cyber",
+      "name": "Y2K Acid Cyber",
+      "polarity": "dark",
+      "path": "archetypes/y2k-acid-cyber.md",
+      "hint": "Chrome wireframes, high-chroma neon green vector accents, millennium cyber energy",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "playful-clay-consumer",
+      "name": "Playful Clay Consumer",
+      "polarity": "light",
+      "path": "archetypes/playful-clay-consumer.md",
+      "hint": "Tactile soft-inflated marshmallow surfaces, puffy clay pill corners, consumer joy",
+      "defaultFeeling": "playful-tactile",
+      "defaultRadius": "high",
+      "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "vaporwave-crt-terminal",
+      "name": "Vaporwave CRT Terminal",
+      "polarity": "dark",
+      "path": "archetypes/vaporwave-crt-terminal.md",
+      "hint": "1980s phosphor scanline overlays, neon sunset nostalgia, terminal command lines",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "subtle",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "high-trust-fintech-clarity",
+      "name": "High-Trust Fintech Clarity",
+      "polarity": "light",
+      "path": "archetypes/high-trust-fintech-clarity.md",
+      "hint": "Stripe & Mercury institutional clarity, pristine white tables, calm financial certainty",
+      "defaultFeeling": "authoritative",
+      "defaultRadius": "subtle",
+      "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "clinical-biotech-precision",
+      "name": "Clinical Biotech Precision",
+      "polarity": "light",
+      "path": "archetypes/clinical-biotech-precision.md",
+      "hint": "Sterile lab-grade contrast, medical diagnostics, forensic genomic data tables",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "civic-govtech-accessible",
+      "name": "Civic Govtech Accessible",
+      "polarity": "light",
+      "path": "archetypes/civic-govtech-accessible.md",
+      "hint": "WCAG AAA 10:1 ultra-accessible contrast, public sovereign identity, civic clarity",
+      "defaultFeeling": "authoritative",
+      "defaultRadius": "sharp",
+      "defaultBlur": "flat"
     }
   ],
   "feeling_vectors": {

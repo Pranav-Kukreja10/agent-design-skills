@@ -158,9 +158,13 @@ export async function compileDesignSystem(options: GeneratorOptions): Promise<{
   await fs.writeJSON(jsonPath, json, { spaces: 2 });
   createdFiles.push(jsonPath);
 
-  // 2. Generate DESIGN.md
-  const designMd = generateDesignMd(options);
+  // 2. Generate DESIGN.md (Smart Non-Destructive Preservation of Sections 5-8)
   const designMdPath = path.resolve(targetDir, 'DESIGN.md');
+  let existingContent: string | undefined;
+  if (await fs.pathExists(designMdPath)) {
+    existingContent = await fs.readFile(designMdPath, 'utf-8');
+  }
+  const designMd = generateDesignMd(options, existingContent);
   await fs.writeFile(designMdPath, designMd, 'utf-8');
   createdFiles.push(designMdPath);
 
