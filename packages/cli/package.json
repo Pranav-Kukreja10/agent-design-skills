@@ -1,6 +1,6 @@
 {
   "name": "agent-design-skills",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "v1.1 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity",
   "type": "module",
   "bin": {
