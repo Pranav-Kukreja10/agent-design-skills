@@ -186,6 +186,18 @@ async function lintFile(
       }
     }
 
+    // Check for banned numbered slash eyebrows (e.g., 01 / LEDGER)
+    if (!line.includes('regex') && !line.includes('banned') && !line.includes('Banned') && !line.includes('Rule') && />?\s*0[1-9]\s*\/\s*[A-Z]/.test(line)) {
+      violations.push({
+        file: relPath,
+        rule: 'copy/banned-phrases-and-leakage',
+        line: lineNumber,
+        snippet: trimmed,
+        message: 'Numbered slash eyebrow (e.g. "01 / ...") detected above headings or in UI markup',
+        severity: 'error'
+      });
+    }
+
     // Rule: slop/no-emoji-icons
     if (EMOJI_REGEX.test(line) && !hasException) {
       // Ignore in markdown block quotes or rule descriptions if comments

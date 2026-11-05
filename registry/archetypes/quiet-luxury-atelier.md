@@ -42,11 +42,11 @@
 ### De-converged Font Pairings
 - **Pairing A (Default - Haute Couture):**
   - `display`: `Cormorant Garamond`, provider: `google`, package: `@fontsource/cormorant-garamond`
-  - `sans`: `Instrument Serif`, provider: `google`, package: `@fontsource/instrument-serif`
+  - `sans`: `DM Sans`, provider: `google`, package: `@fontsource/dm-sans`
   - `mono`: `Fragment Mono`, provider: `google`, package: `@fontsource/fragment-mono`
 - **Pairing B (Bespoke Editorial):**
   - `display`: `Fraunces`, provider: `google`, package: `@fontsource/fraunces`
-  - `sans`: `Newsreader`, provider: `google`, package: `@fontsource/newsreader`
+  - `sans`: `Work Sans`, provider: `google`, package: `@fontsource/work-sans`
   - `mono`: `IBM Plex Mono`, provider: `google`, package: `@fontsource/ibm-plex-mono`
 - **Pairing C (Atelier Modern):**
   - `display`: `Bespoke Serif`, provider: `fontshare`, package: `@fontsource/bespoke-serif`

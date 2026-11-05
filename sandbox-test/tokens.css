@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+
 /* =============================================================================
    AGENT DESIGN SKILLS — TOKEN CONTRACT (v4.2)
    Archetype: dark-obsidian-technical
@@ -108,6 +110,12 @@ html, body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Functional application workspaces: headings use --font-sans for dense clarity */
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-heading);
 }
 
 /* Tabular numbers for financial and audit data */

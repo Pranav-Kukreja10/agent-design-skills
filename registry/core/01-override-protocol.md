@@ -56,3 +56,10 @@ How would you like to handle this change?
 - Never silently introduce an inline style (`style="..."`) or arbitrary CSS class that bypasses `{{TOKENS_PATH}}`.
 - Any style rule diverging from the token contract that lacks both an inline `/* @design-exception */` comment and a matching entry in `{{DESIGN_DOC_PATH}}` is classified as **design drift** and must be flagged or reverted.
 
+---
+
+## 4. User Font & Style Supremacy
+
+Default bans on commodity fonts (`Roboto`, `Inter`, `Plus Jakarta Sans`) or styles apply ONLY to unprompted AI defaults. If the user explicitly requests `Roboto`, `Inter`, or any custom font/color in chat, obey immediately by updating `tokens.css` (if global) or tagging `/* @design-exception */` (if local) with zero pushback.
+
+

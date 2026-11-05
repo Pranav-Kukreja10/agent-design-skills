@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
 import path from 'pathe';
+import fs from 'fs-extra';
 import {
   AgentType,
   ArchetypeId,
@@ -11,11 +12,18 @@ import {
   BlurScaleId,
   InstallMode,
   StarterKitId,
-  GeneratorOptions
+  GeneratorOptions,
+  FontSelectionMode,
+  FontOverrideConfig
 } from './types.js';
 import { compileDesignSystem } from './compiler.js';
 import { lintDirectory } from './linter.js';
 import { freezeProject, unfreezeProject } from './freeze.js';
+import {
+  detectProjectFonts,
+  ARCHETYPE_FONT_PAIRINGS,
+  extractFontFamily
+} from './tokens-gen.js';
 
 const program = new Command();
 
@@ -24,35 +32,115 @@ program
   .description('v4.2 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity')
   .version('4.2.0');
 
+async function detectWorkspaceAgents(targetDir: string): Promise<AgentType[]> {
+  const detected: AgentType[] = [];
+  if (await fs.pathExists(path.resolve(targetDir, '.agent')) || await fs.pathExists(path.resolve(targetDir, '.agents'))) {
+    detected.push('antigravity');
+  }
+  if (await fs.pathExists(path.resolve(targetDir, '.cursor'))) {
+    detected.push('cursor');
+  }
+  if (await fs.pathExists(path.resolve(targetDir, 'CLAUDE.md')) || await fs.pathExists(path.resolve(targetDir, 'AGENTS.md'))) {
+    detected.push('claude-codex');
+  }
+  return detected.length > 0 ? detected : ['antigravity'];
+}
+
+const ARCHETYPE_OPTIONS = [
+  { value: 'dark-obsidian-technical', label: 'Dark Obsidian Technical', hint: '1px hairlines, carbon hue 250, forensic developer/settlement console' },
+  { value: 'swiss-typographic-grid', label: 'Swiss Typographic Grid', hint: 'Light, exposed 1px grid lines, Cabinet Grotesk / Space Grotesk' },
+  { value: 'kinetic-industrial-mono', label: 'Kinetic Industrial Mono', hint: 'Dark, tabular telemetry, JetBrains Mono, amber accents' },
+  { value: 'bento-modular-system', label: 'Bento Modular System', hint: 'Adaptive 12-col bento cells, Satoshi / General Sans' },
+  { value: 'spatial-glass-visionos', label: 'Spatial Glass VisionOS', hint: 'Translucent optical blur, Outfit / DM Sans, specular highlights' },
+  { value: 'editorial-serif-paper', label: 'Editorial Serif Paper', hint: 'Warm bone paper, broadsheet typography, high-craft publication' },
+  { value: 'quiet-luxury-atelier', label: 'Quiet Luxury Atelier', hint: 'Whisper-quiet prestige, Cormorant Garamond / DM Sans, warm ivory' },
+  { value: 'warm-artisan-craft', label: 'Warm Artisan Craft', hint: 'Earthy linen, Fraunces / Cabinet Grotesk, terracotta accents' },
+  { value: 'japanese-minimal-zen', label: 'Japanese Minimal Zen', hint: 'Ma negative space, Noto Serif Display / Work Sans, washi mist' },
+  { value: 'scandinavian-warm-minimal', label: 'Scandinavian Warm Minimal', hint: 'Oat/birch canvas, Familjen Grotesk / DM Sans, spruce accents' },
+  { value: 'neo-brutalism', label: 'Neo-Brutalist Studio', hint: 'Hard 2px borders, stark offset shadows, raw tactile accents' },
+  { value: 'retro-tactile-analog', label: 'Retro Tactile Analog', hint: 'Physical bevels, Space Mono / DM Sans, Teenage Engineering vibe' },
+  { value: 'y2k-acid-cyber', label: 'Y2K Acid Cyber', hint: 'Electric chartreuse on pitch black, VT323 / Syne Mono' },
+  { value: 'playful-clay-consumer', label: 'Playful Clay Consumer', hint: 'Tactile dual-layer shadows, Bricolage Grotesque / Plus Sans' },
+  { value: 'vaporwave-crt-terminal', label: 'Vaporwave CRT Terminal', hint: 'Phosphorescent cyan & magenta on indigo void, scanlines' },
+  { value: 'high-trust-fintech-clarity', label: 'High-Trust Fintech Clarity', hint: 'Enterprise navy, Sora / Public Sans, tabular numbers' },
+  { value: 'clinical-biotech-precision', label: 'Clinical Biotech Precision', hint: 'Sterile lab white, Geist / Space Mono, cold cyan' },
+  { value: 'civic-govtech-accessible', label: 'Civic Govtech Accessible', hint: 'WCAG AAA contrast, Atkinson Hyperlegible / DM Sans' }
+];
+
 // Default action: Interactive Scaffold or Fast Mode
 program
   .command('init', { isDefault: true })
   .description('Scaffold a design token contract, starter kit, and agent governance rules')
+  .option('-a, --agents <agents>', 'Target agents (comma-separated or "all": antigravity, cursor, claude-codex, web-builders)')
   .option('-f, --fast', 'Fast mode with sensible defaults (dark-obsidian-technical, antigravity)')
+  .option('-t, --archetype <archetype>', 'Canonical archetype ID')
   .option('-s, --starter-kit <kit>', 'Pre-baked starter kit: dashboard, landing-waitlist, mobile-app, data-tool')
   .option('-m, --mode <mode>', 'Installation mode: modular or single', 'modular')
+  .option('-F, --fonts <mode>', 'Font selection mode: A, B, C, keep, or comma-separated "Display,Sans,Mono"')
   .option('-d, --dir <dir>', 'Target directory', '.')
+  .option('-y, --yes', 'Accept defaults without interactive prompts')
   .action(async (opts) => {
     const targetDir = path.resolve(process.cwd(), opts.dir || '.');
     const projectName = path.basename(targetDir) || 'my-project';
 
-    if (opts.fast) {
-      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v4.2.0 [FAST MODE]')}`);
+    let parsedFontMode: FontSelectionMode | undefined;
+    let parsedFontOverride: FontOverrideConfig | undefined;
+
+    if (opts.fonts) {
+      const f = opts.fonts.trim();
+      const fUpper = f.toUpperCase();
+      if (fUpper === 'A' || fUpper === 'B' || fUpper === 'C') {
+        parsedFontMode = fUpper as FontSelectionMode;
+      } else if (f.toLowerCase() === 'keep') {
+        parsedFontMode = 'keep';
+      } else if (f.includes(',')) {
+        const parts = f.split(',').map((s: string) => s.trim());
+        parsedFontMode = 'custom';
+        parsedFontOverride = {
+          display: parts[0] || undefined,
+          sans: parts[1] || undefined,
+          mono: parts[2] || undefined,
+          source: 'user'
+        };
+      } else {
+        parsedFontMode = 'custom';
+        parsedFontOverride = {
+          display: f,
+          sans: f,
+          source: 'user'
+        };
+      }
+    }
+
+    let parsedAgents: AgentType[] | null = null;
+    if (opts.agents) {
+      if (opts.agents.toLowerCase() === 'all') {
+        parsedAgents = ['antigravity', 'cursor', 'claude-codex', 'web-builders'];
+      } else {
+        parsedAgents = opts.agents.split(',').map((s: string) => s.trim()) as AgentType[];
+      }
+    }
+
+    if (opts.fast || opts.yes) {
+      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v4.2.0 [EXPRESS MODE]')}`);
       const s = p.spinner();
-      s.start(`Compiling default design system in ${targetDir}...`);
+      s.start(`Compiling design system in ${targetDir}...`);
 
       const starterKit = (opts.starterKit as StarterKitId) || 'dashboard';
+      const agents = parsedAgents || await detectWorkspaceAgents(targetDir);
 
       const options: GeneratorOptions = {
         projectName,
         targetDir,
-        agents: ['antigravity'],
-        archetype: 'dark-obsidian-technical',
+        agents,
+        archetype: (opts.archetype as ArchetypeId) || 'dark-obsidian-technical',
         feeling: 'urgent-precise',
         radius: 'subtle',
         blur: 'subtle-frost',
         mode: (opts.mode as InstallMode) || 'modular',
         starterKit,
+        fontMode: parsedFontMode,
+        fontOverride: parsedFontOverride,
         customDirection: 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
         productBrief: 'High-precision operational workspace and data reconciliation platform',
         fast: true
@@ -65,47 +153,86 @@ program
         console.log(`  ${pc.green('✔')} ${pc.dim(path.relative(targetDir, file))}`);
       }
 
-      p.outro(pc.green('✨ Fast initialization complete. Token contract & starter preview active.'));
+      p.outro(pc.green(`✨ Initialization complete for ${options.agents.join(', ')}. Token contract & starter preview active.`));
       return;
     }
 
     console.clear();
     p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v4.2.0')}`);
 
+    const defaultAgents = await detectWorkspaceAgents(targetDir);
+    const detectedFonts = await detectProjectFonts(targetDir);
+
     const answers = await p.group(
       {
         agents: () =>
-          p.multiselect({
-            message: 'Which AI coding agent(s) are you using?',
-            options: [
-              { value: 'antigravity', label: 'Antigravity', hint: '.agent/rules/ & .agent/skills/' },
-              { value: 'cursor', label: 'Cursor', hint: '.cursor/rules/' },
-              { value: 'claude-codex', label: 'Codex / Claude Code', hint: 'CLAUDE.md / AGENTS.md' },
-              { value: 'web-builders', label: 'Web Builders (v0 / Bolt / Lovable)', hint: 'DESIGN-PROMPT.md' }
-            ],
-            required: true,
-          }),
+          parsedAgents
+            ? Promise.resolve(parsedAgents)
+            : p.multiselect({
+                message: 'Which AI coding agent(s) are you using?',
+                options: [
+                  { value: 'antigravity', label: 'Antigravity', hint: '.agent/rules/ & .agent/skills/' },
+                  { value: 'cursor', label: 'Cursor', hint: '.cursor/rules/' },
+                  { value: 'claude-codex', label: 'Codex / Claude Code', hint: 'CLAUDE.md / AGENTS.md' },
+                  { value: 'web-builders', label: 'Web Builders (v0 / Bolt / Lovable)', hint: 'DESIGN-PROMPT.md' }
+                ],
+                initialValues: defaultAgents,
+                required: true,
+              }),
         archetype: () =>
-          p.select({
-            message: 'Choose a human-crafted design archetype:',
-            options: [
-              {
-                value: 'dark-obsidian-technical',
-                label: 'Dark Obsidian Technical',
-                hint: '1px hairlines, carbon hue 250, forensic developer/settlement console',
-              },
-              {
-                value: 'editorial-serif-paper',
-                label: 'Editorial Serif Paper',
-                hint: 'Warm bone paper, broadsheet typography, high-craft publication',
-              },
-              {
-                value: 'neo-brutalism',
-                label: 'Neo-Brutalist Studio',
-                hint: 'Hard 2px borders, stark offset shadows, raw tactile accents',
-              },
-            ],
-          }),
+          opts.archetype
+            ? Promise.resolve(opts.archetype)
+            : p.select({
+                message: 'Choose a human-crafted design archetype:',
+                options: ARCHETYPE_OPTIONS,
+              }),
+        typography: async ({ results }) => {
+          if (parsedFontMode || parsedFontOverride) {
+            return parsedFontMode || 'custom';
+          }
+          const archId = (results.archetype as ArchetypeId) || (opts.archetype as ArchetypeId) || 'dark-obsidian-technical';
+          const pairings = ARCHETYPE_FONT_PAIRINGS[archId] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
+
+          const fontOptions: Array<{ value: string; label: string; hint?: string }> = [];
+
+          if (detectedFonts && (detectedFonts.display || detectedFonts.sans || detectedFonts.mono)) {
+            const preview = [detectedFonts.display, detectedFonts.sans, detectedFonts.mono].filter(Boolean).map(extractFontFamily).join(' / ');
+            fontOptions.push({
+              value: 'keep',
+              label: `Keep existing project fonts`,
+              hint: preview
+            });
+          }
+
+          fontOptions.push(
+            {
+              value: 'A',
+              label: `Pairing A (Default): ${pairings.A.display} + ${pairings.A.sans} + ${pairings.A.mono}`,
+              hint: 'Archetype primary pairing'
+            },
+            {
+              value: 'B',
+              label: `Pairing B: ${pairings.B.display} + ${pairings.B.sans} + ${pairings.B.mono}`,
+              hint: 'Alternative character'
+            },
+            {
+              value: 'C',
+              label: `Pairing C: ${pairings.C.display} + ${pairings.C.sans} + ${pairings.C.mono}`,
+              hint: 'Alternative character'
+            },
+            {
+              value: 'custom',
+              label: 'Custom font families (specify Display, Sans, Mono)',
+              hint: 'Type custom Google Fonts or Fontshare families'
+            }
+          );
+
+          return p.select({
+            message: 'Select typography & font pairing:',
+            options: fontOptions,
+            initialValue: (detectedFonts && (detectedFonts.display || detectedFonts.sans || detectedFonts.mono)) ? 'keep' : 'A'
+          });
+        },
         starterKit: () =>
           p.select({
             message: 'Choose a token-wired starter kit preview:',
@@ -170,17 +297,61 @@ program
       }
     );
 
+    let finalFontMode: FontSelectionMode = (parsedFontMode || (answers.typography as FontSelectionMode)) || 'A';
+    let finalFontOverride: FontOverrideConfig | undefined = parsedFontOverride;
+
+    if (answers.typography === 'keep' && !finalFontOverride && detectedFonts) {
+      finalFontOverride = detectedFonts;
+    } else if (answers.typography === 'custom' && !finalFontOverride) {
+      const customDisplay = await p.text({
+        message: 'Enter --font-display family (e.g. "Cabinet Grotesk" or "Cormorant Garamond"):',
+        placeholder: 'Sora',
+        validate: (val) => (!val?.trim() ? 'Display font family is required' : undefined)
+      });
+      if (p.isCancel(customDisplay)) {
+        p.cancel('Setup cancelled.');
+        process.exit(0);
+      }
+      const customSans = await p.text({
+        message: 'Enter --font-sans family (e.g. "Instrument Sans" or "Public Sans"):',
+        placeholder: 'Instrument Sans',
+        validate: (val) => (!val?.trim() ? 'Sans font family is required' : undefined)
+      });
+      if (p.isCancel(customSans)) {
+        p.cancel('Setup cancelled.');
+        process.exit(0);
+      }
+      const customMono = await p.text({
+        message: 'Enter --font-mono family (e.g. "Geist Mono" or "JetBrains Mono"):',
+        placeholder: 'JetBrains Mono',
+        validate: (val) => (!val?.trim() ? 'Mono font family is required' : undefined)
+      });
+      if (p.isCancel(customMono)) {
+        p.cancel('Setup cancelled.');
+        process.exit(0);
+      }
+
+      finalFontOverride = {
+        display: (customDisplay as string).trim(),
+        sans: (customSans as string).trim(),
+        mono: (customMono as string).trim(),
+        source: 'user'
+      };
+    }
+
     const s = p.spinner();
     s.start(`Compiling tokens and governance contract...`);
 
     const options: GeneratorOptions = {
       projectName,
       targetDir,
-      agents: answers.agents as AgentType[],
+      agents: (answers.agents as AgentType[]) || (parsedAgents || defaultAgents),
       archetype: answers.archetype as ArchetypeId,
       feeling: answers.feeling as FeelingVectorId,
       radius: answers.radius as RadiusScaleId,
       blur: answers.blur as BlurScaleId,
+      fontMode: finalFontMode,
+      fontOverride: finalFontOverride,
       mode: answers.mode as InstallMode,
       starterKit: answers.starterKit !== 'none' ? (answers.starterKit as StarterKitId) : undefined,
       customDirection: answers.customDirection as string,

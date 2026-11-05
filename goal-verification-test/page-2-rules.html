@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Withholding Rules & Audit Log — Aethelgard Treasury</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Fragment+Mono:ital@0;1&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./tokens.css" />
+  <style>
+    /* Reset & Base Foundation strictly consuming ./tokens.css */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: var(--weight-body);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Outer Container */
+    .app-shell {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Top Utility Navigation Bar (Identical to Page 1) */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      border-bottom: 1px solid var(--border-hairline);
+      margin-bottom: var(--section-py-tight);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: var(--radius-inner);
+      transition: color var(--duration-fast) var(--ease-primary);
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--text-primary);
+    }
+
+    /* State Switcher Control */
+    .state-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      padding: 2px 4px;
+    }
+
+    .state-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      padding-left: 0.5rem;
+    }
+
+    .state-select {
+      background: transparent;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-primary);
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Section Header */
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-heading);
+      line-height: 1.15;
+      text-wrap: balance;
+      color: var(--text-primary);
+    }
+
+    /* Workspace Operational Summary Strip (1px Hairline Dividers) */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-surface);
+    }
+
+    .summary-item {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--border-hairline);
+    }
+
+    .summary-item:last-child {
+      border-right: none;
+    }
+
+    .summary-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .summary-value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-heading);
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .summary-subtext {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-subtle);
+      margin-top: 0.25rem;
+    }
+
+    /* Layout Columns */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Action & Filter Toolbar */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .toolbar-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-heading);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-inner);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-mono);
+      transition: background-color var(--duration-fast) var(--ease-primary), color var(--duration-fast) var(--ease-primary);
+    }
+
+    .btn-primary {
+      background-color: var(--text-primary);
+      color: var(--text-inverse);
+      border: 1px solid var(--text-primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface-active);
+    }
+
+    /* Rule List Frame */
+    .rules-list {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      overflow: hidden;
+      box-shadow: var(--shadow-surface);
+      margin-bottom: 2.5rem;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+
+    .rule-item:hover {
+      background-color: var(--bg-surface-active);
+    }
+
+    .rule-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .rule-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+    }
+
+    .rule-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      max-width: 65ch;
+      text-wrap: pretty;
+    }
+
+    .rule-controls {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .rule-rate {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-mono);
+      font-variant-numeric: tabular-nums;
+      padding: 0.35rem 0.75rem;
+      background-color: var(--bg-sunken);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-inner);
+    }
+
+    /* Table Frame (Matching Page 1 Exactly) */
+    .table-frame {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      overflow: hidden;
+      box-shadow: var(--shadow-surface);
+      margin-bottom: 3rem;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .data-table th {
+      padding: 0.85rem 1.25rem;
+      background-color: var(--bg-sunken);
+      border-bottom: 1px solid var(--border-hairline);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .data-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+      background-color: var(--bg-surface-active);
+    }
+
+    .cell-numeric {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .cell-truncate {
+      max-width: 320px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Functional Record Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-badge);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      border: 1px solid var(--border-hairline);
+    }
+
+    .status-verified {
+      background-color: var(--bg-sunken);
+      color: var(--text-primary);
+    }
+
+    .status-pending {
+      background-color: var(--bg-surface-active);
+      color: var(--text-muted);
+      border-style: dashed;
+    }
+
+    .status-reversal {
+      background-color: var(--bg-sunken);
+      color: var(--status-danger);
+      border-color: var(--border-hairline);
+    }
+
+    /* Inline Error Banner State */
+    .error-banner {
+      display: none;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-left: 3px solid var(--status-danger);
+      border-radius: var(--radius-outer);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-sans);
+    }
+
+    .error-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+
+    .error-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: var(--weight-heading);
+      color: var(--status-danger);
+    }
+
+    .error-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+
+    /* Loading Skeleton State */
+    .skeleton-box {
+      height: 14px;
+      background-color: var(--bg-sunken);
+      border-radius: var(--radius-inner);
+      opacity: 0.7;
+    }
+
+    /* Zero-Data Empty State */
+    .empty-state {
+      display: none;
+      padding: 4rem 2rem;
+      text-align: center;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      margin-bottom: 3rem;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-desc {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      max-width: 48ch;
+      margin: 0 auto 1.5rem;
+      text-wrap: pretty;
+    }
+
+    /* Concentric Footer Note */
+    .footer-bar {
+      border-top: 1px solid var(--border-hairline);
+      padding: 1.5rem 0 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Top Navigation Utility Bar (Shared with Page 1) -->
+    <header class="top-bar">
+      <div class="brand-mark">
+        <span class="brand-title">Aethelgard Treasury</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="page-1-overview.html" class="nav-link">Treasury overview</a>
+        <a href="page-2-rules.html" class="nav-link active">Withholding rules & audit</a>
+      </nav>
+
+      <!-- State Switcher Control -->
+      <div class="state-switcher">
+        <span class="state-label">State:</span>
+        <select id="stateSelector" class="state-select" aria-label="Preview UI state" onchange="switchState(this.value)">
+          <option value="default">Default populated (4 edge cases)</option>
+          <option value="loading">Loading skeleton</option>
+          <option value="empty">Zero-data empty state</option>
+          <option value="error">Inline rule exception error</option>
+          <option value="partial">Partial clearance</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main Workspace Content -->
+    <main>
+      <div class="section-header">
+        <h1 class="page-title">Tax withholding rules & ledger audit</h1>
+      </div>
+
+      <!-- Inline Error Banner -->
+      <div id="errorBanner" class="error-banner">
+        <div class="error-header">
+          <span class="error-title">Rule conflict: foreign retainage threshold overlap</span>
+          <button class="btn btn-secondary" onclick="switchState('default')">Resolve rule priority</button>
+        </div>
+        <p class="error-desc">Rule `RULE-VAT-03` collides with treaty exemption rate on German cross-border invoice `#AS-DE-99410`. Manual override required.</p>
+      </div>
+
+      <!-- Workspace Operational Summary Strip (1px Hairline Dividers) -->
+      <section class="summary-strip" aria-label="Rule engine summary">
+        <div class="summary-item">
+          <span class="summary-label">Active withholding rules</span>
+          <div class="summary-value">3 active</div>
+          <span class="summary-subtext">Automated tier-1 triggers</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Effective tax rate</span>
+          <div class="summary-value">25.0%</div>
+          <span class="summary-subtext">Blended pass-through reserve</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Audit entries verified</span>
+          <div class="summary-value">1,482 logs</div>
+          <span class="summary-subtext">Zero discrepancies committed</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Treasury sweep yield</span>
+          <div class="summary-value">5.14% APY</div>
+          <span class="summary-subtext">4-week US Treasury bills</span>
+        </div>
+      </section>
+
+      <!-- Section: Active Rules -->
+      <section class="content-grid">
+        <div>
+          <div class="toolbar">
+            <h2 class="toolbar-title">Active automated withholding rules</h2>
+            <div class="toolbar-actions">
+              <button class="btn btn-secondary" onclick="alert('Rule priority re-indexed.')">Re-index priority</button>
+              <button class="btn btn-primary" onclick="alert('New withholding rule modal initiated.')">Add custom rule</button>
+            </div>
+          </div>
+
+          <!-- Rules List Frame -->
+          <div id="rulesContainer" class="rules-list">
+            <!-- Rule 1 -->
+            <div class="rule-item">
+              <div class="rule-meta">
+                <div class="rule-title">Federal corporate & pass-through estimated tax</div>
+                <p class="rule-desc">Automatically segregates 21.0% of all incoming domestic client invoice deposits into the federal tax escrow reserve account.</p>
+              </div>
+              <div class="rule-controls">
+                <span class="rule-rate">21.0%</span>
+                <span class="status-badge status-verified">Active</span>
+              </div>
+            </div>
+
+            <!-- Rule 2 -->
+            <div class="rule-item">
+              <div class="rule-meta">
+                <div class="rule-title">State franchise & gross receipts retainage</div>
+                <p class="rule-desc">Calculates and reserves 8.84% state franchise tax liability on net receipts, balancing against deductible studio operating costs.</p>
+              </div>
+              <div class="rule-controls">
+                <span class="rule-rate">8.84%</span>
+                <span class="status-badge status-verified">Active</span>
+              </div>
+            </div>
+
+            <!-- Rule 3 -->
+            <div class="rule-item">
+              <div class="rule-meta">
+                <div class="rule-title">Overnight treasury sweep into short-term bills</div>
+                <p class="rule-desc">Sweeps all studio operating balances exceeding the $10,000 liquidity buffer into short-duration 4-week US T-bills every business day at 16:30 EST.</p>
+              </div>
+              <div class="rule-controls">
+                <span class="rule-rate">5.14%</span>
+                <span class="status-badge status-verified">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Forensic Audit Log Table -->
+        <div>
+          <div class="toolbar">
+            <h2 class="toolbar-title">Append-only treasury audit trail</h2>
+            <div class="toolbar-actions">
+              <a href="page-1-overview.html" class="btn btn-secondary">Return to overview</a>
+              <button class="btn btn-secondary" onclick="alert('Audit cryptographic hash export generated.')">Export audit hash</button>
+            </div>
+          </div>
+
+          <!-- Populated Audit Table Frame -->
+          <div id="auditContainer" class="table-frame">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp (UTC)</th>
+                  <th>Event signature</th>
+                  <th>Target entity / Ref</th>
+                  <th style="text-align: right;">Allocation amount</th>
+                  <th>Signing operator</th>
+                  <th style="text-align: right;">Merkle leaf hash</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+                <!-- // SAMPLE DATA with 4 Edge Cases -->
+                <!-- 1. Normal Event -->
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">2026-11-05 16:30:14</td>
+                  <td><span class="status-badge status-verified">SWEEP_DISPATCH</span></td>
+                  <td>Kallikrates Typographic Atelier LLC</td>
+                  <td class="cell-numeric">$31,000.00</td>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs);">operator://clearing.bot.01</td>
+                  <td class="cell-numeric" style="font-size: var(--text-xs); color: var(--text-subtle);">0x7E41...98B2</td>
+                </tr>
+
+                <!-- 2. Edge Case 1: Extreme String Length with Truncation -->
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">2026-11-05 15:45:02</td>
+                  <td><span class="status-badge status-verified">WITHHOLDING_SPLIT</span></td>
+                  <td class="cell-truncate">
+                    <span title="Atelier für Schriftgestaltung und Visuelle Kommunikation Nordische Buchdruckerei GmbH & Co. KG">Atelier für Schriftgestaltung und Visuelle Kommunikation Nordische Buchdruckerei GmbH & Co. KG</span>
+                  </td>
+                  <td class="cell-numeric">$25,920.00</td>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs);">operator://m.vanderberg</td>
+                  <td class="cell-numeric" style="font-size: var(--text-xs); color: var(--text-subtle);">0x3F1A...110C</td>
+                </tr>
+
+                <!-- 3. Edge Case 2: Zero / Pending Event State -->
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">2026-11-05 14:12:00</td>
+                  <td><span class="status-badge status-pending">FEDWIRE_PENDING</span></td>
+                  <td>Studio Vespera Archival Bindery</td>
+                  <td class="cell-numeric" style="color: var(--text-subtle);">$0.00</td>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle);">—</td>
+                  <td class="cell-numeric" style="font-size: var(--text-xs); color: var(--text-subtle);">—</td>
+                </tr>
+
+                <!-- 4. Edge Case 3: Null Operator / Automated Monogram Fallback -->
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">2026-11-05 12:04:31</td>
+                  <td><span class="status-badge status-verified">YIELD_ACCRUAL</span></td>
+                  <td>Treasury Overnight Yield Accrual (4-week T-bill)</td>
+                  <td class="cell-numeric">+$425.18</td>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">system://autonomous</td>
+                  <td class="cell-numeric" style="font-size: var(--text-xs); color: var(--text-subtle);">0x992B...44D8</td>
+                </tr>
+
+                <!-- 5. Edge Case 4: Negative Adjustment / Reversal Impact -->
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);">2026-11-05 09:20:18</td>
+                  <td><span class="status-badge status-reversal">CLAWBACK_REVERSAL</span></td>
+                  <td>Chronos Heritage Horology SA</td>
+                  <td class="cell-numeric" style="color: var(--status-danger);">-$3,000.00</td>
+                  <td style="font-family: var(--font-mono); font-size: var(--text-xs);">operator://compliance.dir</td>
+                  <td class="cell-numeric" style="font-size: var(--text-xs); color: var(--status-danger);">0xEE01...CC49</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Loading Skeleton (Audit Log) -->
+          <div id="loadingSkeleton" class="table-frame" style="display: none;" aria-busy="true">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp (UTC)</th>
+                  <th>Event signature</th>
+                  <th>Target entity / Ref</th>
+                  <th style="text-align: right;">Allocation amount</th>
+                  <th>Signing operator</th>
+                  <th style="text-align: right;">Merkle leaf hash</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="skeleton-box" style="width: 120px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 80px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 220px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 70px; margin-left: auto;"></div></td>
+                  <td><div class="skeleton-box" style="width: 100px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 60px; margin-left: auto;"></div></td>
+                </tr>
+                <tr>
+                  <td><div class="skeleton-box" style="width: 120px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 80px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 260px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 70px; margin-left: auto;"></div></td>
+                  <td><div class="skeleton-box" style="width: 100px;"></div></td>
+                  <td><div class="skeleton-box" style="width: 60px; margin-left: auto;"></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="empty-state">
+            <h3 class="empty-title">Zero logged audit entries in cycle</h3>
+            <p class="empty-desc">No withholding splits or overnight treasury yield dispatches have occurred yet in this fiscal period. All future rule triggers are written to this append-only ledger.</p>
+            <button class="btn btn-primary" onclick="switchState('default')">Refresh audit stream</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Concentric Footer (Shared with Page 1) -->
+    <footer class="footer-bar">
+      <span>Aethelgard Treasury System</span>
+      <span>Append-only Fedwire settlement protocol</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function switchState(state) {
+      const rules = document.getElementById('rulesContainer');
+      const audit = document.getElementById('auditContainer');
+      const skeleton = document.getElementById('loadingSkeleton');
+      const empty = document.getElementById('emptyState');
+      const error = document.getElementById('errorBanner');
+
+      // Reset display
+      rules.style.display = 'block';
+      audit.style.display = 'block';
+      skeleton.style.display = 'none';
+      empty.style.display = 'none';
+      error.style.display = 'none';
+
+      if (state === 'default') {
+        // Default populated
+      } else if (state === 'loading') {
+        audit.style.display = 'none';
+        skeleton.style.display = 'block';
+      } else if (state === 'empty') {
+        audit.style.display = 'none';
+        empty.style.display = 'block';
+      } else if (state === 'error') {
+        error.style.display = 'block';
+      } else if (state === 'partial') {
+        // Show only rows 1 and 2
+        const rows = document.querySelectorAll('#auditTableBody tr');
+        rows.forEach((r, idx) => {
+          r.style.display = idx < 2 ? '' : 'none';
+        });
+        return;
+      }
+
+      // Reset row visibility for non-partial states
+      const rows = document.querySelectorAll('#auditTableBody tr');
+      rows.forEach(r => r.style.display = '');
+    }
+  </script>
+</body>
+</html>
+

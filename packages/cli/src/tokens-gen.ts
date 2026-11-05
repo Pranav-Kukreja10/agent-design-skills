@@ -1,4 +1,14 @@
-import { GeneratorOptions, TokenVariables, ArchetypeId, RadiusScaleId, BlurScaleId, FeelingVectorId } from './types.js';
+import fs from 'fs-extra';
+import path from 'pathe';
+import {
+  GeneratorOptions,
+  TokenVariables,
+  ArchetypeId,
+  RadiusScaleId,
+  BlurScaleId,
+  FeelingVectorId,
+  FontOverrideConfig
+} from './types.js';
 
 /**
  * Calculates a deterministic hue jitter (-3 to +3 degrees) from a folder/project name.
@@ -37,6 +47,333 @@ function clampLightnessForContrast(
       return Math.min(0.48, lightness);
     }
   }
+}
+
+export interface FontTriple {
+  display: string;
+  sans: string;
+  mono: string;
+}
+
+export const ARCHETYPE_FONT_PAIRINGS: Record<ArchetypeId, { A: FontTriple; B: FontTriple; C: FontTriple }> = {
+  'dark-obsidian-technical': {
+    A: { display: 'Geist', sans: 'Instrument Sans', mono: 'Geist Mono' },
+    B: { display: 'Sora', sans: 'Public Sans', mono: 'Fira Code' },
+    C: { display: 'Satoshi', sans: 'General Sans', mono: 'Space Mono' }
+  },
+  'swiss-typographic-grid': {
+    A: { display: 'Cabinet Grotesk', sans: 'Space Grotesk', mono: 'Space Mono' },
+    B: { display: 'Syne', sans: 'Public Sans', mono: 'Fragment Mono' },
+    C: { display: 'Sora', sans: 'General Sans', mono: 'DM Mono' }
+  },
+  'kinetic-industrial-mono': {
+    A: { display: 'JetBrains Mono', sans: 'IBM Plex Sans', mono: 'JetBrains Mono' },
+    B: { display: 'Fira Code', sans: 'Fragment Mono', mono: 'Fira Code' },
+    C: { display: 'Space Mono', sans: 'Chivo', mono: 'Space Mono' }
+  },
+  'bento-modular-system': {
+    A: { display: 'Satoshi', sans: 'General Sans', mono: 'Geist Mono' },
+    B: { display: 'Sora', sans: 'Public Sans', mono: 'Fira Code' },
+    C: { display: 'Outfit', sans: 'DM Sans', mono: 'JetBrains Mono' }
+  },
+  'spatial-glass-visionos': {
+    A: { display: 'Outfit', sans: 'DM Sans', mono: 'Fragment Mono' },
+    B: { display: 'Sora', sans: 'Public Sans', mono: 'Geist Mono' },
+    C: { display: 'Cabinet Grotesk', sans: 'Switzer', mono: 'Inconsolata' }
+  },
+  'editorial-serif-paper': {
+    A: { display: 'Newsreader', sans: 'Work Sans', mono: 'Fragment Mono' },
+    B: { display: 'Fraunces', sans: 'Merriweather Sans', mono: 'IBM Plex Mono' },
+    C: { display: 'Bespoke Serif', sans: 'Switzer', mono: 'Inconsolata' }
+  },
+  'quiet-luxury-atelier': {
+    A: { display: 'Cormorant Garamond', sans: 'DM Sans', mono: 'Fragment Mono' },
+    B: { display: 'Fraunces', sans: 'Work Sans', mono: 'IBM Plex Mono' },
+    C: { display: 'Bespoke Serif', sans: 'Switzer', mono: 'Space Mono' }
+  },
+  'warm-artisan-craft': {
+    A: { display: 'Fraunces', sans: 'Cabinet Grotesk', mono: 'DM Mono' },
+    B: { display: 'Source Serif 4', sans: 'Public Sans', mono: 'Fragment Mono' },
+    C: { display: 'Newsreader', sans: 'General Sans', mono: 'Space Mono' }
+  },
+  'japanese-minimal-zen': {
+    A: { display: 'Noto Serif Display', sans: 'Work Sans', mono: 'DM Mono' },
+    B: { display: 'Newsreader', sans: 'Public Sans', mono: 'Fragment Mono' },
+    C: { display: 'Bespoke Serif', sans: 'Sora', mono: 'JetBrains Mono' }
+  },
+  'scandinavian-warm-minimal': {
+    A: { display: 'Familjen Grotesk', sans: 'DM Sans', mono: 'Fragment Mono' },
+    B: { display: 'Sora', sans: 'Public Sans', mono: 'IBM Plex Mono' },
+    C: { display: 'Switzer', sans: 'Work Sans', mono: 'Space Mono' }
+  },
+  'neo-brutalism': {
+    A: { display: 'Space Grotesk', sans: 'Syne', mono: 'Space Mono' },
+    B: { display: 'Archivo Black', sans: 'Archivo', mono: 'DM Mono' },
+    C: { display: 'Clash Display', sans: 'Cabinet Grotesk', mono: 'Fragment Mono' }
+  },
+  'retro-tactile-analog': {
+    A: { display: 'Space Mono', sans: 'Chivo', mono: 'Space Mono' },
+    B: { display: 'Syne', sans: 'Public Sans', mono: 'Fira Code' },
+    C: { display: 'Archivo', sans: 'DM Mono', mono: 'DM Mono' }
+  },
+  'y2k-acid-cyber': {
+    A: { display: 'Syne', sans: 'Chakra Petch', mono: 'Space Mono' },
+    B: { display: 'Clash Display', sans: 'Space Grotesk', mono: 'Fira Code' },
+    C: { display: 'Cabinet Grotesk', sans: 'Public Sans', mono: 'JetBrains Mono' }
+  },
+  'playful-clay-consumer': {
+    A: { display: 'Bricolage Grotesque', sans: 'Fredoka', mono: 'Space Mono' },
+    B: { display: 'Outfit', sans: 'DM Sans', mono: 'Fragment Mono' },
+    C: { display: 'Cabinet Grotesk', sans: 'Switzer', mono: 'DM Mono' }
+  },
+  'vaporwave-crt-terminal': {
+    A: { display: 'VT323', sans: 'Fira Code', mono: 'Fira Code' },
+    B: { display: 'Chakra Petch', sans: 'Space Mono', mono: 'Space Mono' },
+    C: { display: 'Syne', sans: 'DM Mono', mono: 'DM Mono' }
+  },
+  'high-trust-fintech-clarity': {
+    A: { display: 'Sora', sans: 'Public Sans', mono: 'Fira Code' },
+    B: { display: 'General Sans', sans: 'Instrument Sans', mono: 'JetBrains Mono' },
+    C: { display: 'Cabinet Grotesk', sans: 'Switzer', mono: 'Space Mono' }
+  },
+  'clinical-biotech-precision': {
+    A: { display: 'Instrument Sans', sans: 'Public Sans', mono: 'IBM Plex Mono' },
+    B: { display: 'Sora', sans: 'General Sans', mono: 'Fragment Mono' },
+    C: { display: 'Cabinet Grotesk', sans: 'Work Sans', mono: 'Fira Code' }
+  },
+  'civic-govtech-accessible': {
+    A: { display: 'Atkinson Hyperlegible', sans: 'Public Sans', mono: 'Fragment Mono' },
+    B: { display: 'Sora', sans: 'DM Sans', mono: 'IBM Plex Mono' },
+    C: { display: 'Work Sans', sans: 'General Sans', mono: 'Fira Code' }
+  }
+};
+
+const GOOGLE_WEIGHTS_MAP: Record<string, string> = {
+  'instrument sans': 'wght@400;500;600;700',
+  'space grotesk': 'wght@400;500;600;700',
+  'sora': 'wght@400;600',
+  'fraunces': 'opsz,wght@9..144,400..700',
+  'cormorant garamond': 'wght@500;600;700',
+  'jetbrains mono': 'wght@400;500',
+  'fira code': 'wght@400;500',
+  'ibm plex mono': 'wght@400;500',
+  'ibm plex sans': 'wght@400;500;600',
+  'space mono': 'wght@400;700',
+  'public sans': 'wght@400;500;600',
+  'dm sans': 'wght@400;500;600',
+  'dm mono': 'wght@400;500',
+  'work sans': 'wght@400;500;600',
+  'atkinson hyperlegible': 'wght@400;700',
+  'bricolage grotesque': 'wght@400;600;700',
+  'syne': 'wght@600;700',
+  'syne mono': 'wght@400',
+  'vt323': 'wght@400',
+  'newsreader': 'ital,opsz,wght@0,6..72,400..700;1,6..72,400',
+  'noto serif display': 'wght@400;600',
+  'familjen grotesk': 'wght@400;600',
+  'geist': 'wght@400;500;600;700',
+  'geist mono': 'wght@400;500',
+  'chakra petch': 'wght@400;600',
+  'fredoka': 'wght@400;600',
+  'archivo black': 'wght@400',
+  'archivo': 'wght@400;600',
+  'chivo': 'wght@400;600',
+  'inconsolata': 'wght@400;600',
+  'merriweather sans': 'wght@400;600',
+  'source serif 4': 'opsz,wght@8..60,400..700'
+};
+
+const FONTSHARE_SLUGS_MAP: Record<string, string> = {
+  'cabinet grotesk': 'cabinet-grotesk@500,700,800',
+  'general sans': 'general-sans@400,500,600',
+  'satoshi': 'satoshi@400,500,700',
+  'switzer': 'switzer@400,500,600',
+  'bespoke serif': 'bespoke-serif@400,600',
+  'clash display': 'clash-display@500,600,700'
+};
+
+export function extractFontFamily(fontValue: string): string {
+  if (!fontValue) return '';
+  const match = fontValue.match(/["']([^"']+)["']/);
+  return match ? match[1] : fontValue.split(',')[0].trim();
+}
+
+/**
+ * Priority 1: Scans existing project files (tokens.css, tokens.json, package.json)
+ * to detect and preserve already-configured fonts.
+ */
+export async function detectProjectFonts(targetDir: string): Promise<FontOverrideConfig | null> {
+  const cssPath = path.resolve(targetDir, 'tokens.css');
+  const jsonPath = path.resolve(targetDir, 'tokens.json');
+  const pkgPath = path.resolve(targetDir, 'package.json');
+
+  let display: string | undefined;
+  let sans: string | undefined;
+  let mono: string | undefined;
+  let importUrl: string | undefined;
+
+  // 1. Check tokens.css
+  if (await fs.pathExists(cssPath)) {
+    const content = await fs.readFile(cssPath, 'utf-8');
+    const displayMatch = content.match(/--font-display:\s*([^;]+);/);
+    const sansMatch = content.match(/--font-sans:\s*([^;]+);/);
+    const monoMatch = content.match(/--font-mono:\s*([^;]+);/);
+    const importMatch = content.match(/@import\s+url\(['"]?([^'")]+)['"]?\);/);
+
+    if (displayMatch) display = displayMatch[1].trim();
+    if (sansMatch) sans = sansMatch[1].trim();
+    if (monoMatch) mono = monoMatch[1].trim();
+    if (importMatch) importUrl = importMatch[1].trim();
+
+    if (display || sans || mono) {
+      return { display, sans, mono, importUrl, source: 'preserved' };
+    }
+  }
+
+  // 2. Check tokens.json
+  if (await fs.pathExists(jsonPath)) {
+    try {
+      const json = await fs.readJSON(jsonPath);
+      const vars = json.variables || {};
+      if (vars['--font-display'] || vars['--font-sans'] || vars['--font-mono']) {
+        return {
+          display: vars['--font-display'],
+          sans: vars['--font-sans'],
+          mono: vars['--font-mono'],
+          source: 'preserved'
+        };
+      }
+    } catch {}
+  }
+
+  // 3. Scan package.json for @fontsource/* packages or next/font
+  if (await fs.pathExists(pkgPath)) {
+    try {
+      const pkg = await fs.readJSON(pkgPath);
+      const allDeps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+      const fontsourcePkgs = Object.keys(allDeps).filter(dep => dep.startsWith('@fontsource/'));
+      if (fontsourcePkgs.length > 0) {
+        const fonts = fontsourcePkgs.map(p => {
+          const raw = p.replace('@fontsource/', '');
+          return raw.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        });
+        return {
+          display: fonts[0],
+          sans: fonts[1] || fonts[0],
+          mono: fonts.find(f => f.toLowerCase().includes('mono') || f.toLowerCase().includes('code')) || 'monospace',
+          source: 'package.json'
+        };
+      }
+    } catch {}
+  }
+
+  return null;
+}
+
+/**
+ * Priority 2: Parses user's Section 0 Custom Creative Direction string for font mentions.
+ */
+export function parseCustomDirectionFonts(customDirection?: string): Partial<FontOverrideConfig> | null {
+  if (!customDirection) return null;
+
+  const fontCandidates = [
+    'Geist Mono', 'Geist', 'Instrument Sans', 'Space Grotesk', 'Space Mono',
+    'Cabinet Grotesk', 'General Sans', 'Satoshi', 'Switzer', 'Bespoke Serif',
+    'Fraunces', 'Cormorant Garamond', 'Newsreader', 'Noto Serif Display',
+    'Source Serif 4', 'Familjen Grotesk', 'Sora', 'Public Sans', 'Work Sans',
+    'Atkinson Hyperlegible', 'Bricolage Grotesque', 'Syne Mono', 'Syne',
+    'JetBrains Mono', 'Fira Code', 'IBM Plex Mono', 'IBM Plex Sans',
+    'DM Sans', 'DM Mono', 'Outfit', 'VT323', 'Archivo'
+  ];
+
+  const lower = customDirection.toLowerCase();
+  for (const candidate of fontCandidates) {
+    const pattern = new RegExp(`\\b(?:use|with|in|font:?)\\s+${candidate.toLowerCase()}\\b|\\b${candidate.toLowerCase()}\\s+(?:font|typography)\\b`, 'i');
+    if (pattern.test(customDirection) || lower.includes(`use ${candidate.toLowerCase()}`)) {
+      const isMono = /mono|code|vt323/i.test(candidate);
+      const isSerif = /serif|garamond|fraunces|newsreader|cinzel/i.test(candidate);
+      if (isMono) {
+        return { mono: candidate, source: 'custom' };
+      } else if (isSerif) {
+        return { display: candidate, source: 'custom' };
+      } else {
+        return { sans: candidate, display: candidate, source: 'custom' };
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Appends clean, production-grade fallback stacks for Display, Sans, and Mono.
+ */
+export function formatFontStack(fontName: string, role: 'display' | 'sans' | 'mono'): string {
+  if (!fontName) return '';
+  if (fontName.includes(',') && (fontName.includes('serif') || fontName.includes('sans-serif') || fontName.includes('monospace'))) {
+    return fontName;
+  }
+
+  const cleanName = fontName.replace(/['"]/g, '').trim();
+  const lower = cleanName.toLowerCase();
+
+  const isMono = role === 'mono' || /mono|code|vt323|inconsolata/i.test(lower);
+  const isSerif = role === 'display' && (/serif|garamond|fraunces|newsreader|cinzel/i.test(lower));
+
+  if (isMono) {
+    return `'${cleanName}', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
+  }
+  if (isSerif) {
+    return `'${cleanName}', Georgia, "Times New Roman", serif`;
+  }
+  return `'${cleanName}', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+}
+
+/**
+ * Builds @import CSS statements for Google Fonts and Fontshare CDNs with explicit weights.
+ */
+export function buildFontImports(
+  displayFont: string,
+  sansFont: string,
+  monoFont: string,
+  preservedImportUrl?: string
+): string {
+  const rawFamilies = [
+    extractFontFamily(displayFont),
+    extractFontFamily(sansFont),
+    extractFontFamily(monoFont)
+  ].filter(Boolean);
+
+  const uniqueFamilies = Array.from(new Set(rawFamilies));
+
+  const fontshareImports: string[] = [];
+  const googleFamilies: string[] = [];
+
+  for (const fam of uniqueFamilies) {
+    const lower = fam.toLowerCase();
+    if (FONTSHARE_SLUGS_MAP[lower]) {
+      fontshareImports.push(
+        `@import url('https://api.fontshare.com/v2/css?f[]=${FONTSHARE_SLUGS_MAP[lower]}&display=swap');`
+      );
+    } else if (lower === 'monospace' || lower === 'serif' || lower === 'sans-serif' || lower === 'customuserfont') {
+      continue;
+    } else {
+      const encoded = fam.replace(/\s+/g, '+');
+      const weights = GOOGLE_WEIGHTS_MAP[lower] || 'wght@400;500;600;700';
+      googleFamilies.push(`family=${encoded}:${weights}`);
+    }
+  }
+
+  const lines: string[] = [];
+  if (preservedImportUrl && !lines.includes(`@import url('${preservedImportUrl}');`)) {
+    lines.push(`@import url('${preservedImportUrl}');`);
+  }
+  lines.push(...fontshareImports);
+  if (googleFamilies.length > 0) {
+    lines.push(`@import url('https://fonts.googleapis.com/css2?${googleFamilies.join('&')}&display=swap');`);
+  }
+
+  return lines.length > 0 ? lines.join('\n') + '\n\n' : '';
 }
 
 export interface GeneratedTokensResult {
@@ -80,7 +417,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     textMutedL = 0.48;
     textSubtleL = 0.62;
     fontDisplay = '"Newsreader", Georgia, serif';
-    fontSans = '"Source Serif 4", Georgia, serif';
+    fontSans = '"Work Sans", sans-serif';
     fontMono = '"Fragment Mono", monospace';
   } else if (archetype === 'neo-brutalism') {
     polarity = 'light';
@@ -178,7 +515,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     textMutedL = 0.46;
     textSubtleL = 0.60;
     fontDisplay = '"Cormorant Garamond", serif';
-    fontSans = '"Instrument Serif", serif';
+    fontSans = '"DM Sans", sans-serif';
     fontMono = '"Fragment Mono", monospace';
   } else if (archetype === 'warm-artisan-craft') {
     polarity = 'light';
@@ -226,7 +563,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     textMutedL = 0.48;
     textSubtleL = 0.60;
     fontDisplay = '"Familjen Grotesk", sans-serif';
-    fontSans = '"Source Serif 4", serif';
+    fontSans = '"DM Sans", sans-serif';
     fontMono = '"Fragment Mono", monospace';
   } else if (archetype === 'retro-tactile-analog') {
     polarity = 'dark';
@@ -399,6 +736,47 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     shadowElevated = `6px 6px 0px 0px oklch(0.12 0.005 260)`;
   }
 
+  // 3-Tier Font Hierarchy Resolution
+  const pairings = ARCHETYPE_FONT_PAIRINGS[archetype] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
+
+  let chosenDisplay = pairings.A.display;
+  let chosenSans = pairings.A.sans;
+  let chosenMono = pairings.A.mono;
+
+  // Priority 1: Preserved project fonts
+  if (options.fontOverride?.source === 'preserved' && (options.fontMode === 'keep' || !options.fontMode)) {
+    if (options.fontOverride.display) chosenDisplay = extractFontFamily(options.fontOverride.display);
+    if (options.fontOverride.sans) chosenSans = extractFontFamily(options.fontOverride.sans);
+    if (options.fontOverride.mono) chosenMono = extractFontFamily(options.fontOverride.mono);
+  }
+  // Priority 2: User custom selection / CLI flag
+  else if (options.fontMode === 'B') {
+    chosenDisplay = pairings.B.display;
+    chosenSans = pairings.B.sans;
+    chosenMono = pairings.B.mono;
+  } else if (options.fontMode === 'C') {
+    chosenDisplay = pairings.C.display;
+    chosenSans = pairings.C.sans;
+    chosenMono = pairings.C.mono;
+  } else if (options.fontOverride) {
+    if (options.fontOverride.display) chosenDisplay = extractFontFamily(options.fontOverride.display);
+    if (options.fontOverride.sans) chosenSans = extractFontFamily(options.fontOverride.sans);
+    if (options.fontOverride.mono) chosenMono = extractFontFamily(options.fontOverride.mono);
+  }
+
+  // Priority 2b: Custom direction prompt override (e.g. "use Fraunces")
+  const directionFont = parseCustomDirectionFonts(options.customDirection);
+  if (directionFont && options.fontMode !== 'keep') {
+    if (directionFont.display) chosenDisplay = directionFont.display;
+    if (directionFont.sans) chosenSans = directionFont.sans;
+    if (directionFont.mono) chosenMono = directionFont.mono;
+  }
+
+  // Format with fallback stacks
+  fontDisplay = formatFontStack(chosenDisplay, 'display');
+  fontSans = formatFontStack(chosenSans, 'sans');
+  fontMono = formatFontStack(chosenMono, 'mono');
+
   const variables: TokenVariables = {
     '--bg-canvas': `oklch(${bgCanvasL} 0.015 ${effectiveHue})`,
     '--bg-elevated': `oklch(${bgElevatedL} 0.015 ${effectiveHue})`,
@@ -449,7 +827,9 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--duration-normal': durationNormal,
   };
 
-  const css = `/* =============================================================================
+  const fontImports = buildFontImports(chosenDisplay, chosenSans, chosenMono, options.fontOverride?.importUrl);
+
+  const css = `${fontImports}/* =============================================================================
    AGENT DESIGN SKILLS — TOKEN CONTRACT (v4.2)
    Archetype: ${archetype}
    Polarity: ${polarity}
@@ -537,6 +917,12 @@ html, body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Functional application workspaces: headings use --font-sans for dense clarity */
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-heading);
 }
 
 .font-tabular,

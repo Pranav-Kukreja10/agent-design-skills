@@ -67,6 +67,16 @@ export interface RadiusScaleConfig {
   radiusBadge: string;
 }
 
+export type FontSelectionMode = 'A' | 'B' | 'C' | 'keep' | 'custom';
+
+export interface FontOverrideConfig {
+  display?: string;
+  sans?: string;
+  mono?: string;
+  importUrl?: string;
+  source?: 'preserved' | 'user' | 'custom' | 'package.json';
+}
+
 export interface GeneratorOptions {
   projectName: string;
   targetDir: string;
@@ -76,6 +86,8 @@ export interface GeneratorOptions {
   radius: RadiusScaleId;
   blur: BlurScaleId;
   fontPairingId?: string;
+  fontMode?: FontSelectionMode;
+  fontOverride?: FontOverrideConfig;
   accentPaletteId?: string;
   customDirection?: string;
   productBrief?: string;

@@ -4,21 +4,19 @@ import { fileURLToPath } from 'node:url';
 import { GeneratorOptions } from '../types.js';
 
 async function findRegistryDir(): Promise<string> {
-  const cwdRegistry = path.resolve(process.cwd(), 'registry');
-  if (await fs.pathExists(cwdRegistry)) return cwdRegistry;
-
   const currentFile = fileURLToPath(import.meta.url);
   const dirname = path.dirname(currentFile);
   const candidates = [
-    path.resolve(dirname, '../../../../registry'),
+    path.resolve(dirname, '../registry'),
+    path.resolve(dirname, '../../registry'),
     path.resolve(dirname, '../../../registry'),
-    path.resolve(dirname, '../../registry')
+    path.resolve(process.cwd(), 'registry')
   ];
 
   for (const c of candidates) {
     if (await fs.pathExists(c)) return c;
   }
-  return cwdRegistry;
+  return path.resolve(process.cwd(), 'registry');
 }
 
 function interpolateVariables(content: string, options: GeneratorOptions): string {

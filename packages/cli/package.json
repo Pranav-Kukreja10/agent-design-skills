@@ -8,11 +8,13 @@
     "design-skills": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "registry",
+    "README.md"
   ],
   "scripts": {
     "dev": "tsup src/index.ts --format esm --watch",
-    "build": "tsup src/index.ts --format esm --clean --minify",
+    "build": "tsup src/index.ts --format esm --clean --minify && node scripts/copy-assets.mjs",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

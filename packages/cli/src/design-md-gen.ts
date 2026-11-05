@@ -21,17 +21,33 @@ export function generateDesignMd(options: GeneratorOptions, existingContent?: st
   } = options;
 
   let polarity = 'Dark';
+  const lightArchetypes = new Set([
+    'editorial-serif-paper',
+    'neo-brutalism',
+    'swiss-typographic-grid',
+    'quiet-luxury-atelier',
+    'warm-artisan-craft',
+    'japanese-minimal-zen',
+    'scandinavian-warm-minimal',
+    'playful-clay-consumer',
+    'high-trust-fintech-clarity',
+    'clinical-biotech-precision',
+    'civic-govtech-accessible'
+  ]);
+  if (lightArchetypes.has(archetype)) {
+    polarity = 'Light';
+  }
+
   let layout = 'Desktop-First';
   let voiceAdjectives = 'Direct, Forensic, Unhurried';
   let soundsLikeA = 'Row 4,812: $412.50 FX discrepancy between Stripe payout and nodal settlement.';
   let neverSoundsLikeA = 'Oops! Something went wrong with your reconciliation. Try again!';
   let signatureMoment = 'Precision single-sweep scanline pulse over the batch header upon reconciliation commitment (180ms ease, zero overshoot).';
 
-  if (archetype === 'editorial-serif-paper') {
-    polarity = 'Light';
+  if (archetype === 'editorial-serif-paper' || archetype === 'quiet-luxury-atelier') {
     voiceAdjectives = 'Literary, Dispassionate, Deeply-Researched';
-    soundsLikeA = 'Citations cross-referenced across 14 archival editions with verified bibliographic provenance.';
-    neverSoundsLikeA = 'Supercharge your reading with our AI-powered journal platform! 🚀';
+    soundsLikeA = 'Vault allocation audited against physical treasury bills with verified CUSIP numbers.';
+    neverSoundsLikeA = 'Supercharge your treasury with our smart AI dashboard! 🚀';
     signatureMoment = 'Gentle 240ms ink-soak underline expansion upon section entry.';
   } else if (archetype === 'neo-brutalism') {
     polarity = 'Light';

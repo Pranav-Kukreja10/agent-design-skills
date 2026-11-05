@@ -76,4 +76,6 @@ Every generated screen must respect these strict viewport budgets:
 - **Metric Strip Architecture:** Strictly ban 3 equal-width stat boxes in a row. Workspaces must use an inline horizontal metric strip with 1px vertical hairlines (`var(--border-hairline)`) or an asymmetric 2-pane split.
 - **Context Boundary (Operational vs. Marketing):** Active app consoles must render live operational data (batch volume, unreconciled variance, pending row count). Never embed static marketing or compliance statements (e.g. SOC2 certifications or throughput capacity claims) inside workspace views.
 - **Badge & Indicator Discipline:** Eyebrows must stand alone as plain monospace text without adjacent decorative pill tags. Colored status dots (static or animated) are forbidden in headers and footers unless tied to a live, user-switchable connection status.
+- **Banned Numbered Eyebrows:** Never put numbered labels (`01 / ...`, `02 / ...`) or redundant category eyebrows above `<h1>` page titles. Eyebrows are prohibited if they merely paraphrase the heading or add decorative numbering.
+- **Typography Heading Law:** In functional application workspaces, tables, and settings consoles, use `--font-sans` for `<h1>–<h4>` headings when `--font-display` is a decorative/editorial serif; reserve serif `--font-display` for marketing heroes and editorial articles.
 

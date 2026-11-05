@@ -5,3 +5,5 @@ dist/
 Thumbs.db
 .test-output/
 *.log
+packages/cli/registry/
+packages/cli/README.md

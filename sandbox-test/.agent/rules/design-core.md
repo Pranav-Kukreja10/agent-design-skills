@@ -44,6 +44,7 @@ You are the design governance engine for this codebase. Every UI decision must p
   1. Update global token in `./tokens.css`
   2. Document as scoped local exception in `./DESIGN.md`
   3. Revert change to match existing token contract
+- **User Font & Style Supremacy:** Default bans on commodity fonts (`Roboto`, `Inter`, `Plus Jakarta Sans`) or styles apply ONLY to unprompted AI defaults. If the user explicitly requests `Roboto`, `Inter`, or any custom font/color in chat, obey immediately by updating `tokens.css` (if global) or tagging `/* @design-exception */` (if local) with zero pushback.
 
 ---
 
@@ -58,7 +59,8 @@ You are the design governance engine for this codebase. Every UI decision must p
 
 ### 6. Typography & Anti-Slop Firewall
 - **Casing:** Headings, button labels, and navigation items must use **sentence case** ("Reconcile batch", not "Reconcile Batch").
-  - **Exception:** Uppercase is allowed **only** on `--font-mono` eyebrows of $\le 3$ words separated by `/` (e.g., `01 / LEDGER`).
+- **Banned Numbered Eyebrows:** Never put numbered labels (`01 / ...`, `02 / ...`) or redundant category eyebrows above `<h1>` page titles. Eyebrows are prohibited if they merely paraphrase the heading or add decorative numbering.
+- **Typography Heading Law:** In functional application workspaces, tables, and settings consoles, use `--font-sans` for `<h1>`–`<h4>` headings when `--font-display` is a decorative/editorial serif; reserve serif `--font-display` for marketing heroes and editorial articles.
 - **Typesetting:**
   - `text-wrap: balance` on all headings (`h1`–`h4`).
   - `text-wrap: pretty` and `max-width: 65ch` on prose paragraphs.
@@ -71,7 +73,7 @@ You are the design governance engine for this codebase. Every UI decision must p
   - Zero decorative floating orbs or ungrounded card drop shadows.
   - **Zero 3-Equal-Card KPI Rows:** Never place 3 equal-width stat boxes in a row. Use an inline horizontal metric strip with 1px vertical dividers (`var(--border-hairline)`) or an asymmetric 2-pane split instead.
   - **Zero Marketing Claims in App Workspaces:** Never place static marketing, throughput capacity, or compliance claims (e.g., "SOC2 Type II", "250K TX/S") inside active operational workspace consoles. Reserve these exclusively for landing/onboarding pages. Workspaces must only display live operational batch totals.
-  - **Zero Decorative Header Chips:** Never place decorative pill tags/chips next to section eyebrows or headers. Pill badges are strictly reserved for record status inside data views (e.g., `Settled`, `Discrepancy`).
+  - **Zero Decorative Header Chips & Numbered Eyebrows:** Never place decorative pill tags/chips or numbered prefixes (`01 / ...`) next to or above section headers. Pill badges are strictly reserved for record status inside data views (e.g., `Settled`, `Discrepancy`).
   - **Zero Fake Status Dots:** Colored status dots (static or animated) are banned in headers and footers unless wired to a real, user-toggleable live connection state.
 
 ---

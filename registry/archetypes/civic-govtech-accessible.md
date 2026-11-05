@@ -46,7 +46,7 @@
   - `mono`: `Fragment Mono`, provider: `google`, package: `@fontsource/fragment-mono`
 - **Pairing B (Institutional Formal):**
   - `display`: `Sora`, provider: `google`, package: `@fontsource/sora`
-  - `sans`: `Source Serif 4`, provider: `google`, package: `@fontsource/source-serif-4`
+  - `sans`: `DM Sans`, provider: `google`, package: `@fontsource/dm-sans`
   - `mono`: `IBM Plex Mono`, provider: `google`, package: `@fontsource/ibm-plex-mono`
 - **Pairing C (Clean Public Service):**
   - `display`: `Work Sans`, provider: `google`, package: `@fontsource/work-sans`

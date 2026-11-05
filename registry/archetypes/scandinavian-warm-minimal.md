@@ -42,7 +42,7 @@
 ### De-converged Font Pairings
 - **Pairing A (Default - Nordic Humanist):**
   - `display`: `Familjen Grotesk`, provider: `google`, package: `@fontsource/familjen-grotesk`
-  - `sans`: `Source Serif 4`, provider: `google`, package: `@fontsource/source-serif-4`
+  - `sans`: `DM Sans`, provider: `google`, package: `@fontsource/dm-sans`
   - `mono`: `Fragment Mono`, provider: `google`, package: `@fontsource/fragment-mono`
 - **Pairing B (Clean Functional):**
   - `display`: `Sora`, provider: `google`, package: `@fontsource/sora`
@@ -50,7 +50,7 @@
   - `mono`: `IBM Plex Mono`, provider: `google`, package: `@fontsource/ibm-plex-mono`
 - **Pairing C (Literary Nordic):**
   - `display`: `Switzer`, provider: `fontshare`, package: `@fontsource/switzer`
-  - `sans`: `Newsreader`, provider: `google`, package: `@fontsource/newsreader`
+  - `sans`: `Work Sans`, provider: `google`, package: `@fontsource/work-sans`
   - `mono`: `Space Mono`, provider: `google`, package: `@fontsource/space-mono`
 
 ---

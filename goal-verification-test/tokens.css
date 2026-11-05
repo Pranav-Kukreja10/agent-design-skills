@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Fragment+Mono&display=swap');
+
+/* =============================================================================
+   AGENT DESIGN SKILLS — TOKEN CONTRACT (v4.2)
+   Archetype: quiet-luxury-atelier
+   Polarity: light
+   Feeling Vector: calm
+   Jitter: -2° (Base Hue: 70)
+   ============================================================================= */
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg-canvas: oklch(0.97 0.015 68);
+  --bg-elevated: oklch(0.99 0.015 68);
+  --bg-surface-active: oklch(0.95 0.018 68);
+  --bg-glass: oklch(0.99 0.015 68 / 0.72);
+  --bg-sunken: oklch(0.92 0.012 68);
+
+  /* Text & Foregrounds */
+  --text-primary: oklch(0.18 0.005 68);
+  --text-muted: oklch(0.46 0.015 68);
+  --text-subtle: oklch(0.6 0.018 68);
+  --text-inverse: oklch(0.98 0.005 68);
+
+  /* Accents, Borders & Highlights */
+  --accent-primary: oklch(0.50 0.04 60);
+  --accent-subtle: oklch(0.50 0.04 60 / 0.12);
+  --accent-hover: oklch(0.45 0.05 60);
+  --border-hairline: oklch(0.86 0.015 68);
+  --border-subtle: oklch(0.91 0.012 68);
+  --border-focus: oklch(0.65 0.20 68 / 0.75);
+  --highlight-specular: oklch(1 0 0 / 0.60);
+
+  /* Status Tokens */
+  --status-success: oklch(0.72 0.16 145);
+  --status-warning: oklch(0.78 0.14 75);
+  --status-danger: oklch(0.65 0.22 25);
+  --status-info: oklch(0.70 0.15 230);
+
+  /* Geometry & Depth (Concentric Scale) */
+  --radius-outer: 6px;
+  --radius-inner: 4px;
+  --radius-badge: 4px;
+  --surface-blur: 0px;
+  --shadow-surface: 0 1px 3px 0 oklch(0.20 0.012 50 / 0.06), 0 0 0 1px var(--border-hairline);
+  --shadow-elevated: 0 6px 16px -2px oklch(0.20 0.012 50 / 0.08), 0 0 0 1px var(--border-hairline);
+
+  /* 3-Step Vertical Section Rhythm & Container */
+  --section-py-tight: clamp(2.5rem, 4vw, 4rem);
+  --section-py-normal: clamp(4.5rem, 7vw, 6.5rem);
+  --section-py-breathing: clamp(7rem, 12vw, 11rem);
+  --container-max: 1280px;
+
+  /* Typography Scale */
+  --font-display: "Cormorant Garamond", serif;
+  --font-sans: "DM Sans", sans-serif;
+  --font-mono: "Fragment Mono", monospace;
+  --text-xs: 0.640rem;
+  --text-sm: 0.800rem;
+  --text-base: 1.000rem;
+  --text-lg: 1.250rem;
+  --text-xl: 1.563rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+  --text-4xl: 3.052rem;
+  --weight-heading: 600;
+  --weight-body: 400;
+  --weight-mono: 500;
+
+  /* Motion Vector */
+  --ease-primary: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 140ms;
+  --duration-normal: 240ms;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-body);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Functional Heading Law: Workspaces use clean --font-sans */
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.font-tabular,
+table,
+[data-tabular="true"] {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}

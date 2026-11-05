@@ -39,10 +39,9 @@ Never place a subheading immediately beneath a heading if it simply restates the
   - All headings (`h1`–`h6`), table headers, input labels, tooltips, and button labels must use **sentence case**:
     - Correct: *"Reconcile batch entries"*, *"Download audit report"*
     - Incorrect: *"Reconcile Batch Entries"*, *"DOWNLOAD AUDIT REPORT"*
-- **The Eyebrow Exception:**
-  - Uppercase is permitted **only** on short category eyebrow tags that meet both criteria:
-    1. Maximum of 3 words.
-    2. Rendered in monospaced font (`var(--font-mono)`) with a numerical or slash prefix (e.g., `01 / LEDGER`, `STATUS / ACTIVE`, `TX / 0x4B2`).
+- **Eyebrow Ban & Technical Tags:**
+  - **Banned:** Never put numbered labels (`01 / ...`, `02 / ...`) or redundant category eyebrows above `<h1>` page titles.
+  - Uppercase is permitted **only** on short functional technical tags of $\le 3$ words rendered in `var(--font-mono)` (e.g., `STATUS: ACTIVE`, `REF: 0x4B2`), never as decorative numbered prefixes above titles.
 - **Typesetting Hygiene:**
   - `text-wrap: balance` on all headings to eliminate orphan words.
   - `text-wrap: pretty` on all body paragraphs.

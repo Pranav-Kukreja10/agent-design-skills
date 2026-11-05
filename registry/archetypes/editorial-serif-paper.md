@@ -42,7 +42,7 @@
 ### De-converged Font Pairings
 - **Pairing A (Default - Literary Classic):**
   - `display`: `Newsreader`, provider: `google`, package: `@fontsource/newsreader`
-  - `sans`: `Source Serif 4`, provider: `google`, package: `@fontsource/source-serif-4`
+  - `sans`: `Work Sans`, provider: `google`, package: `@fontsource/work-sans`
   - `mono`: `Fragment Mono`, provider: `google`, package: `@fontsource/fragment-mono`
 - **Pairing B (Modern Broadsheet):**
   - `display`: `Fraunces`, provider: `google`, package: `@fontsource/fraunces`
