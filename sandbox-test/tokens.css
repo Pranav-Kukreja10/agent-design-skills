@@ -1,0 +1,125 @@
+/* =============================================================================
+   AGENT DESIGN SKILLS — TOKEN CONTRACT (v4.2)
+   Archetype: dark-obsidian-technical
+   Polarity: Dark
+   Colorspace: OKLCH
+   ============================================================================= */
+
+:root {
+  /* ---------------------------------------------------------------------------
+     1. SURFACES & BACKGROUNDS (Carbon neutrals pulled toward hue 250)
+     --------------------------------------------------------------------------- */
+  --bg-canvas: oklch(0.12 0.015 250);          /* Base deep carbon canvas */
+  --bg-elevated: oklch(0.18 0.015 250);        /* Cards, panels, settlement tables */
+  --bg-surface-active: oklch(0.22 0.018 250);  /* Active row, selected item */
+  --bg-glass: oklch(0.18 0.015 250 / 0.72);    /* Translucent backdrops */
+  --bg-sunken: oklch(0.09 0.012 250);          /* Wells, codeblocks, sunken logs */
+
+  /* ---------------------------------------------------------------------------
+     2. TEXT & FOREGROUNDS (Contrast verified against canvas & elevated)
+     WCAG AAA >= 7:1 for --text-primary on --bg-canvas (~14.8:1)
+     WCAG AA >= 4.5:1 for --text-muted on --bg-elevated (~5.1:1)
+     --------------------------------------------------------------------------- */
+  --text-primary: oklch(0.96 0.005 250);       /* Crisp high-contrast foreground */
+  --text-muted: oklch(0.68 0.015 250);         /* Secondary forensic descriptors */
+  --text-subtle: oklch(0.52 0.018 250);        /* Eyebrows, timestamps, table headers */
+  --text-inverse: oklch(0.12 0.015 250);       /* Text on primary accent fills */
+
+  /* ---------------------------------------------------------------------------
+     3. ACCENTS, STATUS & BORDERS
+     --------------------------------------------------------------------------- */
+  --accent-primary: oklch(0.65 0.20 250);      /* Precision technical indigo-blue */
+  --accent-subtle: oklch(0.65 0.20 250 / 0.15);/* Focus rings, chip backgrounds */
+  --accent-hover: oklch(0.70 0.22 250);        /* Hover state for primary actions */
+  
+  --border-hairline: oklch(0.28 0.015 250);    /* Crisp 1px structural hairlines */
+  --border-subtle: oklch(0.22 0.012 250);      /* Internal table dividers */
+  --border-focus: oklch(0.65 0.20 250 / 0.75); /* Accessible focus ring */
+  --highlight-specular: oklch(1 0 0 / 0.18);   /* Top-edge 1px card specular highlight */
+
+  --status-success: oklch(0.72 0.16 145);      /* Reconciled / Settled */
+  --status-warning: oklch(0.78 0.14 75);       /* Pending verification / In flight */
+  --status-danger: oklch(0.65 0.22 25);        /* Ledger mismatch / Discrepancy */
+  --status-info: oklch(0.70 0.15 230);         /* Audit notice / System sync */
+
+  /* ---------------------------------------------------------------------------
+     4. GEOMETRY & DEPTH (Subtle Technical Scale)
+     Concentric rule: --radius-inner = max(0px, --radius-outer - padding)
+     --------------------------------------------------------------------------- */
+  --radius-outer: 6px;
+  --radius-inner: 4px;
+  --radius-badge: 4px;
+  --surface-blur: 8px;
+  --shadow-surface: 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 0 0 1px var(--border-hairline);
+  --shadow-elevated: 0 4px 12px 0 oklch(0 0 0 / 0.50), 0 0 0 1px var(--border-hairline);
+
+  /* ---------------------------------------------------------------------------
+     5. 3-STEP VERTICAL SECTION RHYTHM & CONTAINER
+     --------------------------------------------------------------------------- */
+  --section-py-tight: clamp(2.5rem, 4vw, 4rem);
+  --section-py-normal: clamp(4.5rem, 7vw, 6.5rem);
+  --section-py-breathing: clamp(7rem, 12vw, 11rem);
+  --container-max: 1280px;
+
+  /* ---------------------------------------------------------------------------
+     6. TYPOGRAPHY (Geist / Instrument Sans + Geist Mono, 1.250 Modular Ratio)
+     --------------------------------------------------------------------------- */
+  --font-display: "Geist", "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Geist", "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", "SF Mono", Monaco, Consolas, monospace;
+
+  --text-xs: 0.64rem;                          /* 10.24px — Table metadata, micro-tags */
+  --text-sm: 0.80rem;                          /* 12.80px — Eyebrows, compact table rows */
+  --text-base: 1.00rem;                        /* 16.00px — Body, data cells */
+  --text-lg: 1.25rem;                          /* 20.00px — Card titles, subheadings */
+  --text-xl: 1.563rem;                         /* 25.00px — Section headers */
+  --text-2xl: 1.953rem;                        /* 31.25px — Primary view titles */
+  --text-3xl: 2.441rem;                        /* 39.06px — KPI settlement totals */
+  --text-4xl: 3.052rem;                        /* 48.83px — Large display counters */
+
+  --weight-heading: 600;
+  --weight-body: 400;
+  --weight-mono: 500;
+
+  /* ---------------------------------------------------------------------------
+     7. MOTION (Urgent-Precise Vector)
+     --------------------------------------------------------------------------- */
+  --ease-primary: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 110ms;
+  --duration-normal: 180ms;
+}
+
+/* =============================================================================
+   BASE CANONICAL STYLES (Enforces Token Consumption)
+   ============================================================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-body);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numbers for financial and audit data */
+.font-tabular,
+table,
+[data-tabular="true"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus visibility reset adhering to technical hairline styling */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+
