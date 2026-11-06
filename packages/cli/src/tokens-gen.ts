@@ -62,10 +62,30 @@ export interface FontTriple {
 }
 
 export const ARCHETYPE_FONT_PAIRINGS: Record<ArchetypeId, { A: FontTriple; B: FontTriple; C: FontTriple }> = {
+  'dark-obsidian-linear': {
+    A: { display: 'Geist', sans: 'Instrument Sans', mono: 'Geist Mono' },
+    B: { display: 'Sora', sans: 'Public Sans', mono: 'Fira Code' },
+    C: { display: 'Satoshi', sans: 'General Sans', mono: 'Space Mono' }
+  },
   'dark-obsidian-technical': {
     A: { display: 'Geist', sans: 'Instrument Sans', mono: 'Geist Mono' },
     B: { display: 'Sora', sans: 'Public Sans', mono: 'Fira Code' },
     C: { display: 'Satoshi', sans: 'General Sans', mono: 'Space Mono' }
+  },
+  'consumer-retail-studio': {
+    A: { display: 'Oswald', sans: 'Plus Jakarta Sans', mono: 'JetBrains Mono' },
+    B: { display: 'Plus Jakarta Sans', sans: 'Inter', mono: 'JetBrains Mono' },
+    C: { display: 'Syne', sans: 'Plus Jakarta Sans', mono: 'Space Mono' }
+  },
+  'data-dense-observability': {
+    A: { display: 'JetBrains Mono', sans: 'IBM Plex Sans', mono: 'JetBrains Mono' },
+    B: { display: 'Geist Mono', sans: 'Geist', mono: 'Geist Mono' },
+    C: { display: 'Space Mono', sans: 'Public Sans', mono: 'Fira Code' }
+  },
+  'atmospheric-aurora-launch': {
+    A: { display: 'Cabinet Grotesk', sans: 'Satoshi', mono: 'JetBrains Mono' },
+    B: { display: 'Clash Display', sans: 'General Sans', mono: 'Space Mono' },
+    C: { display: 'Outfit', sans: 'DM Sans', mono: 'Geist Mono' }
   },
   'swiss-typographic-grid': {
     A: { display: 'Cabinet Grotesk', sans: 'Space Grotesk', mono: 'Space Mono' },
@@ -111,6 +131,11 @@ export const ARCHETYPE_FONT_PAIRINGS: Record<ArchetypeId, { A: FontTriple; B: Fo
     A: { display: 'Familjen Grotesk', sans: 'DM Sans', mono: 'Fragment Mono' },
     B: { display: 'Sora', sans: 'Public Sans', mono: 'IBM Plex Mono' },
     C: { display: 'Switzer', sans: 'Work Sans', mono: 'Space Mono' }
+  },
+  'neo-brutalist-studio': {
+    A: { display: 'Space Grotesk', sans: 'Syne', mono: 'Space Mono' },
+    B: { display: 'Archivo Black', sans: 'Archivo', mono: 'DM Mono' },
+    C: { display: 'Clash Display', sans: 'Cabinet Grotesk', mono: 'Fragment Mono' }
   },
   'neo-brutalism': {
     A: { display: 'Space Grotesk', sans: 'Syne', mono: 'Space Mono' },
@@ -213,16 +238,24 @@ const GOOGLE_WEIGHTS_MAP: Record<string, string> = {
   'chivo': 'wght@400;600',
   'inconsolata': 'wght@400;600',
   'merriweather sans': 'wght@400;600',
-  'source serif 4': 'opsz,wght@8..60,400..700'
+  'source serif 4': 'opsz,wght@8..60,400..700',
+  'plus jakarta sans': 'wght@400;500;600;700',
+  'oswald': 'wght@400;500;600;700',
+  'inter': 'wght@400;500;600;700',
+  'outfit': 'wght@400;500;600;700'
 };
 
 const FONTSHARE_SLUGS_MAP: Record<string, string> = {
-  'cabinet grotesk': 'cabinet-grotesk@500,700,800',
-  'general sans': 'general-sans@400,500,600',
   'satoshi': 'satoshi@400,500,700',
+  'cabinet grotesk': 'cabinet-grotesk@400,500,600,700,800',
+  'general sans': 'general-sans@400,500,600',
+  'clash display': 'clash-display@400,500,600,700',
+  'clash grotesk': 'clash-grotesk@400,500,600',
   'switzer': 'switzer@400,500,600',
-  'bespoke serif': 'bespoke-serif@400,600',
-  'clash display': 'clash-display@500,600,700'
+  'ranade': 'ranade@400,500,700',
+  'zodiak': 'zodiak@400,600,700',
+  'sentient': 'sentient@400,500,700',
+  'bespoke serif': 'bespoke-serif@400,600'
 };
 
 export function extractFontFamily(fontValue: string): string {
@@ -312,8 +345,10 @@ export function parseCustomDirectionFonts(customDirection?: string): Partial<Fon
   const fontCandidates = [
     'Geist Mono', 'Geist', 'Instrument Sans', 'Space Grotesk', 'Space Mono',
     'Cabinet Grotesk', 'General Sans', 'Satoshi', 'Switzer', 'Bespoke Serif',
+    'Clash Display', 'Clash Grotesk', 'Ranade', 'Zodiak', 'Sentient',
     'Fraunces', 'Cormorant Garamond', 'Newsreader', 'Noto Serif Display',
     'Source Serif 4', 'Familjen Grotesk', 'Sora', 'Public Sans', 'Work Sans',
+    'Plus Jakarta Sans', 'Oswald', 'Inter',
     'Atkinson Hyperlegible', 'Bricolage Grotesque', 'Syne Mono', 'Syne',
     'JetBrains Mono', 'Fira Code', 'IBM Plex Mono', 'IBM Plex Sans',
     'DM Sans', 'DM Mono', 'Outfit', 'VT323', 'Archivo'
@@ -436,7 +471,58 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   let fontMono = '"Geist Mono", "SF Mono", monospace';
   let modularRatio = 1.250;
 
-  if (archetype === 'editorial-serif-paper') {
+  if (archetype === 'consumer-retail-studio') {
+    polarity = 'light';
+    baseHue = 240;
+    bgCanvasL = 1.0;
+    bgElevatedL = 0.97;
+    bgSunkenL = 0.93;
+    borderHairlineL = 0.92;
+    accentOklch = 'oklch(0.12 0.01 240)';
+    accentSubtle = 'oklch(0.12 0.01 240 / 0.08)';
+    accentHover = 'oklch(0.24 0.01 240)';
+    textPrimaryL = 0.12;
+    textMutedL = 0.40;
+    textSubtleL = 0.52;
+    fontDisplay = '"Oswald", sans-serif';
+    fontSans = '"Plus Jakarta Sans", sans-serif';
+    fontMono = '"JetBrains Mono", monospace';
+    modularRatio = 1.250;
+  } else if (archetype === 'data-dense-observability') {
+    polarity = 'dark';
+    baseHue = 225;
+    bgCanvasL = 0.10;
+    bgElevatedL = 0.15;
+    bgSunkenL = 0.07;
+    borderHairlineL = 0.24;
+    accentOklch = 'oklch(0.70 0.18 220)';
+    accentSubtle = 'oklch(0.70 0.18 220 / 0.15)';
+    accentHover = 'oklch(0.75 0.20 220)';
+    textPrimaryL = 0.97;
+    textMutedL = 0.70;
+    textSubtleL = 0.50;
+    fontDisplay = '"JetBrains Mono", monospace';
+    fontSans = '"IBM Plex Sans", sans-serif';
+    fontMono = '"JetBrains Mono", monospace';
+    modularRatio = 1.200;
+  } else if (archetype === 'atmospheric-aurora-launch') {
+    polarity = 'dark';
+    baseHue = 265;
+    bgCanvasL = 0.09;
+    bgElevatedL = 0.15;
+    bgSunkenL = 0.06;
+    borderHairlineL = 0.30;
+    accentOklch = 'oklch(0.70 0.22 285)';
+    accentSubtle = 'oklch(0.70 0.22 285 / 0.18)';
+    accentHover = 'oklch(0.75 0.24 285)';
+    textPrimaryL = 0.98;
+    textMutedL = 0.72;
+    textSubtleL = 0.54;
+    fontDisplay = '"Cabinet Grotesk", sans-serif';
+    fontSans = '"Satoshi", sans-serif';
+    fontMono = '"JetBrains Mono", monospace';
+    modularRatio = 1.250;
+  } else if (archetype === 'editorial-serif-paper') {
     polarity = 'light';
     baseHue = 75;
     bgCanvasL = 0.97;
@@ -452,7 +538,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     fontDisplay = '"Newsreader", Georgia, serif';
     fontSans = '"Work Sans", sans-serif';
     fontMono = '"Fragment Mono", monospace';
-  } else if (archetype === 'neo-brutalism') {
+  } else if (archetype === 'neo-brutalist-studio' || archetype === 'neo-brutalism') {
     polarity = 'light';
     baseHue = 90;
     bgCanvasL = 0.97;
@@ -752,16 +838,19 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   // Shadow surface calculation
   let shadowSurface = `0 1px 2px 0 oklch(0 0 0 / 0.45), 0 0 0 1px var(--border-hairline)`;
   let shadowElevated = `0 4px 12px 0 oklch(0 0 0 / 0.50), 0 0 0 1px var(--border-hairline)`;
-  if (polarity === 'light' && archetype !== 'neo-brutalism') {
+  if (archetype === 'consumer-retail-studio') {
+    shadowSurface = `0 1px 4px 0 oklch(0.20 0.012 50 / 0.04)`;
+    shadowElevated = `0 8px 24px -4px oklch(0.20 0.012 50 / 0.08)`;
+  } else if (polarity === 'light' && archetype !== 'neo-brutalism' && archetype !== 'neo-brutalist-studio') {
     shadowSurface = `0 1px 3px 0 oklch(0.20 0.012 50 / 0.06), 0 0 0 1px var(--border-hairline)`;
     shadowElevated = `0 6px 16px -2px oklch(0.20 0.012 50 / 0.08), 0 0 0 1px var(--border-hairline)`;
-  } else if (archetype === 'neo-brutalism') {
+  } else if (archetype === 'neo-brutalism' || archetype === 'neo-brutalist-studio') {
     shadowSurface = `3px 3px 0px 0px oklch(0.12 0.005 260)`;
     shadowElevated = `6px 6px 0px 0px oklch(0.12 0.005 260)`;
   }
 
   // 3-Tier Font Hierarchy Resolution
-  const pairings = ARCHETYPE_FONT_PAIRINGS[archetype] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
+  const pairings = ARCHETYPE_FONT_PAIRINGS[archetype] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-linear'] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
 
   let chosenDisplay = pairings.A.display;
   let chosenSans = pairings.A.sans;
@@ -801,6 +890,13 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   fontSans = formatFontStack(chosenSans, 'sans');
   fontMono = formatFontStack(chosenMono, 'mono');
 
+  // Deterministic button/accent foreground contrast law
+  const accentLMatch = accentOklch.match(/oklch\(\s*([\d.]+)/i);
+  const accentL = accentLMatch ? parseFloat(accentLMatch[1]) : 0.65;
+  const accentForeground = accentL >= 0.70
+    ? `oklch(0.12 0.01 ${effectiveHue})`
+    : `oklch(0.98 0.005 ${effectiveHue})`;
+
   const variables: TokenVariables = {
     '--bg-canvas': `oklch(${bgCanvasL} 0.015 ${effectiveHue})`,
     '--bg-elevated': `oklch(${bgElevatedL} 0.015 ${effectiveHue})`,
@@ -813,6 +909,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
     '--text-subtle': `oklch(${textSubtleL} 0.018 ${effectiveHue})`,
     '--text-inverse': polarity === 'dark' ? `oklch(0.12 0.015 ${effectiveHue})` : `oklch(0.98 0.005 ${effectiveHue})`,
     '--accent-primary': accentOklch,
+    '--accent-foreground': accentForeground,
     '--accent-subtle': accentSubtle,
     '--accent-hover': accentHover,
     '--border-hairline': polarity === 'dark' ? `oklch(1 0 0 / 0.07)` : `oklch(0 0 0 / 0.07)`,
@@ -880,6 +977,7 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
 
   /* Accents, Borders & Highlights */
   --accent-primary: ${variables['--accent-primary']};
+  --accent-foreground: ${variables['--accent-foreground']};
   --accent-subtle: ${variables['--accent-subtle']};
   --accent-hover: ${variables['--accent-hover']};
   --border-hairline: ${variables['--border-hairline']};
@@ -928,6 +1026,31 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   --ease-spring: ${variables['--ease-spring']};
   --duration-fast: ${variables['--duration-fast']};
   --duration-normal: ${variables['--duration-normal']};
+
+  /* Semantic Aliases & Ergonomic Scale */
+  --surface-canvas: var(--bg-canvas);
+  --surface-card: var(--bg-elevated);
+  --surface-elevated: var(--bg-elevated);
+  --surface-sunken: var(--bg-sunken);
+  --radius-sm: var(--radius-inner);
+  --radius-md: var(--radius-inner);
+  --radius-lg: var(--radius-outer);
+
+  /* shadcn/ui & Tailwind Ecosystem Compatibility Aliases */
+  --background: var(--surface-canvas);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-primary);
+  --primary-foreground: var(--accent-foreground);
+  --muted: var(--surface-card);
+  --muted-foreground: var(--text-secondary);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--accent-primary);
+  --radius: var(--radius-md);
 }
 
 /* =============================================================================
@@ -945,11 +1068,28 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   --text-muted: oklch(0.44 0.015 ${effectiveHue});
   --text-subtle: oklch(0.55 0.018 ${effectiveHue});
   --text-inverse: oklch(0.98 0.005 ${effectiveHue});
+  --accent-foreground: ${accentForeground};
   --border-hairline: oklch(0 0 0 / 0.07);
   --border-subtle: oklch(0 0 0 / 0.04);
   --highlight-specular: oklch(1 0 0 / 0.60);
   --shadow-surface: 0 1px 3px 0 oklch(0.20 0.012 50 / 0.06), 0 0 0 1px var(--border-hairline);
   --shadow-elevated: 0 6px 16px -2px oklch(0.20 0.012 50 / 0.08), 0 0 0 1px var(--border-hairline);
+
+  /* shadcn/ui & Tailwind Ecosystem Compatibility Aliases */
+  --background: var(--surface-canvas);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-primary);
+  --primary-foreground: var(--accent-foreground);
+  --muted: var(--surface-card);
+  --muted-foreground: var(--text-secondary);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--accent-primary);
+  --radius: var(--radius-md);
 }
 
 [data-theme="dark"], .dark {
@@ -963,11 +1103,28 @@ export function generateTokens(options: GeneratorOptions): GeneratedTokensResult
   --text-muted: oklch(0.68 0.015 ${effectiveHue});
   --text-subtle: oklch(0.52 0.018 ${effectiveHue});
   --text-inverse: oklch(0.12 0.015 ${effectiveHue});
+  --accent-foreground: ${accentForeground};
   --border-hairline: oklch(1 0 0 / 0.07);
   --border-subtle: oklch(1 0 0 / 0.04);
   --highlight-specular: oklch(1 0 0 / 0.18);
   --shadow-surface: 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 0 0 1px var(--border-hairline);
   --shadow-elevated: 0 4px 12px 0 oklch(0 0 0 / 0.50), 0 0 0 1px var(--border-hairline);
+
+  /* shadcn/ui & Tailwind Ecosystem Compatibility Aliases */
+  --background: var(--surface-canvas);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent-primary);
+  --primary-foreground: var(--accent-foreground);
+  --muted: var(--surface-card);
+  --muted-foreground: var(--text-secondary);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--accent-primary);
+  --radius: var(--radius-md);
 }
 
 /* =============================================================================
@@ -995,6 +1152,12 @@ html, body {
 h1, h2, h3, h4 {
   font-family: var(--font-sans);
   font-weight: var(--weight-heading);
+}
+
+/* Primary Action Button Foreground Binding */
+.btn-primary, button.btn-primary, [role="button"].btn-primary, button[type="submit"] {
+  background-color: var(--accent-primary);
+  color: var(--accent-foreground);
 }
 
 /* Numeric & Tabular Typography Law (Clean open-oval zeros, zero horizontal jitter) */

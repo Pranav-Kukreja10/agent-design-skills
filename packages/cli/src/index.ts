@@ -24,13 +24,14 @@ import {
   ARCHETYPE_FONT_PAIRINGS,
   extractFontFamily
 } from './tokens-gen.js';
+import { ARCHETYPE_OPTIONS } from './prompts.js';
 
 const program = new Command();
 
 program
   .name('agent-design-skills')
   .description('v1.1 CLI and design-governance registry eliminating AI UI slop and enforcing cross-page unity')
-  .version('1.1.3');
+  .version('1.1.5');
 
 async function detectWorkspaceAgents(targetDir: string): Promise<AgentType[]> {
   const detected: AgentType[] = [];
@@ -46,33 +47,12 @@ async function detectWorkspaceAgents(targetDir: string): Promise<AgentType[]> {
   return detected.length > 0 ? detected : ['antigravity'];
 }
 
-const ARCHETYPE_OPTIONS = [
-  { value: 'dark-obsidian-technical', label: 'Dark Obsidian Technical', hint: '1px hairlines, carbon hue 250, forensic developer/settlement console' },
-  { value: 'swiss-typographic-grid', label: 'Swiss Typographic Grid', hint: 'Light, exposed 1px grid lines, Cabinet Grotesk / Space Grotesk' },
-  { value: 'kinetic-industrial-mono', label: 'Kinetic Industrial Mono', hint: 'Dark, tabular telemetry, JetBrains Mono, amber accents' },
-  { value: 'bento-modular-system', label: 'Bento Modular System', hint: 'Adaptive 12-col bento cells, Satoshi / General Sans' },
-  { value: 'spatial-glass-visionos', label: 'Spatial Glass VisionOS', hint: 'Translucent optical blur, Outfit / DM Sans, specular highlights' },
-  { value: 'editorial-serif-paper', label: 'Editorial Serif Paper', hint: 'Warm bone paper, broadsheet typography, high-craft publication' },
-  { value: 'quiet-luxury-atelier', label: 'Quiet Luxury Atelier', hint: 'Whisper-quiet prestige, Cormorant Garamond / DM Sans, warm ivory' },
-  { value: 'warm-artisan-craft', label: 'Warm Artisan Craft', hint: 'Earthy linen, Fraunces / Cabinet Grotesk, terracotta accents' },
-  { value: 'japanese-minimal-zen', label: 'Japanese Minimal Zen', hint: 'Ma negative space, Noto Serif Display / Work Sans, washi mist' },
-  { value: 'scandinavian-warm-minimal', label: 'Scandinavian Warm Minimal', hint: 'Oat/birch canvas, Familjen Grotesk / DM Sans, spruce accents' },
-  { value: 'neo-brutalism', label: 'Neo-Brutalist Studio', hint: 'Hard 2px borders, stark offset shadows, raw tactile accents' },
-  { value: 'retro-tactile-analog', label: 'Retro Tactile Analog', hint: 'Physical bevels, Space Mono / DM Sans, Teenage Engineering vibe' },
-  { value: 'y2k-acid-cyber', label: 'Y2K Acid Cyber', hint: 'Electric chartreuse on pitch black, VT323 / Syne Mono' },
-  { value: 'playful-clay-consumer', label: 'Playful Clay Consumer', hint: 'Tactile dual-layer shadows, Bricolage Grotesque / Plus Sans' },
-  { value: 'vaporwave-crt-terminal', label: 'Vaporwave CRT Terminal', hint: 'Phosphorescent cyan & magenta on indigo void, scanlines' },
-  { value: 'high-trust-fintech-clarity', label: 'High-Trust Fintech Clarity', hint: 'Enterprise navy, Sora / Public Sans, tabular numbers' },
-  { value: 'clinical-biotech-precision', label: 'Clinical Biotech Precision', hint: 'Sterile lab white, Geist / Space Mono, cold cyan' },
-  { value: 'civic-govtech-accessible', label: 'Civic Govtech Accessible', hint: 'WCAG AAA contrast, Atkinson Hyperlegible / DM Sans' }
-];
-
 // Default action: Interactive Scaffold or Fast Mode
 program
   .command('init', { isDefault: true })
   .description('Scaffold a design token contract, starter kit, and agent governance rules')
   .option('-a, --agents <agents>', 'Target agents (comma-separated or "all": antigravity, cursor, claude-codex, web-builders)')
-  .option('-f, --fast', 'Fast mode with sensible defaults (dark-obsidian-technical, antigravity)')
+  .option('-f, --fast', 'Fast mode with sensible defaults (dark-obsidian-linear, antigravity)')
   .option('-t, --archetype <archetype>', 'Canonical archetype ID')
   .option('-s, --starter-kit <kit>', 'Pre-baked starter kit: dashboard, landing-waitlist, mobile-app, data-tool')
   .option('-m, --mode <mode>', 'Installation mode: modular or single', 'modular')
@@ -122,7 +102,7 @@ program
     }
 
     if (opts.fast || opts.yes) {
-      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.0 [EXPRESS MODE]')}`);
+      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.5 [EXPRESS MODE]')}`);
       const s = p.spinner();
       s.start(`Compiling design system in ${targetDir}...`);
 
@@ -133,7 +113,7 @@ program
         projectName,
         targetDir,
         agents,
-        archetype: (opts.archetype as ArchetypeId) || 'dark-obsidian-technical',
+        archetype: (opts.archetype as ArchetypeId) || 'dark-obsidian-linear',
         feeling: 'urgent-precise',
         radius: 'subtle',
         blur: 'subtle-frost',
@@ -141,8 +121,8 @@ program
         starterKit,
         fontMode: parsedFontMode,
         fontOverride: parsedFontOverride,
-        customDirection: 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
-        productBrief: 'High-precision operational workspace and data reconciliation platform',
+        customDirection: 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
+        productBrief: 'Modern SaaS product interface and workspace',
         fast: true
       };
 
@@ -154,11 +134,12 @@ program
       }
 
       p.outro(pc.green(`✨ Initialization complete for ${options.agents.join(', ')}. Token contract & starter preview active.`));
+      console.log(`${pc.bold(pc.cyan('💡 Agent Blueprint Tip:'))} Tell your AI agent ${pc.yellow('"Inspect ./starter-preview.html first before creating components"')} to ensure it reuses the pre-built layout and component architecture!\n`);
       return;
     }
 
     console.clear();
-    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.0')}`);
+    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.5')}`);
 
     const defaultAgents = await detectWorkspaceAgents(targetDir);
     const detectedFonts = await detectProjectFonts(targetDir);
@@ -190,8 +171,8 @@ program
           if (parsedFontMode || parsedFontOverride) {
             return parsedFontMode || 'custom';
           }
-          const archId = (results.archetype as ArchetypeId) || (opts.archetype as ArchetypeId) || 'dark-obsidian-technical';
-          const pairings = ARCHETYPE_FONT_PAIRINGS[archId] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
+          const archId = (results.archetype as ArchetypeId) || (opts.archetype as ArchetypeId) || 'dark-obsidian-linear';
+          const pairings = ARCHETYPE_FONT_PAIRINGS[archId] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-linear'] || ARCHETYPE_FONT_PAIRINGS['dark-obsidian-technical'];
 
           const fontOptions: Array<{ value: string; label: string; hint?: string }> = [];
 
@@ -285,8 +266,8 @@ program
         customDirection: () =>
           p.text({
             message: 'Custom Creative Direction & Anti-Drift Mandate (Section 0):',
-            placeholder: 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
-            initialValue: 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
+            placeholder: 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
+            initialValue: 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
           }),
       },
       {
@@ -367,6 +348,7 @@ program
     p.outro(
       `${pc.green('✔')} Initialized ${pc.bold(options.archetype)} for ${pc.cyan(options.agents.join(', '))}`
     );
+    console.log(`${pc.bold(pc.cyan('💡 Agent Blueprint Tip:'))} Tell your AI agent ${pc.yellow('"Inspect ./starter-preview.html first before creating components"')} to ensure it reuses the pre-built layout and component architecture!\n`);
   });
 
 // Lint command

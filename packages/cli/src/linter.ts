@@ -43,6 +43,13 @@ const FAKE_COSPLAY_REGEX = /\b(SUB-\d+MS|TEMPORAL ENGINE|MASTER CHRONOMETER|CHRO
 // Regex for hardcoded overlay badge text on images/media/products
 const OVERLAY_BADGE_TEXT_REGEX = /\b(NOW PLAYING|•\s*PLAYING|HD\s*1080P|4K\s*HDR|120\s*FPS|HI-RES\s*AUDIO|LIVE\s*CINEMATIC|BESTSELLER|HOT\s*SALE|LIMITED\s*TIME)\b/i;
 
+// Regex for small decorative status dot elements (Tailwind or inline styling)
+const DECORATIVE_DOT_CLASS_REGEX = /\b(?:w-(?:1|1\.5|2|2\.5)\b[^"']*\bh-(?:1|1\.5|2|2\.5)\b|\bh-(?:1|1\.5|2|2\.5)\b[^"']*\bw-(?:1|1\.5|2|2\.5)\b)[^"']*\brounded-full\b|\brounded-full\b[^"']*(?:\bw-(?:1|1\.5|2|2\.5)\b[^"']*\bh-(?:1|1\.5|2|2\.5)\b|\bh-(?:1|1\.5|2|2\.5)\b[^"']*\bw-(?:1|1\.5|2|2\.5)\b)/i;
+const DECORATIVE_DOT_INLINE_REGEX = /(?:width:\s*[5-8]px[^;]*;\s*height:\s*[5-8]px|height:\s*[5-8]px[^;]*;\s*width:\s*[5-8]px)[^"';}]*;\s*border-radius:\s*(?:50%|9999px)|border-radius:\s*(?:50%|9999px)[^"';}]*;\s*(?:width:\s*[5-8]px[^;]*;\s*height:\s*[5-8]px|height:\s*[5-8]px[^;]*;\s*width:\s*[5-8]px)/i;
+
+// Regex for prefix bullet characters inside text/JSX
+const PREFIX_BULLET_REGEX = /(?:^[>'"\s]*|[>'"\s])[●•▪]\s+[A-Za-z0-9]/;
+
 // Regex for absolute-positioned corner badge/pill overlay classes
 const CORNER_BADGE_CLASS_REGEX = /\babsolute\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b|\babsolute\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b/i;
 const CORNER_PILL_TRAIT_REGEX = /\b(rounded-full|uppercase|tracking-[a-z0-9_-]+|text-xs|badge|pill|chip)\b/i;
@@ -296,6 +303,33 @@ async function lintFile(
           message: hasOverlayText
             ? 'Banned media/product overlay badge text detected. Keep media uncluttered without floating corner status pills.'
             : 'Floating corner badge/pill overlay detected. Never place floating status pills on top of cards, media, or product images.',
+          severity: 'error'
+        });
+      }
+    }
+
+    // Rule: slop/no-decorative-dots (Flag static/animated status dot elements & prefix bullets)
+    if (!hasException && !isRuleOrDoc && !line.includes('rule') && !line.includes('banned') && !line.includes('ban')) {
+      const hasDotClass = DECORATIVE_DOT_CLASS_REGEX.test(line);
+      const hasDotInline = DECORATIVE_DOT_INLINE_REGEX.test(line);
+      const hasPrefixBullet = PREFIX_BULLET_REGEX.test(line);
+
+      if (hasDotClass || hasDotInline) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-decorative-dots',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Decorative colored circle dot element detected. Communicate status through clean typography or subtle text color alone without decorative dot elements.',
+          severity: 'error'
+        });
+      } else if (hasPrefixBullet) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-decorative-dots',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Prefix bullet character (• / ● / ▪) detected on badge, pill, or label. Communicate status with clean text alone.',
           severity: 'error'
         });
       }

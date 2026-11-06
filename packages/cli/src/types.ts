@@ -1,8 +1,13 @@
 export type AgentType = 'antigravity' | 'cursor' | 'claude-codex' | 'web-builders';
 
 export type ArchetypeId =
+  | 'dark-obsidian-linear'
   | 'dark-obsidian-technical'
+  | 'consumer-retail-studio'
+  | 'data-dense-observability'
+  | 'atmospheric-aurora-launch'
   | 'editorial-serif-paper'
+  | 'neo-brutalist-studio'
   | 'neo-brutalism'
   | 'swiss-typographic-grid'
   | 'kinetic-industrial-mono'
@@ -112,6 +117,7 @@ export interface TokenVariables {
   '--text-inverse': string;
   // Accents & Borders
   '--accent-primary': string;
+  '--accent-foreground': string;
   '--accent-subtle': string;
   '--accent-hover': string;
   '--border-hairline': string;
@@ -171,4 +177,140 @@ export interface FreezeManifest {
   generatedAt: string;
   hashes: Record<string, string>;
 }
+
+export interface CalibrationDials {
+  designVariance: number;
+  motionIntensity: number;
+  visualDensity: number;
+}
+
+export function computeCalibrationDials(archetype: string, feeling?: string): CalibrationDials {
+  let designVariance = 4;
+  let motionIntensity = 3;
+  let visualDensity = 5;
+
+  switch (archetype) {
+    case 'data-dense-observability':
+      designVariance = 2;
+      motionIntensity = 1;
+      visualDensity = 9;
+      break;
+    case 'dark-obsidian-linear':
+    case 'dark-obsidian-technical':
+      designVariance = 3;
+      motionIntensity = 3;
+      visualDensity = 6;
+      break;
+    case 'swiss-typographic-grid':
+      designVariance = 4;
+      motionIntensity = 2;
+      visualDensity = 5;
+      break;
+    case 'editorial-serif-paper':
+      designVariance = 6;
+      motionIntensity = 3;
+      visualDensity = 3;
+      break;
+    case 'quiet-luxury-atelier':
+      designVariance = 5;
+      motionIntensity = 3;
+      visualDensity = 3;
+      break;
+    case 'consumer-retail-studio':
+      designVariance = 5;
+      motionIntensity = 5;
+      visualDensity = 4;
+      break;
+    case 'atmospheric-aurora-launch':
+      designVariance = 7;
+      motionIntensity = 7;
+      visualDensity = 4;
+      break;
+    case 'neo-brutalist-studio':
+    case 'neo-brutalism':
+      designVariance = 8;
+      motionIntensity = 4;
+      visualDensity = 6;
+      break;
+    case 'playful-clay-consumer':
+      designVariance = 7;
+      motionIntensity = 6;
+      visualDensity = 5;
+      break;
+    case 'high-trust-fintech-clarity':
+      designVariance = 3;
+      motionIntensity = 2;
+      visualDensity = 7;
+      break;
+    case 'clinical-biotech-precision':
+      designVariance = 2;
+      motionIntensity = 1;
+      visualDensity = 8;
+      break;
+    case 'civic-govtech-accessible':
+      designVariance = 2;
+      motionIntensity = 1;
+      visualDensity = 6;
+      break;
+    case 'kinetic-industrial-mono':
+      designVariance = 7;
+      motionIntensity = 6;
+      visualDensity = 7;
+      break;
+    case 'bento-modular-system':
+      designVariance = 5;
+      motionIntensity = 4;
+      visualDensity = 6;
+      break;
+    case 'spatial-glass-visionos':
+      designVariance = 6;
+      motionIntensity = 5;
+      visualDensity = 5;
+      break;
+    case 'warm-artisan-craft':
+      designVariance = 6;
+      motionIntensity = 3;
+      visualDensity = 4;
+      break;
+    case 'japanese-minimal-zen':
+      designVariance = 4;
+      motionIntensity = 2;
+      visualDensity = 2;
+      break;
+    case 'scandinavian-warm-minimal':
+      designVariance = 4;
+      motionIntensity = 3;
+      visualDensity = 3;
+      break;
+    case 'retro-tactile-analog':
+      designVariance = 7;
+      motionIntensity = 4;
+      visualDensity = 6;
+      break;
+    case 'y2k-acid-cyber':
+      designVariance = 9;
+      motionIntensity = 7;
+      visualDensity = 7;
+      break;
+    case 'vaporwave-crt-terminal':
+      designVariance = 8;
+      motionIntensity = 5;
+      visualDensity = 7;
+      break;
+    default:
+      designVariance = 4;
+      motionIntensity = 3;
+      visualDensity = 5;
+      break;
+  }
+
+  if (feeling === 'urgent-precise') {
+    motionIntensity = Math.max(1, motionIntensity - 1);
+  } else if (feeling === 'playful-tactile') {
+    motionIntensity = Math.min(10, motionIntensity + 2);
+  }
+
+  return { designVariance, motionIntensity, visualDensity };
+}
+
 

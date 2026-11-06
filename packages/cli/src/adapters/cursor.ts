@@ -49,6 +49,9 @@ Every interactive component or data view must handle:
 - Ban "John Doe", "Jane Doe", "Lorem ipsum", "Acme", and "$99.99".
 - Require varied string lengths, at least 1 long entity string testing truncation (\`text-overflow: ellipsis\`), 1 null avatar monogram fallback, and 1 zero/pending state.
 - Tabular numbers: All metrics, counters, and currencies must enforce \`font-variant-numeric: tabular-nums\`.
+
+### Starter Kit Blueprint Mandate (./starter-preview.html)
+Before generating new components or views, inspect \`./starter-preview.html\`. Mirror its layout grid, header architecture, split-pane layout, and component markup rather than inventing from scratch.
 `;
     await fs.writeFile(uxFilePath, uxContent, 'utf-8');
     createdFiles.push(uxFilePath);

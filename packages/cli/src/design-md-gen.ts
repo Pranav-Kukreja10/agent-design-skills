@@ -1,4 +1,4 @@
-import { GeneratorOptions } from './types.js';
+import { GeneratorOptions, computeCalibrationDials } from './types.js';
 
 /**
  * Extracts sections 5 through 8 from an existing DESIGN.md document.
@@ -16,13 +16,17 @@ export function generateDesignMd(options: GeneratorOptions, existingContent?: st
   const {
     projectName,
     archetype,
-    customDirection = 'Needs to feel like a high-precision developer settlement console, crisp 1px hairlines, zero marketing fluff',
-    productBrief = 'High-precision operational workspace and data reconciliation platform'
+    customDirection = 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
+    productBrief = 'Clean, high-precision modern SaaS and digital product workspace'
   } = options;
+
+  const dials = computeCalibrationDials(archetype, options.feeling);
 
   let polarity = 'Dark';
   const lightArchetypes = new Set([
+    'consumer-retail-studio',
     'editorial-serif-paper',
+    'neo-brutalist-studio',
     'neo-brutalism',
     'swiss-typographic-grid',
     'quiet-luxury-atelier',
@@ -39,17 +43,33 @@ export function generateDesignMd(options: GeneratorOptions, existingContent?: st
   }
 
   let layout = 'Desktop-First';
-  let voiceAdjectives = 'Direct, Forensic, Unhurried';
-  let soundsLikeA = 'Row 4,812: $412.50 FX discrepancy between Stripe payout and nodal settlement.';
-  let neverSoundsLikeA = 'Oops! Something went wrong with your reconciliation. Try again!';
-  let signatureMoment = 'Precision single-sweep scanline pulse over the batch header upon reconciliation commitment (180ms ease, zero overshoot).';
+  let voiceAdjectives = 'Direct, High-Precision, Unhurried';
+  let soundsLikeA = 'Deployment pipeline committed: 84 tests passing, zero warnings.';
+  let neverSoundsLikeA = 'Oops! Something went wrong with your app. Try again! 🚀';
+  let signatureMoment = 'Subtle 150ms border-glow transition on active workspace panels (zero spring overshoot).';
 
-  if (archetype === 'editorial-serif-paper' || archetype === 'quiet-luxury-atelier') {
+  if (archetype === 'consumer-retail-studio') {
+    polarity = 'Light';
+    voiceAdjectives = 'Refined, Confident, Understated';
+    soundsLikeA = 'Crafted in 100% organic cotton. Designed for lasting comfort.';
+    neverSoundsLikeA = 'HURRY! BUY NOW! 🔥 LIMITED STOCK DEALS!';
+    signatureMoment = 'Silky-smooth image scale and elevation on product card focus (200ms ease).';
+  } else if (archetype === 'data-dense-observability') {
+    voiceAdjectives = 'Forensic, Dense, Uncompromising';
+    soundsLikeA = 'Cluster ap-south-1b latency p99 at 14.2ms. Ingress throughput 4.2 GB/s.';
+    neverSoundsLikeA = 'Check out your super-fast cloud stats today!';
+    signatureMoment = 'Instant zero-latency tabular filter slice with 100ms row pulse.';
+  } else if (archetype === 'atmospheric-aurora-launch') {
+    voiceAdjectives = 'Visionary, Cinematic, Precise';
+    soundsLikeA = 'Next-generation intelligent computing. Available today.';
+    neverSoundsLikeA = 'The ultimate AI tool that changes everything!';
+    signatureMoment = 'Subtle ambient radial aurora drift behind the primary hero card.';
+  } else if (archetype === 'editorial-serif-paper' || archetype === 'quiet-luxury-atelier') {
     voiceAdjectives = 'Literary, Dispassionate, Deeply-Researched';
     soundsLikeA = 'Vault allocation audited against physical treasury bills with verified CUSIP numbers.';
     neverSoundsLikeA = 'Supercharge your treasury with our smart AI dashboard! 🚀';
     signatureMoment = 'Gentle 240ms ink-soak underline expansion upon section entry.';
-  } else if (archetype === 'neo-brutalism') {
+  } else if (archetype === 'neo-brutalist-studio' || archetype === 'neo-brutalism') {
     polarity = 'Light';
     voiceAdjectives = 'Stark, Punchy, Tactile';
     soundsLikeA = 'Pipeline output committed. Hash: 0x8F2D. 0 warnings.';
@@ -65,13 +85,19 @@ export function generateDesignMd(options: GeneratorOptions, existingContent?: st
 **ARCHETYPE:** ${archetype}  
 **POLARITY:** ${polarity}  
 **LAYOUT:** ${layout}  
-**TOKENS SOURCE:** \`./tokens.css\`
+**TOKENS SOURCE:** \`./tokens.css\`  
+**STARTER BLUEPRINT:** \`./starter-preview.html\` (Living architectural reference — MUST inspect before authoring views)
 
 ---
 
 ## 0. User's Custom Creative Direction & Anti-Drift Mandate
 
 > *"${customDirection}"*
+
+### The 3-Tier Priority Hierarchy ("The User Is Always in the Driver's Seat")
+1. **Priority #1 (Highest) — User's Live Chat Prompt & Explicit Instructions:** If the user asks for a specific layout, section, animation, color, font, badge, or component in chat, execute it 100% faithfully with zero pushback. Explicit user intent always overrides default rules.
+2. **Priority #2 — User's Custom Creative Direction (This Section 0):** Overrides default archetype aesthetics or tone.
+3. **Priority #3 (Fallback Only) — Archetype Rules, Domain Blueprints & Anti-Slop Defaults:** Governs ONLY when the user's prompt is silent or vague, filling in missing decisions so the agent never falls back to generic AI slop.
 
 ### The 3-Point Anti-Drift Mandate
 1. **Express via Tokens Only:** Every stylistic choice, density shift, or visual cue must be expressed through CSS Custom Properties declared in \`./tokens.css\`. Inlining raw hex/rgb values, arbitrary border-radii, or ad-hoc margins is strictly forbidden.
@@ -80,12 +106,27 @@ export function generateDesignMd(options: GeneratorOptions, existingContent?: st
 
 ---
 
-## 1. Project Design DNA
+## 1. Project Design DNA & Starter Blueprint
 
 - **Archetype:** \`${archetype}\`
 - **Primary Layout Vector:** ${layout}
 - **Polarity:** ${polarity} Polarity
+- **Starter Blueprint:** \`./starter-preview.html\`
+- **Architectural Parity Mandate:** Always inspect \`./starter-preview.html\` before creating new views. It demonstrates production-ready markup, container sizing, split-pane structures, table styling, and verified token bindings. Port its proven patterns directly into your framework rather than designing from scratch.
 - **Geometric Rigor:** Concentric corner radius hierarchy (\`radius-inner = max(0, radius-outer - padding)\`).
+- **Calibration Dials:**
+  - \`DESIGN_VARIANCE: ${dials.designVariance}/10\`
+  - \`MOTION_INTENSITY: ${dials.motionIntensity}/10\`
+  - \`VISUAL_DENSITY: ${dials.visualDensity}/10\`
+- **Viewport Height Law:** Full-height containers & mobile shells must use \`min-h-[100dvh]\` / \`100dvh\` (never \`100vh\`).
+
+### Fallback Domain Blueprints (When Prompt Is Brief)
+> **FALLBACK BLUEPRINT RULE:** Use these domain architectures ONLY to fill in the blanks when the user's prompt is brief or unstructured (e.g., "build a sneaker shop", "make a music player", "make a crypto dashboard"). If the user specifies their own sections, pages, or layout structure, **ALWAYS follow the user's exact structure instead.**
+
+- **E-Commerce & Retail Studio:** Asymmetric product hero with split gallery, sticky add-to-bag bar, curated single-row collection (<= 4 items), sticky mobile checkout dock with safe-area clearance.
+- **Media & Music Player / Streaming:** Edge-to-edge canvas with artwork focal point, fixed bottom player dock with scrubber & centered play trigger, asymmetric playlist split pane, centered artwork overlay (no corner pills).
+- **SaaS Workspace & Analytics Dashboard:** Clean command/filter bar, asymmetric 2-pane metric/activity split (never 3 equal cards), high-density data grid with right-aligned tabular numerals, empty state handoff.
+- **Product Launch & Waitlist / Editorial:** Balanced display headline on open canvas, minimalist single-field waitlist dock, asymmetric feature reveal with breathing room, zero ungrounded marketing claims.
 
 ---
 
@@ -137,7 +178,7 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - **Context Boundary:** Workspaces must display live operational data. Never place static marketing or compliance statements in active console views.
 - **Zero Unrequested Badges Law:** NEVER place pill badges, status chips, or uppercase tag boxes inside app headers, navbars, hero sections, or card headers (e.g., ban \`PRO v2.4\`, \`STABLE\`, \`SUB-10MS\`, \`60 FPS\`). Cards must use plain text headings or no header at all. Tags/badges are ONLY permitted inside repeating data table cells or list rows to indicate item-level record status (e.g., \`Settled\`, \`Discrepancy\`, \`Active\`), strictly capped at max 1 badge per row.
 - **Numeric & Tabular Typography Law:** NEVER use coding monospace fonts (\`--font-mono\`) or \`slashed-zero\` on hero numbers, counters, or KPI figures. Always use \`var(--font-display)\` or \`var(--font-sans)\` with \`font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;\` so digits have clean, open-oval zeros (\`0\`) with zero horizontal jitter. Reserve \`var(--font-mono)\` strictly for code snippets, file paths, or git hashes.
-- **Badge & Indicator Discipline:** Eyebrows must stand alone as plain monospace text. Colored status dots are forbidden unless tied to a live connection status.
+- **Strict Dot & Bullet Discipline:** Eyebrows must stand alone as plain monospace text. NEVER render small colored circle elements (whether static or animated) next to status text or beside headings; communicate status through clean typography or subtle text color alone. NEVER start badges, pills, eyebrows, or labels with bullet characters (\`•\`, \`●\`, \`▪\`). Dots are strictly restricted to true vertical lists (\`<ul><li>\`), inline mid-dot separators (\`·\`) between two strings, or carousel pagination.
 - **Signature Moment:** ${signatureMoment}
 `;
 
@@ -158,10 +199,10 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 |---|---|---|---|
 | **Top Utility Bar & State Controller** | \`header.top-utility-bar\`, \`nav.state-switcher\` | View metadata & state controller | \`var(--bg-sunken)\`, \`var(--border-hairline)\`, \`var(--radius-outer)\` |
 | **Workspace Summary Bar** | \`div.workspace-summary-bar\`, \`.summary-segment\` | Operational batch totals & variance strip | \`var(--bg-elevated)\`, \`var(--border-hairline)\`, \`var(--highlight-specular)\` |
-| **Inline Error Banner** | \`aside.inline-error-banner\` | Discrepancy alert banner | \`var(--bg-sunken)\`, \`var(--status-danger)\`, \`var(--radius-outer)\` |
+| **Inline Error Banner** | \`aside.inline-error-banner\` | Validation / state alert banner | \`var(--bg-sunken)\`, \`var(--status-danger)\`, \`var(--radius-outer)\` |
 | **Action Bar & Primary CTA** | \`section.action-bar\`, \`button.btn-primary\` | Controls & single primary CTA | \`var(--accent-primary)\`, \`var(--text-inverse)\`, \`var(--radius-inner)\` |
-| **Primary Card Container** | \`article.settlement-card\` | Concentric bounded workspace card | \`var(--bg-elevated)\`, \`var(--border-hairline)\`, \`var(--radius-outer)\` |
-| **Data Table Grid** | \`table.settlement-grid\` | Forensic record display & truncation | \`var(--bg-elevated)\`, \`var(--border-subtle)\`, \`var(--font-mono)\` |
+| **Primary Card Container** | \`article.workspace-card\` | Concentric bounded workspace card | \`var(--bg-elevated)\`, \`var(--border-hairline)\`, \`var(--radius-outer)\` |
+| **Data Table Grid** | \`table.data-grid\` | Forensic record display & truncation | \`var(--bg-elevated)\`, \`var(--border-subtle)\`, \`var(--font-mono)\` |
 | **Monogram Avatar Fallback** | \`span.monogram-avatar\` | Null avatar fallback box | \`var(--bg-sunken)\`, \`var(--border-subtle)\`, \`var(--radius-inner)\` |
 | **Loading Skeleton View** | \`div.skeleton-view[aria-busy="true"]\` | Zero-CLS layout-matching skeleton | \`var(--bg-sunken)\`, \`var(--radius-inner)\` |
 | **Zero-Data Empty State** | \`div.empty-view\`, \`button.empty-cta-handoff\` | Hand-off target absorbing Primary CTA | \`var(--text-muted)\`, \`var(--accent-primary)\`, \`var(--radius-inner)\` |

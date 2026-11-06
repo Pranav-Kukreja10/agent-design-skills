@@ -78,14 +78,18 @@ ${coreRuleContent}
     // Single combined master skill file
     let combinedContent = `---
 name: design-system
-description: "Complete design system tokens, UX ergonomics, and archetype specifications"
+description: "Design system tokens, UX ergonomics, archetype specs, and starter kit blueprints (starter-preview.html)"
 ---
 
 # Master Design System (v1.0)
 
 Target Archetype: \`${options.archetype}\`  
 Token Contract: \`./tokens.css\`  
-Design Specification: \`./DESIGN.md\`
+Design Specification: \`./DESIGN.md\`  
+Starter Blueprint: \`./starter-preview.html\` (Inspect first before writing UI)
+
+## Golden Starter Blueprint (./starter-preview.html)
+Before writing or refactoring any frontend component or page, inspect \`./starter-preview.html\` in the workspace root. It provides the reference layout architecture, navigation chrome, responsive grid, and pre-styled component markup for this project archetype. Always adapt and port its proven HTML/CSS structures directly into your framework rather than designing from scratch.
 
 ${coreRuleContent}
 
@@ -131,14 +135,18 @@ ${coreRuleContent}
 
     const skillContent = `---
 name: design-system
-description: "Complete design system tokens, UX ergonomics, and archetype specifications"
+description: "Design system tokens, UX ergonomics, archetype specs, and starter kit blueprints (starter-preview.html)"
 ---
 
 # Design System Skill (v1.0)
 
 Target Archetype: \`${options.archetype}\`  
 Token Contract: \`./tokens.css\`  
-Design Specification: \`./DESIGN.md\`
+Design Specification: \`./DESIGN.md\`  
+Starter Blueprint: \`./starter-preview.html\` (Inspect first before writing UI)
+
+## Golden Starter Blueprint (./starter-preview.html)
+Before writing or refactoring any frontend component or page, inspect \`./starter-preview.html\` in the workspace root. It provides the reference layout architecture, navigation chrome, responsive grid, and pre-styled component markup for this project archetype. Always adapt and port its proven HTML/CSS structures directly into your framework rather than designing from scratch.
 
 ## Overview
 This skill provides comprehensive, on-demand reference guidelines for maintaining frontend geometric unity, copy honesty, and token adherence across this codebase.
