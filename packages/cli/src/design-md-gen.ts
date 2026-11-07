@@ -12,12 +12,34 @@ export function extractPreservedSections(existingContent: string): string | null
   return null;
 }
 
+export function extractExistingDirection(existingContent: string): string | null {
+  const m = existingContent.match(/## 0\. User's Custom Creative Direction & Anti-Drift Mandate\s*\n\s*> \*"([^"]+)"\*/);
+  return m ? m[1].trim() : null;
+}
+
+export function extractExistingBrief(existingContent: string): string | null {
+  const m = existingContent.match(/\*\*Product Definition:\*\*\s*\n\s*([^.]+?)(?:\s+for\s+[^\n.]+)?\./);
+  return m ? m[1].trim() : null;
+}
+
 export function generateDesignMd(options: GeneratorOptions, existingContent?: string): string {
+  let activeCustomDirection = options.customDirection;
+  let activeProductBrief = options.productBrief;
+
+  if (existingContent) {
+    if (!activeCustomDirection) {
+      activeCustomDirection = extractExistingDirection(existingContent) || undefined;
+    }
+    if (!activeProductBrief) {
+      activeProductBrief = extractExistingBrief(existingContent) || undefined;
+    }
+  }
+
   const {
     projectName,
     archetype,
-    customDirection = 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
-    productBrief = 'Clean, high-precision modern SaaS and digital product workspace'
+    customDirection = activeCustomDirection || 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
+    productBrief = activeProductBrief || 'Clean, high-precision modern SaaS and digital product workspace'
   } = options;
 
   const dials = computeCalibrationDials(archetype, options.feeling);
@@ -179,6 +201,7 @@ All components MUST consume these semantic tokens directly. Never duplicate raw 
 - **Zero Unrequested Badges Law:** NEVER place pill badges, status chips, or uppercase tag boxes inside app headers, navbars, hero sections, or card headers (e.g., ban \`PRO v2.4\`, \`STABLE\`, \`SUB-10MS\`, \`60 FPS\`). Cards must use plain text headings or no header at all. Tags/badges are ONLY permitted inside repeating data table cells or list rows to indicate item-level record status (e.g., \`Settled\`, \`Discrepancy\`, \`Active\`), strictly capped at max 1 badge per row.
 - **Numeric & Tabular Typography Law:** NEVER use coding monospace fonts (\`--font-mono\`) or \`slashed-zero\` on hero numbers, counters, or KPI figures. Always use \`var(--font-display)\` or \`var(--font-sans)\` with \`font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;\` so digits have clean, open-oval zeros (\`0\`) with zero horizontal jitter. Reserve \`var(--font-mono)\` strictly for code snippets, file paths, or git hashes.
 - **Strict Dot & Bullet Discipline:** Eyebrows must stand alone as plain monospace text. NEVER render small colored circle elements (whether static or animated) next to status text or beside headings; communicate status through clean typography or subtle text color alone. NEVER start badges, pills, eyebrows, or labels with bullet characters (\`•\`, \`●\`, \`▪\`). Dots are strictly restricted to true vertical lists (\`<ul><li>\`), inline mid-dot separators (\`·\`) between two strings, or carousel pagination.
+- **Ban Unrequested Keyboard Shortcut Badges (\`⌘K\`, \`Ctrl+K\`, \`(⌘K)\`):** NEVER render unrequested fake shortcut chips (\`⌘K\`, \`Ctrl+K\`, \`<kbd>⌘K</kbd>\`, \`(⌘K)\`) inside inputs, search fields, or headers on your own. Maintain clean inputs without decorative shortcut chips unless the user explicitly requested a keyboard shortcut system.
 - **Signature Moment:** ${signatureMoment}
 `;
 

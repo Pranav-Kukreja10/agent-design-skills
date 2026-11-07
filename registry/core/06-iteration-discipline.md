@@ -30,7 +30,7 @@ Iterative refinement must not devolve into endless, unproductive turns of subjec
 - **Mandatory Log:** Each pass must be logged in `{{DESIGN_DOC_PATH}}` under `## 6. Active Revision Passes`:
   ```markdown
   | Pass # | Target Component | Modification | Tokens Touched | Verification |
-  | Pass 1 | SettlementTable.tsx | Adjusted cell padding and right-aligned currency | `--text-sm`, `--border-subtle` | Verified tabular alignment |
+  | Pass 1 | DataTable.tsx | Adjusted cell padding and right-aligned currency | `--text-sm`, `--border-subtle` | Verified tabular alignment |
   ```
 - **Post-Budget Gate:** Once 2 passes are exhausted, any further cosmetic tweaks must be deferred to the **Polish Backlog**.
 
@@ -55,4 +55,19 @@ If a revision compromises cross-page unity, introduces design drift, or conflict
 1. Do not apply patches on top of broken changes.
 2. Execute a clean revert back to the last known compliant commit or token baseline.
 3. Re-evaluate the requirement using the Divergence Protocol in `01-override-protocol.md`.
+
+---
+
+## 5. Non-Destructive Redesign Law (Upgrading Existing Projects)
+
+When tasked with redesigning, restyling, or modernizing an existing codebase or component:
+
+1. **Preserve Business Logic 100%:**
+   - NEVER delete, rewrite, or disrupt existing state hooks (`useState`, `useEffect`, `useQuery`, `useReducer`), API clients, data fetching pipelines, form validation, routing paths, or event handlers.
+   - The redesign is visual and architectural—not functional destruction.
+
+2. **Reskin In Place:**
+   - Audit the existing DOM elements.
+   - Replace hardcoded hex colors, arbitrary spacing, and generic gray Tailwind classes (`bg-gray-50`, `text-gray-900`) with semantic `tokens.css` variables (`--bg-canvas`, `--text-primary`, `--accent-primary`).
+   - Unbox unnecessary wrapper `<div>`s and nested cards while preserving child interactive bindings.
 

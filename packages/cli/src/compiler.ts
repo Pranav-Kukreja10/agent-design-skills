@@ -2,8 +2,9 @@ import fs from 'fs-extra';
 import path from 'pathe';
 import { fileURLToPath } from 'node:url';
 import { GeneratorOptions, computeCalibrationDials } from './types.js';
+import { buildTier1Content, buildTier1Echo, buildProjectSnapshot } from './tier1.js';
 import { generateTokens, detectProjectFonts } from './tokens-gen.js';
-import { generateDesignMd } from './design-md-gen.js';
+import { generateDesignMd, extractExistingDirection, extractExistingBrief } from './design-md-gen.js';
 import { writeAntigravityAdapter } from './adapters/antigravity.js';
 import { writeCursorAdapter } from './adapters/cursor.js';
 import { writeClaudeCodexAdapter } from './adapters/claude-codex.js';
@@ -33,9 +34,17 @@ export function buildCoreRuleContent(options: GeneratorOptions): string {
   const { archetype, feeling } = options;
   const dials = computeCalibrationDials(archetype, feeling);
 
-  return `# Always-On Design Governance Rule (v1.1)
+  return `# Always-On Design Governance Rule (v1.2)
 
 You are the design governance engine for this codebase. Every UI decision must preserve geometric unity, copy honesty, and visual calm across every turn.
+
+---
+
+${buildTier1Content(options)}
+
+---
+
+${buildProjectSnapshot(options)}
 
 ---
 
@@ -136,7 +145,7 @@ Every blueprint, archetype rule, dial, and anti-slop constraint follows a strict
 
 ### 5. Strict Scope Lock
 - Build **only** what was explicitly requested.
-- **Prohibited unprompted additions:** Never add unrequested dark/light theme toggles, notification bells, search bars, account profile dropdowns, multi-step wizards, or decorative marketing footers. If a feature was not asked for, do not generate it.
+- **Prohibited unprompted additions:** Never add unrequested dark/light theme toggles, notification bells, search bars, account profile dropdowns, multi-step wizards, decorative marketing footers, or unrequested keyboard shortcut chips (\`⌘K\`, \`Ctrl+K\`, \`(⌘K)\`, \`<kbd>\` elements). If a feature was not asked for, do not generate it.
 
 ---
 
@@ -204,6 +213,9 @@ Every blueprint, archetype rule, dial, and anti-slop constraint follows a strict
       - For active media/playback: Use a single centered icon overlay (Play/Pause/Equalizer) on the thumbnail or a quiet indicator inside the text row—never a corner text pill (\`• PLAYING\`).
       - For product/content metadata (like \`"New Arrival"\`, \`"Limited Edition"\`, or discounts): Render it as clean, quiet plain text (\`var(--text-secondary)\`) below the image alongside the title/price—never as a colored sticker slapped onto the corner of the photograph.
       - **Only Permitted Media Overlay:** A plain bottom-right numeric video duration timestamp (\`3:51\`) or a single subtle top-right icon action (like a quiet heart/bookmark icon on hover).
+  - **Ban Unrequested Keyboard Shortcut Badges (\`⌘K\`, \`Ctrl+K\`, \`(⌘K)\`):**
+    - NEVER render unrequested fake keyboard shortcut chips (\`⌘K\`, \`Ctrl+K\`, \`<kbd>⌘K</kbd>\`, \`(⌘K)\`) inside search bars, inputs, headers, or toolbars on your own.
+    - An input or search bar must remain a clean input with a placeholder alone. Do not invent or assume keyboard shortcuts unless the user explicitly requested a keyboard-driven command palette or shortcut system with functioning keydown event listeners.
 
 ---
 
@@ -249,7 +261,11 @@ When called to redesign, reskin, or modernize an existing project or component:
 ### 11. Fix-Forward & 2-Pass Revision Budget
 - **Fix-Forward:** Resolve visual or ergonomic issues by updating \`./tokens.css\` or removing clutter—**never** by adding wrapper elements, extra containers, or ad-hoc overrides.
 - **Revision Budget:** Maximum **2 iterative revision passes** per feature. Track each pass in \`DESIGN.md\` Section 6.
-- Log non-blocking enhancements into \`DESIGN.md\` Section 8 (**Polish Backlog**) rather than burning turns on infinite micro-tweaks.`;
+- Log non-blocking enhancements into \`DESIGN.md\` Section 8 (**Polish Backlog**) rather than burning turns on infinite micro-tweaks.
+
+---
+
+${buildTier1Echo()}`;
 }
 
 /**
@@ -275,6 +291,21 @@ export async function compileDesignSystem(options: GeneratorOptions): Promise<{
     }
   }
 
+  // Preserve existing customDirection and productBrief from DESIGN.md if not explicitly passed
+  const designMdPath = path.resolve(targetDir, 'DESIGN.md');
+  let existingContent: string | undefined;
+  if (await fs.pathExists(designMdPath)) {
+    existingContent = await fs.readFile(designMdPath, 'utf-8');
+    if (!options.customDirection) {
+      const dir = extractExistingDirection(existingContent);
+      if (dir) options.customDirection = dir;
+    }
+    if (!options.productBrief) {
+      const brief = extractExistingBrief(existingContent);
+      if (brief) options.productBrief = brief;
+    }
+  }
+
   const createdFiles: string[] = [];
 
   // 1. Generate tokens.css and tokens.json
@@ -289,11 +320,6 @@ export async function compileDesignSystem(options: GeneratorOptions): Promise<{
   createdFiles.push(jsonPath);
 
   // 2. Generate DESIGN.md (Smart Non-Destructive Preservation of Sections 5-8)
-  const designMdPath = path.resolve(targetDir, 'DESIGN.md');
-  let existingContent: string | undefined;
-  if (await fs.pathExists(designMdPath)) {
-    existingContent = await fs.readFile(designMdPath, 'utf-8');
-  }
   const designMd = generateDesignMd(options, existingContent);
   await fs.writeFile(designMdPath, designMd, 'utf-8');
   createdFiles.push(designMdPath);

@@ -1,9 +1,14 @@
 {
   "name": "agent-design-skills-monorepo",
+  "version": "1.1.7",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "npm --prefix packages/cli run dev",
     "build": "npm --prefix packages/cli run build",
+    "publish:cli": "cd packages/cli && npm publish --access public",
     "start": "node packages/cli/dist/index.js"
   }
 }

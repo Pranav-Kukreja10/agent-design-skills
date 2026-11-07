@@ -2,14 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobile App Starter Kit — Agent Design Skills</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mobile App Shell — Agent Design Skills</title>
   <link rel="stylesheet" href="./tokens.css">
   <style>
     /* =========================================================================
-       MOBILE APP STARTER STYLES (v1.0)
-       Mobile-first 375px–430px frame, >=44px touch targets, zero hover traps
+       MOBILE APP STARTER SHELL
+       Domain-neutral mobile viewport (max-width: 430px), >=44px touch targets
+       Strict token consumption from tokens.css
        ========================================================================= */
+
+    :root {
+      --surface-canvas: var(--bg-canvas);
+      --surface-card: var(--bg-elevated);
+      --radius-md: var(--radius-inner);
+      --radius-lg: var(--radius-outer);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       background-color: var(--bg-canvas);
@@ -17,211 +29,432 @@
       font-family: var(--font-sans);
       font-size: var(--text-base);
       font-weight: var(--weight-body);
-      line-height: 1.4;
+      line-height: 1.45;
       margin: 0;
       padding: 0;
       min-height: 100vh;
       display: flex;
       justify-content: center;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Centered Mobile Device Viewport Frame */
-    .mobile-frame {
+    /* Device frame wrapper */
+    .mobile-shell {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       min-height: 100vh;
-      background-color: var(--bg-elevated);
+      background-color: var(--bg-canvas);
       border-left: 1px solid var(--border-hairline);
       border-right: 1px solid var(--border-hairline);
       display: flex;
       flex-direction: column;
       position: relative;
-      overflow-x: hidden;
     }
 
-    /* Mobile Top App Header */
-    .mobile-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border-hairline);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: var(--bg-elevated);
+    @media (min-width: 768px) {
+      body {
+        padding: 2rem 0;
+      }
+      .mobile-shell {
+        min-height: 860px;
+        border-radius: var(--radius-outer);
+        border: 1px solid var(--border-hairline);
+        box-shadow: var(--shadow-elevated);
+        overflow: hidden;
+      }
+    }
+
+    /* Top App Header */
+    .mobile-top-bar {
+      padding: 1rem 1.25rem 0.75rem;
+      background-color: var(--bg-canvas);
       position: sticky;
       top: 0;
       z-index: 10;
-    }
-
-    .eyebrow-text {
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
-      color: var(--text-subtle);
-    }
-
-    /* Main Scrollable Content Area */
-    .mobile-content {
-      flex: 1;
-      padding: 1.25rem;
-      padding-bottom: 5.5rem; /* space for bottom navigation */
-      overflow-y: auto;
-    }
-
-    .screen-title {
-      font-size: var(--text-xl);
-      font-weight: var(--weight-heading);
-      margin: 0 0 0.5rem 0;
-    }
-
-    .screen-desc {
-      font-size: var(--text-sm);
-      color: var(--text-muted);
-      margin: 0 0 1.25rem 0;
-    }
-
-    /* Compact Mobile Summary Strip */
-    .mobile-summary {
-      background-color: var(--bg-sunken);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-outer);
-      padding: 0.85rem 1rem;
-      margin-bottom: 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .summary-title {
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
-      color: var(--text-subtle);
-    }
-
-    .summary-stat {
-      font-family: var(--font-mono);
-      font-size: var(--text-lg);
-      font-weight: var(--weight-heading);
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Touch-Friendly List (>=44px target) */
-    .touch-list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.875rem;
+      border-bottom: 1px solid var(--border-hairline);
     }
 
-    .touch-item {
-      min-height: 48px;
-      background-color: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-inner);
-      padding: 0.75rem 1rem;
+    .top-bar-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .app-brand {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .icon-action-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      text-decoration: none;
-      color: inherit;
+      padding: 0;
       transition: background-color var(--duration-fast) var(--ease-primary);
     }
 
-    .touch-item:active {
+    .icon-action-btn:hover {
       background-color: var(--bg-surface-active);
     }
 
-    .item-left {
+    /* Composite Search Input (Inner input outline: none; outer handles focus) */
+    .search-composite {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      min-width: 0;
+      gap: 0.625rem;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 0.625rem 0.875rem;
+      transition: border-color var(--duration-fast) var(--ease-primary), box-shadow var(--duration-fast) var(--ease-primary);
     }
 
-    .monogram-avatar {
-      width: 32px;
-      height: 32px;
+    .search-composite:focus-within {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 1px var(--border-focus);
+    }
+
+    .search-composite svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .search-composite input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      padding: 0;
+      outline: none;
+    }
+
+    .search-composite input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Scrollable Body Content */
+    .mobile-content {
+      flex: 1;
+      padding: 1.25rem 1.25rem calc(5.5rem + env(safe-area-inset-bottom));
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Featured Hero Card */
+    .featured-card {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-outer);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-surface);
+    }
+
+    .featured-card-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-heading);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .featured-card-subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .pill-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      min-height: 44px;
+      padding: 0.625rem 1.25rem;
+      border-radius: 9999px;
+      background-color: var(--accent-primary);
+      color: var(--accent-foreground);
+      border: none;
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-heading);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color var(--duration-fast) var(--ease-primary), transform var(--duration-fast) var(--ease-spring);
+    }
+
+    .pill-cta:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .pill-cta:active {
+      transform: scale(0.98);
+    }
+
+    /* Category Pill Filter Track */
+    .filter-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin: 0 -0.25rem;
+      padding: 0.25rem;
+    }
+
+    .filter-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-pill {
+      min-height: 38px;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-body);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--duration-fast) var(--ease-primary);
+    }
+
+    .filter-pill:hover {
+      color: var(--text-primary);
+      border-color: var(--border-hairline);
+    }
+
+    .filter-pill.active {
+      background-color: var(--accent-primary);
+      color: var(--accent-foreground);
+      border-color: var(--accent-primary);
+      font-weight: var(--weight-heading);
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-heading);
+      margin: 0;
+    }
+
+    .section-action {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Interactive Item List */
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .item-row {
+      min-height: 52px;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 0.875rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.875rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color var(--duration-fast) var(--ease-primary), border-color var(--duration-fast) var(--ease-primary);
+    }
+
+    .item-row:hover {
+      border-color: var(--border-hairline);
+    }
+
+    .item-row:active {
+      background-color: var(--bg-surface-active);
+    }
+
+    .item-leading {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .item-icon-box {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
       border-radius: var(--radius-inner);
       background-color: var(--bg-sunken);
       border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
+      color: var(--text-secondary);
       flex-shrink: 0;
     }
 
-    .item-info {
-      min-width: 0;
+    .item-icon-box svg {
+      width: 20px;
+      height: 20px;
     }
 
-    .truncate-entity {
-      max-width: 170px;
+    .item-texts {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .item-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-heading);
+      color: var(--text-primary);
+      margin: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: var(--text-sm);
-      font-weight: var(--weight-heading);
-      display: block;
     }
 
-    .item-sub {
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
-      color: var(--text-muted);
+    .item-subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin: 0.15rem 0 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .item-amount {
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      font-variant-numeric: tabular-nums;
+    .item-trailing {
       text-align: right;
+      flex-shrink: 0;
     }
 
-    /* Bottom Thumb-Zone Navigation Bar (>=48px height) */
-    .bottom-nav {
+    .item-meta {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums lining-nums;
+      font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;
+    }
+
+    /* Fixed Bottom Dock (4 Tabs with SVG + Label) */
+    .bottom-dock {
       position: fixed;
       bottom: 0;
-      width: 100%;
-      max-width: 420px;
-      height: 60px;
+      left: 0;
+      right: 0;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 64px;
       background-color: var(--bg-elevated);
       border-top: 1px solid var(--border-hairline);
       display: flex;
       align-items: center;
       justify-content: space-around;
       z-index: 20;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
-    .nav-tab {
+    @media (min-width: 768px) {
+      .bottom-dock {
+        position: absolute;
+        border-bottom-left-radius: var(--radius-outer);
+        border-bottom-right-radius: var(--radius-outer);
+      }
+    }
+
+    .dock-tab {
       min-width: 48px;
       min-height: 48px;
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-family: var(--font-sans);
-      font-size: var(--text-xs);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0.25rem 0.5rem;
+      gap: 0.25rem;
+      padding: 0.35rem 0.75rem;
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      transition: color var(--duration-fast) var(--ease-primary);
     }
 
-    .nav-tab.active {
+    .dock-tab svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .dock-tab.active {
       color: var(--accent-primary);
       font-weight: var(--weight-heading);
     }
 
-    /* Interactive Bottom Sheet Modal */
+    .dock-tab:hover {
+      color: var(--text-primary);
+    }
+
+    /* Interactive Bottom Sheet */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-canvas);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration-normal) var(--ease-primary);
+      z-index: 29;
+    }
+
+    .sheet-backdrop.open {
+      opacity: 0.6;
+      pointer-events: auto;
+    }
+
     .bottom-sheet {
       position: fixed;
       bottom: -100%;
       left: 0;
       right: 0;
-      max-width: 420px;
+      max-width: 430px;
       margin: 0 auto;
-      background-color: var(--bg-canvas);
+      background-color: var(--bg-elevated);
       border-top: 1px solid var(--border-hairline);
       border-top-left-radius: var(--radius-outer);
       border-top-right-radius: var(--radius-outer);
@@ -229,6 +462,9 @@
       padding: 1.5rem;
       transition: bottom var(--duration-normal) var(--ease-primary);
       z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
     .bottom-sheet.open {
@@ -236,14 +472,28 @@
     }
 
     .sheet-handle {
-      width: 36px;
+      width: 40px;
       height: 4px;
       border-radius: 2px;
-      background-color: var(--border-hairline);
-      margin: 0 auto 1.25rem auto;
+      background-color: var(--border-subtle);
+      margin: 0 auto 0.5rem;
     }
 
-    .btn {
+    .sheet-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-heading);
+      margin: 0;
+    }
+
+    .sheet-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .btn-sheet-action {
       min-height: 44px;
       width: 100%;
       border-radius: var(--radius-inner);
@@ -254,157 +504,221 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 1rem;
-    }
-
-    .btn-primary {
+      border: none;
       background-color: var(--accent-primary);
-      color: var(--text-inverse);
-      border: 1px solid var(--accent-primary);
+      color: var(--accent-foreground);
     }
 
-    .btn-secondary {
-      background-color: var(--bg-elevated);
+    .btn-sheet-dismiss {
+      min-height: 44px;
+      width: 100%;
+      border-radius: var(--radius-inner);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-sunken);
       color: var(--text-primary);
-      border: 1px solid var(--border-hairline);
     }
   </style>
 </head>
 <body>
 
-  <div class="mobile-frame">
+  <div class="mobile-shell">
 
-    <header class="mobile-header">
-      <span class="eyebrow-text">MOBILE SETTLEMENT</span>
-      <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle);">
-        SYNC: LIVE
-      </span>
+    <!-- Top App Header -->
+    <header class="mobile-top-bar">
+      <div class="top-bar-row">
+        <h1 class="app-brand">Studio Hub</h1>
+        <button type="button" class="icon-action-btn" aria-label="Profile actions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+      </div>
+      <!-- Composite search wrapper with :focus-within -->
+      <div class="search-composite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" placeholder="Search projects and resources..." aria-label="Search">
+      </div>
     </header>
 
+    <!-- Scrollable Main Content -->
     <main class="mobile-content">
-      <h1 class="screen-title">Reconciliation records</h1>
-      <p class="screen-desc">
-        Touch an item below to inspect cryptographic signatures and tax identifiers.
-      </p>
 
-      <div class="mobile-summary">
-        <div>
-          <div class="summary-title">PENDING BATCH</div>
-          <div class="summary-stat">12 records</div>
-        </div>
-        <div style="text-align: right;">
-          <div class="summary-title">TOTAL DELTA</div>
-          <div class="summary-stat" style="color: var(--status-danger);">+$412.50</div>
-        </div>
+      <!-- Featured Hero Card -->
+      <section class="featured-card">
+        <h2 class="featured-card-title">Design Workspace</h2>
+        <p class="featured-card-subtitle">
+          Collaborate on component patterns, inspect shared assets, and keep layouts synchronized.
+        </p>
+        <button type="button" class="pill-cta" onclick="openSheet('Design Workspace', 'All creative files and team components are synchronized.')">
+          Open Project
+        </button>
+      </section>
+
+      <!-- Category Filter Track -->
+      <div class="filter-track" role="tablist" aria-label="Filter category">
+        <button type="button" class="filter-pill active" role="tab" aria-selected="true">All</button>
+        <button type="button" class="filter-pill" role="tab" aria-selected="false">Featured</button>
+        <button type="button" class="filter-pill" role="tab" aria-selected="false">Recent</button>
+        <button type="button" class="filter-pill" role="tab" aria-selected="false">Saved</button>
       </div>
 
-      <!-- Touch List with // SAMPLE DATA -->
-      <div class="touch-list" role="list">
-        <!-- Edge Case 1: Standard Reconciled Record -->
-        <div class="touch-item" role="listitem" onclick="openSheet('Stripe Payments Europe Ltd', '$184,200.00', '0x7c4e...89a1')">
-          <div class="item-left">
-            <span class="monogram-avatar">SE</span>
-            <div class="item-info">
-              <span class="truncate-entity">Stripe Payments Europe Ltd</span>
-              <span class="item-sub">EUR / USD Settled</span>
-            </div>
-          </div>
-          <div class="item-amount">$184,200.00</div>
+      <!-- Content List -->
+      <section class="item-list" aria-label="Project list">
+        <div class="section-header">
+          <h3 class="section-title">Active Projects</h3>
+          <span class="section-action">View all</span>
         </div>
 
-        <!-- Edge Case 2: Discrepancy Record -->
-        <div class="touch-item" role="listitem" style="border-color: var(--status-danger);" onclick="openSheet('ICICI Bank Nodal Settlement', '+$412.50 Discrepancy', '0x8F2D...c41a')">
-          <div class="item-left">
-            <span class="monogram-avatar" style="color: var(--status-danger);">IC</span>
-            <div class="item-info">
-              <span class="truncate-entity">ICICI Bank Nodal Settlement</span>
-              <span class="item-sub" style="color: var(--status-danger);">Row 4,812 mismatch</span>
+        <!-- Item 1 -->
+        <div class="item-row" role="button" tabindex="0" onclick="openSheet('Studio Canvas', 'Vector layouts and responsive design frames.')">
+          <div class="item-leading">
+            <div class="item-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+            </div>
+            <div class="item-texts">
+              <h4 class="item-title">Studio Canvas</h4>
+              <p class="item-subtitle">Updated 10m ago</p>
             </div>
           </div>
-          <div class="item-amount" style="color: var(--status-danger);">+$412.50</div>
+          <div class="item-trailing">
+            <span class="item-meta">14 assets</span>
+          </div>
         </div>
 
-        <!-- Edge Case 3: Truncated Long Entity -->
-        <div class="touch-item" role="listitem" onclick="openSheet('State Bank of India — Commercial Branch Mumbai Nariman Point', '₹12,450,000.00', '0x3b11...99ef')">
-          <div class="item-left">
-            <span class="monogram-avatar">SB</span>
-            <div class="item-info">
-              <span class="truncate-entity">State Bank of India — Commercial Branch Mumbai Nariman Point</span>
-              <span class="item-sub">GSTIN 27AAAPL1234C1ZV</span>
+        <!-- Item 2 -->
+        <div class="item-row" role="button" tabindex="0" onclick="openSheet('Component Library', 'Living design token bindings and theme variables.')">
+          <div class="item-leading">
+            <div class="item-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <div class="item-texts">
+              <h4 class="item-title">Component Library</h4>
+              <p class="item-subtitle">Updated 2h ago</p>
             </div>
           </div>
-          <div class="item-amount">₹12.4M</div>
+          <div class="item-trailing">
+            <span class="item-meta">Active</span>
+          </div>
         </div>
 
-        <!-- Edge Case 4: Null Avatar Fallback -->
-        <div class="touch-item" role="listitem" onclick="openSheet('Paytm Payments Bank', '₹842,100.00', '0x9a02...41bd')">
-          <div class="item-left">
-            <span class="monogram-avatar">PP</span>
-            <div class="item-info">
-              <span class="truncate-entity">Paytm Payments Bank</span>
-              <span class="item-sub">Escrow verified</span>
+        <!-- Item 3 -->
+        <div class="item-row" role="button" tabindex="0" onclick="openSheet('Compute Pipeline', 'Edge distribution configs and deployment assets.')">
+          <div class="item-leading">
+            <div class="item-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <div class="item-texts">
+              <h4 class="item-title">Compute Pipeline</h4>
+              <p class="item-subtitle">Updated yesterday</p>
             </div>
           </div>
-          <div class="item-amount">₹842.1K</div>
+          <div class="item-trailing">
+            <span class="item-meta">Ready</span>
+          </div>
         </div>
 
-        <!-- Edge Case 5: Zero/Pending State -->
-        <div class="touch-item" role="listitem" onclick="openSheet('HSBC Global Custody UK', '£0.00 Pending', '0x0000...0000')">
-          <div class="item-left">
-            <span class="monogram-avatar">HS</span>
-            <div class="item-info">
-              <span class="truncate-entity">HSBC Global Custody UK</span>
-              <span class="item-sub">GBP clearing</span>
+        <!-- Item 4 -->
+        <div class="item-row" role="button" tabindex="0" onclick="openSheet('Interface Toolkit', 'Shared modal and navigation controls.')">
+          <div class="item-leading">
+            <div class="item-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <div class="item-texts">
+              <h4 class="item-title">Interface Toolkit</h4>
+              <p class="item-subtitle">Updated 3d ago</p>
             </div>
           </div>
-          <div class="item-amount" style="color: var(--status-warning);">£0.00</div>
+          <div class="item-trailing">
+            <span class="item-meta">Saved</span>
+          </div>
         </div>
-      </div>
+      </section>
+
     </main>
 
-    <!-- Bottom Thumb Navigation Bar -->
-    <nav class="bottom-nav" aria-label="Mobile Navigation">
-      <button type="button" class="nav-tab active">
-        <span>Ledger</span>
+    <!-- Fixed 4-Tab Bottom Dock -->
+    <nav class="bottom-dock" aria-label="Bottom Navigation">
+      <button type="button" class="dock-tab active" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
       </button>
-      <button type="button" class="nav-tab">
-        <span>Batches</span>
+      <button type="button" class="dock-tab" aria-label="Explore">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        <span>Explore</span>
       </button>
-      <button type="button" class="nav-tab">
-        <span>Audit</span>
+      <button type="button" class="dock-tab" aria-label="Saved">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Saved</span>
+      </button>
+      <button type="button" class="dock-tab" aria-label="Profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Profile</span>
       </button>
     </nav>
 
-    <!-- Interactive Bottom Sheet -->
+    <!-- Backdrop & Detail Bottom Sheet -->
+    <div class="sheet-backdrop" id="sheet-backdrop" onclick="closeSheet()"></div>
     <aside class="bottom-sheet" id="sheet" aria-modal="true" role="dialog">
       <div class="sheet-handle"></div>
-      <h2 id="sheet-title" style="font-size: var(--text-lg); margin: 0 0 0.5rem 0;">Batch details</h2>
-      <p id="sheet-amount" style="font-family: var(--font-mono); color: var(--text-muted); margin: 0 0 0.5rem 0;"></p>
-      <p id="sheet-hash" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle); margin: 0 0 1.5rem 0;"></p>
-
-      <button type="button" class="btn btn-primary" onclick="closeSheet()">Verify partition</button>
-      <button type="button" class="btn btn-secondary" onclick="closeSheet()">Dismiss</button>
+      <h2 class="sheet-title" id="sheet-title">Project Details</h2>
+      <p class="sheet-desc" id="sheet-desc">Select an item from the list to inspect workspace properties.</p>
+      <button type="button" class="btn-sheet-action" onclick="closeSheet()">Open in Editor</button>
+      <button type="button" class="btn-sheet-dismiss" onclick="closeSheet()">Dismiss</button>
     </aside>
 
   </div>
 
   <script>
     const sheet = document.getElementById('sheet');
+    const sheetBackdrop = document.getElementById('sheet-backdrop');
     const sheetTitle = document.getElementById('sheet-title');
-    const sheetAmount = document.getElementById('sheet-amount');
-    const sheetHash = document.getElementById('sheet-hash');
+    const sheetDesc = document.getElementById('sheet-desc');
 
-    function openSheet(title, amount, hash) {
+    function openSheet(title, desc) {
       sheetTitle.textContent = title;
-      sheetAmount.textContent = 'Amount: ' + amount;
-      sheetHash.textContent = 'Root hash: ' + hash;
+      sheetDesc.textContent = desc;
       sheet.classList.add('open');
+      sheetBackdrop.classList.add('open');
     }
 
     function closeSheet() {
       sheet.classList.remove('open');
+      sheetBackdrop.classList.remove('open');
     }
   </script>
 </body>
 </html>
-

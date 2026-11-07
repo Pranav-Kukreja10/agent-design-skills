@@ -24,13 +24,14 @@ If the answer is **YES**, **do not render it.**
 
 ---
 
-## 2. Mandatory Pre-Flight Gate
+## 2. Mandatory Pre-Flight Gate & Starter Blueprint
 
 Before generating, updating, or refactoring any frontend component or view:
 
 1. **Verify Token Import:** Ensure `{{TOKENS_PATH}}` is imported into the root layout or application entry point.
-2. **Read Design Specification:** Inspect `{{DESIGN_DOC_PATH}}` to determine the current `BRIEF STATUS` and project constraints.
-3. **Branch by Brief Status:**
+2. **Inspect Starter Kit Blueprint (`./starter-preview.html`):** Check if `./starter-preview.html` exists in the project root. If present, read it before writing code. It is the living architectural ground truth containing verified layouts, navigation shells, metric strips, and card structures. Adapt its proven HTML/CSS directly into your component hierarchy instead of designing from scratch.
+3. **Read Design Specification:** Inspect `{{DESIGN_DOC_PATH}}` to determine the current `BRIEF STATUS` and project constraints.
+4. **Branch by Brief Status:**
    - **Case A: `BRIEF STATUS: DRAFT` (or ambiguous user prompt)**
      - Do **not** write production UI code yet.
      - Prompt the user with 2–4 concise, architectural clarifying questions.
@@ -38,9 +39,9 @@ Before generating, updating, or refactoring any frontend component or view:
      - Await confirmation or adjustments before proceeding.
    - **Case B: `BRIEF STATUS: LOCKED` (and unambiguous prompt)**
      - Skip preliminary interrogation questions.
-     - Begin your response immediately with the standard assumptions confirmation:
+     - Begin your response immediately with the standard assumptions confirmation anchored to the starter blueprint:
        ```markdown
-       > **Assumptions:** [1-line summary specifying scope, target viewport, and active tokens from {{TOKENS_PATH}}]
+       > **Blueprint Anchor:** Extracted from ./starter-preview.html using tokens from {{TOKENS_PATH}}.
        ```
      - Proceed directly to code generation.
 
@@ -59,6 +60,7 @@ AI agents frequently hallucinate peripheral features to make prototypes look "co
   - Mock user profile dropdowns or avatar switchers.
   - Generic marketing footers, cookie consent banners, or celebratory modals.
   - Extraneous tabs or navigation items.
+  - **Unrequested Keyboard Shortcut Badges (`⌘K`, `Ctrl+K`, `(⌘K)`, `<kbd>` elements):** NEVER add fake or unprompted keyboard shortcut pills into search bars, inputs, headers, or navbars on your own. Keep inputs clean unless the user explicitly requested a keyboard-driven command palette.
   - **Fake Brand & Telemetry Cosplay:** Ban inventing fake brand names, fake tier badges (`[PRO v2.4]`, `[BETA]`), fake hardware telemetry (`60 FPS`, `SUB-10MS`), and unrequested Unix `EPOCH` readouts.
 
 ---

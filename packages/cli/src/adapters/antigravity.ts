@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'pathe';
 import { fileURLToPath } from 'node:url';
 import { GeneratorOptions } from '../types.js';
+import { buildTier1Content, buildProjectSnapshot } from '../tier1.js';
 
 async function findRegistryDir(): Promise<string> {
   const currentFile = fileURLToPath(import.meta.url);
@@ -54,6 +55,15 @@ ${coreRuleContent}
 
   await fs.writeFile(ruleFilePath, ruleContent, 'utf-8');
   createdFiles.push(ruleFilePath);
+
+  // 2b. Tiny standalone Tier 1 always-on rule (anti-drift: short rules survive long contexts)
+  const tier1FilePath = path.resolve(rulesDir, 'design-tier1.md');
+  await fs.writeFile(
+    tier1FilePath,
+    `---\ntrigger: always_on\ndescription: "Tier 1 non-negotiable design invariants. Re-apply every UI turn."\n---\n\n${buildTier1Content(options)}\n\n---\n\n${buildProjectSnapshot(options)}\n`,
+    'utf-8'
+  );
+  createdFiles.push(tier1FilePath);
 
   // 3. Handle Tier-2 On-Demand Skills (modular vs. single)
   const skillsDir = path.resolve(targetDir, agentFolder, 'skills/design-system');

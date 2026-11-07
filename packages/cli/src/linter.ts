@@ -54,6 +54,12 @@ const PREFIX_BULLET_REGEX = /(?:^[>'"\s]*|[>'"\s])[●•▪]\s+[A-Za-z0-9]/;
 const CORNER_BADGE_CLASS_REGEX = /\babsolute\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b|\babsolute\b[^"']*\b(?:left|right)-(?:1|2|3|4|5|6|8)\b[^"']*\b(?:top-(?:1|2|3|4|5|6|8)|top-\[[^\]]+\])\b/i;
 const CORNER_PILL_TRAIT_REGEX = /\b(rounded-full|uppercase|tracking-[a-z0-9_-]+|text-xs|badge|pill|chip)\b/i;
 
+// Regex for ad-hoc Tailwind palette colors that bypass tokens.css (e.g. bg-blue-500, text-emerald-400, border-rose-200/50)
+const RAW_PALETTE_CLASS_REGEX = /\b(?:bg|text|border|ring|from|via|to|fill|stroke|divide|outline|shadow)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950)\b/;
+
+// Regex for unrequested decorative keyboard shortcut badges (⌘K, Ctrl+K, (⌘K), <kbd> tags)
+const UNREQUESTED_KBD_SHORTCUT_REGEX = /(?:<kbd>[^<]*(?:⌘|Ctrl|Cmd)[^<]*<\/kbd>|[>'"\s]\(?[⌘^]\s*K\)?|[>'"\s]\(?(?:Ctrl|Cmd)\s*\+\s*K\)?|[>'"\s]⌘K\b)/i;
+
 // Regex for slashed-zero numeric styling
 const SLASHED_ZERO_REGEX = /slashed-zero|font-feature-settings:[^;]*["']zero["']\s*1/i;
 
@@ -203,6 +209,18 @@ async function lintFile(
       }
     }
 
+    // Rule: tokens/no-raw-palette-classes (agent drift: ad-hoc Tailwind palette colors bypass the token contract)
+    if (!isTokensCss && !isRuleOrDoc && !hasException && RAW_PALETTE_CLASS_REGEX.test(line) && !LOW_OPACITY_TEXT_REGEX.test(line)) {
+      violations.push({
+        file: relPath,
+        rule: 'tokens/no-raw-palette-classes',
+        line: lineNumber,
+        snippet: trimmed,
+        message: 'Raw Tailwind palette color class detected (e.g. bg-blue-500). Use token-backed classes/variables (var(--*)) so every page stays visually unified.',
+        severity: 'error'
+      });
+    }
+
     // Rule: slop/no-animate-ping
     if (line.includes('animate-ping')) {
       violations.push({
@@ -303,6 +321,20 @@ async function lintFile(
           message: hasOverlayText
             ? 'Banned media/product overlay badge text detected. Keep media uncluttered without floating corner status pills.'
             : 'Floating corner badge/pill overlay detected. Never place floating status pills on top of cards, media, or product images.',
+          severity: 'error'
+        });
+      }
+    }
+
+    // Rule: slop/no-unprompted-cmd-k (Flag unrequested ⌘K / Ctrl+K keyboard shortcut chips)
+    if (!hasException && !isRuleOrDoc && !line.includes('rule') && !line.includes('banned') && !line.includes('ban')) {
+      if (UNREQUESTED_KBD_SHORTCUT_REGEX.test(line)) {
+        violations.push({
+          file: relPath,
+          rule: 'slop/no-unprompted-cmd-k',
+          line: lineNumber,
+          snippet: trimmed,
+          message: 'Unrequested keyboard shortcut badge (e.g. "⌘K", "(⌘K)", "Ctrl+K") detected. Never add unrequested keyboard shortcut chips inside inputs, search fields, or headers on your own.',
           severity: 'error'
         });
       }

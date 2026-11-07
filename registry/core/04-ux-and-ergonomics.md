@@ -54,17 +54,29 @@ All numbers, financial quantities, telemetry counters, metrics, and timestamps m
 - NEVER use coding monospace fonts (`--font-mono`) or `slashed-zero` on hero numbers, counters, or KPI figures. Always use `var(--font-display)` or `var(--font-sans)` with `font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;` so digits have clean, open-oval zeros (`0`) with zero horizontal jitter.
 - Reserve `var(--font-mono)` strictly for code snippets, file paths, or git hashes.
 
+### Human Eyesight & Readability Floor (No Micro-Print)
+1. **Never use font sizes below `13px` (`0.8125rem`).** Ban Tailwind micro-classes (`text-[9px]`, `text-[10px]`, `text-[11px]`).
+2. **Comfortable Secondary Text (`14px–15px`):** Sub-labels (metadata beneath headings, secondary descriptions beneath primary titles), navigation tabs, and buttons MUST be `0.875rem–0.9375rem` (`14px–15px`) in high-contrast `var(--text-secondary)`—never `11px` dim gray.
+3. **Prominent Card Titles (`18px–20px`):** Primary item titles inside rows or cards (e.g., entity names, item titles) must be `1.125rem–1.25rem` (`18px–20px`, `font-weight: 600`) so they anchor the row clearly.
+4. **Never Combine Small Size + Low Opacity:** If text is `13px–14px`, it MUST use `var(--text-secondary)` (high contrast) and `font-weight: 500`, never low-opacity `opacity-40` / `opacity-50` or `text-zinc-500`.
+
 ---
 
-## 4. Keyboard Navigation & Accessibility
+## 4. Keyboard Navigation, Accessibility & Composite Input Focus
 
-- Never suppress focus outlines without providing a token-bound replacement:
+- **Universal Input Reset & Focus Visibility:** Never suppress focus outlines on interactive controls without providing a token-bound replacement, and delegate composite input focus to the outer container:
   ```css
-  :focus-visible {
-    outline: 2px solid var(--border-focus);
-    outline-offset: 1px;
+  /* Universal Input Reset: Prevent inner rectangular outlines inside composite input wrappers */
+  input, textarea, select {
+    outline: none;
+  }
+
+  button:focus-visible, a:focus-visible, [role="button"]:focus-visible, [role="tab"]:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
   }
   ```
+- **Universal Composite Input Focus Law:** For form fields and composite inputs (inputs with icons, prefixes, search bars, or action buttons), never allow a raw inner `<input>` focus box to clip inside a rounded wrapper; use `outline: none` on the inner input and apply focus feedback (`border-color` or ring) to the outer field container via `:focus-within`.
 - Table headers must include `scope="col"`.
 - Sorting headers must declare `aria-sort="ascending" | "descending" | "none"`.
 - Interactive action triggers must use `<button>` elements, never clickable `<div>` or `<span>` elements without full keyboard event handlers and ARIA semantics.

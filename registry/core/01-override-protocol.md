@@ -7,6 +7,15 @@
 
 ---
 
+## 0. The 3-Tier Priority Hierarchy ("The User Is Always in the Driver's Seat")
+
+Every blueprint, archetype rule, dial, and anti-slop constraint in `agent-design-skills` follows a strict 3-tier hierarchy:
+1. **Priority #1 (Highest) — User's Live Chat Prompt & Explicit Instructions:** If the user asks for a specific layout, section, animation, color, font, badge, or component in their prompt, execute it 100% faithfully with zero pushback. Explicit user intent always overrides default rules.
+2. **Priority #2 — User's Custom Creative Direction (`customPrompt` / Section 0 of `DESIGN.md`):** Overrides any conflicting archetype or domain default.
+3. **Priority #3 (Fallback Only) — Archetype Rules, Domain Blueprints & Anti-Slop Defaults:** These govern the UI **ONLY where the user's prompt is silent or vague** (e.g., on a short 1-sentence prompt), filling in missing architectural decisions so the agent never falls back to generic AI slop.
+
+---
+
 ## 1. Intent Detection: Singular vs. Plural Overrides
 
 When the user requests an aesthetic, geometric, or stylistic modification during development, parse the linguistic intent before touching code:
@@ -22,7 +31,7 @@ When the user requests an aesthetic, geometric, or stylistic modification during
   3. Immediately record the exception in `{{DESIGN_DOC_PATH}}` under `## 7. Intentional Local Exceptions`:
      ```markdown
      | Component / File | Selector | Rule Diverged From | Business Justification | Source Marker |
-     | SettlementTable.tsx | .btn-settle | Pill border-radius | High-priority primary trigger | `/* @design-exception: High-priority trigger */` |
+     | DataTable.tsx | .btn-primary | Pill border-radius | High-priority primary trigger | `/* @design-exception: High-priority trigger */` |
      ```
 
 ### Case B: Plural Intent (Global Token Update)

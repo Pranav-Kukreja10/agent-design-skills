@@ -48,31 +48,61 @@
   ],
   "archetypes": [
     {
-      "id": "dark-obsidian-technical",
-      "name": "Dark Obsidian Technical",
+      "id": "dark-obsidian-linear",
+      "name": "Dark Obsidian Linear",
       "polarity": "dark",
-      "path": "archetypes/dark-obsidian-technical.md",
-      "hint": "Crisp 1px hairlines, carbon surfaces hue 250, forensic developer/settlement consoles",
+      "path": "archetypes/dark-obsidian-linear.md",
+      "hint": "Dark · Geist + Instrument Sans · Electric Indigo · Crisp 1px borders & subtle glass",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "subtle",
       "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "consumer-retail-studio",
+      "name": "Consumer Retail & E-Commerce Studio",
+      "polarity": "light",
+      "path": "archetypes/consumer-retail-studio.md",
+      "hint": "Light · Oswald + Plus Jakarta Sans · Stark Monochrome · Borderless #F5F5F7 studio tiles",
+      "defaultFeeling": "calm",
+      "defaultRadius": "medium",
+      "defaultBlur": "flat"
+    },
+    {
+      "id": "data-dense-observability",
+      "name": "Data-Dense Analytics & Observability",
+      "polarity": "dark",
+      "path": "archetypes/data-dense-observability.md",
+      "hint": "Dark · JetBrains Mono + IBM Plex Sans · Telemetry Cyan · High-density metrics & tabular grids",
+      "defaultFeeling": "urgent-precise",
+      "defaultRadius": "sharp",
+      "defaultBlur": "subtle-frost"
+    },
+    {
+      "id": "atmospheric-aurora-launch",
+      "name": "Atmospheric Aurora & Product Launch",
+      "polarity": "dark",
+      "path": "archetypes/atmospheric-aurora-launch.md",
+      "hint": "Dark · Cabinet Grotesk + Satoshi · Luminous Aurora · Specular glass & spotlight meshes",
+      "defaultFeeling": "calm",
+      "defaultRadius": "high",
+      "defaultBlur": "deep-glass"
     },
     {
       "id": "editorial-serif-paper",
       "name": "Editorial Serif Paper",
       "polarity": "light",
       "path": "archetypes/editorial-serif-paper.md",
-      "hint": "Warm bone/alabaster paper, high-contrast serif typography, literary craft",
+      "hint": "Light · Newsreader + Work Sans · Warm Terracotta · High-contrast broadsheet editorial craft",
       "defaultFeeling": "calm",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
     },
     {
-      "id": "neo-brutalism",
+      "id": "neo-brutalist-studio",
       "name": "Neo-Brutalist Studio",
       "polarity": "light",
-      "path": "archetypes/neo-brutalism.md",
-      "hint": "Hard 2px black borders, hard offset shadows, zero radius, saturated tactile accents",
+      "path": "archetypes/neo-brutalist-studio.md",
+      "hint": "Light · Space Grotesk + Syne · Acid Lime · Hard 2px black borders & offset drop shadows",
       "defaultFeeling": "playful-tactile",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -82,7 +112,7 @@
       "name": "Swiss Typographic Grid",
       "polarity": "light",
       "path": "archetypes/swiss-typographic-grid.md",
-      "hint": "Cold mathematical exposed hairlines, pure 12-col grid, objective clarity",
+      "hint": "Light · Cabinet Grotesk + Space Grotesk · International Orange · Mathematical exposed 1px grid hairlines",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -92,7 +122,7 @@
       "name": "Kinetic Industrial Mono",
       "polarity": "dark",
       "path": "archetypes/kinetic-industrial-mono.md",
-      "hint": "High-velocity tabular monospace telemetry, industrial console instrumentation",
+      "hint": "Dark · JetBrains Mono + IBM Plex Sans · Amber Glow · High-velocity tabular monospace telemetry",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -102,7 +132,7 @@
       "name": "Bento Modular System",
       "polarity": "dark",
       "path": "archetypes/bento-modular-system.md",
-      "hint": "Asymmetric 12-col bento grid, distinct card visual weight, structured hardware depth",
+      "hint": "Dark · Satoshi + General Sans · Cobalt Pulse · Structured asymmetric 12-col bento cells",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "subtle",
       "defaultBlur": "subtle-frost"
@@ -112,7 +142,7 @@
       "name": "Spatial Glass VisionOS",
       "polarity": "dark",
       "path": "archetypes/spatial-glass-visionos.md",
-      "hint": "Optical depth, 20px frosted backdrop blur, 1px specular rim reflection highlights",
+      "hint": "Dark · Outfit + DM Sans · Cyan Specular · Translucent optical blur & 1px rim highlights",
       "defaultFeeling": "calm",
       "defaultRadius": "high",
       "defaultBlur": "deep-glass"
@@ -122,7 +152,7 @@
       "name": "Quiet Luxury Atelier",
       "polarity": "light",
       "path": "archetypes/quiet-luxury-atelier.md",
-      "hint": "Whisper-quiet prestige, warm cashmere bone paper, haute couture serif restraint",
+      "hint": "Light · Cormorant Garamond + DM Sans · Champagne Gold · Whisper-quiet ivory paper & haute couture restraint",
       "defaultFeeling": "calm",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -132,7 +162,7 @@
       "name": "Warm Artisan Craft",
       "polarity": "light",
       "path": "archetypes/warm-artisan-craft.md",
-      "hint": "Earthy raw linen canvas, terracotta clay accents, hand-finished tactile bevels",
+      "hint": "Light · Fraunces + Cabinet Grotesk · Terracotta Clay · Earthy raw linen canvas & tactile bevels",
       "defaultFeeling": "calm",
       "defaultRadius": "subtle",
       "defaultBlur": "flat"
@@ -142,7 +172,7 @@
       "name": "Japanese Minimal Zen",
       "polarity": "light",
       "path": "archetypes/japanese-minimal-zen.md",
-      "hint": "Ma negative space, washi mist paper, asymmetric tranquil balance, deep sumi ink",
+      "hint": "Light · Noto Serif Display + Work Sans · Sumi Charcoal · Tranquil Ma negative space & washi mist paper",
       "defaultFeeling": "calm",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -152,7 +182,7 @@
       "name": "Scandinavian Warm Minimal",
       "polarity": "light",
       "path": "archetypes/scandinavian-warm-minimal.md",
-      "hint": "Soft birch/oat neutrals, natural Nordic daylight, functional humanism",
+      "hint": "Light · Familjen Grotesk + DM Sans · Nordic Spruce · Soft birch/oat canvas & functional humanism",
       "defaultFeeling": "calm",
       "defaultRadius": "subtle",
       "defaultBlur": "subtle-frost"
@@ -162,7 +192,7 @@
       "name": "Retro Tactile Analog",
       "polarity": "dark",
       "path": "archetypes/retro-tactile-analog.md",
-      "hint": "Teenage Engineering physical keycap bevels, mechanical clicky toggles, matte grey",
+      "hint": "Dark · Space Mono + Chivo · Matte Industrial · Keycap tactile bevels & mechanical clicky toggles",
       "defaultFeeling": "playful-tactile",
       "defaultRadius": "subtle",
       "defaultBlur": "flat"
@@ -172,7 +202,7 @@
       "name": "Y2K Acid Cyber",
       "polarity": "dark",
       "path": "archetypes/y2k-acid-cyber.md",
-      "hint": "Chrome wireframes, high-chroma neon green vector accents, millennium cyber energy",
+      "hint": "Dark · Syne + Chakra Petch · Neon Chartreuse · Chrome wireframes & millennium cyber energy",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -182,7 +212,7 @@
       "name": "Playful Clay Consumer",
       "polarity": "light",
       "path": "archetypes/playful-clay-consumer.md",
-      "hint": "Tactile soft-inflated marshmallow surfaces, puffy clay pill corners, consumer joy",
+      "hint": "Light · Bricolage Grotesque + Fredoka · Lavender Joy · Soft marshmallow surfaces & puffy clay pill corners",
       "defaultFeeling": "playful-tactile",
       "defaultRadius": "high",
       "defaultBlur": "subtle-frost"
@@ -192,7 +222,7 @@
       "name": "Vaporwave CRT Terminal",
       "polarity": "dark",
       "path": "archetypes/vaporwave-crt-terminal.md",
-      "hint": "1980s phosphor scanline overlays, neon sunset nostalgia, terminal command lines",
+      "hint": "Dark · VT323 + Fira Code · Phosphor Cyan · 1980s scanline overlays & terminal nostalgia",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "subtle",
       "defaultBlur": "flat"
@@ -202,7 +232,7 @@
       "name": "High-Trust Fintech Clarity",
       "polarity": "light",
       "path": "archetypes/high-trust-fintech-clarity.md",
-      "hint": "Stripe & Mercury institutional clarity, pristine white tables, calm financial certainty",
+      "hint": "Light · Sora + Public Sans · Institution Navy · Institutional clarity & calm financial certainty",
       "defaultFeeling": "authoritative",
       "defaultRadius": "subtle",
       "defaultBlur": "subtle-frost"
@@ -212,7 +242,7 @@
       "name": "Clinical Biotech Precision",
       "polarity": "light",
       "path": "archetypes/clinical-biotech-precision.md",
-      "hint": "Sterile lab-grade contrast, medical diagnostics, forensic genomic data tables",
+      "hint": "Light · Instrument Sans + Public Sans · Cold Clinical Cyan · Sterile lab-grade contrast & forensic data tables",
       "defaultFeeling": "urgent-precise",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -222,7 +252,7 @@
       "name": "Civic Govtech Accessible",
       "polarity": "light",
       "path": "archetypes/civic-govtech-accessible.md",
-      "hint": "WCAG AAA 10:1 ultra-accessible contrast, public sovereign identity, civic clarity",
+      "hint": "Light · Atkinson Hyperlegible + Public Sans · Sovereign Blue · WCAG AAA 10:1 ultra-accessible public clarity",
       "defaultFeeling": "authoritative",
       "defaultRadius": "sharp",
       "defaultBlur": "flat"
@@ -318,7 +348,7 @@
       "id": "data-tool",
       "name": "Split-Pane Query Explorer & Tool",
       "path": "starter-kits/data-tool/template.html",
-      "description": "Split-pane query/inspector, ⌘K command bar, dense tabular numbers, inline error recovery"
+      "description": "Split-pane query/inspector, command bar, dense tabular numbers, inline error recovery"
     }
   ]
 }

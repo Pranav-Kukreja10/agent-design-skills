@@ -1,212 +1,321 @@
-# agent-design-skills (v1.1)
+# agent-design-skills
 
-> **Eliminate AI UI Slop.** Enforce cross-page geometric unity, copy honesty, and iteration discipline across AI coding agents.
+> **Eliminate AI UI Slop.** A zero-LLM design system compiler, multi-agent governance generator, and static UI linter that enforces human-crafted frontend aesthetics across AI coding agents.
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Pranav-Kukreja10/agent-design-skills)
+[![npm version](https://img.shields.io/npm/v/agent-design-skills.svg?color=indigo)](https://www.npmjs.com/package/agent-design-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Zero-Slop Certified](https://img.shields.io/badge/Anti--Slop-Enforced-indigo.svg)](evals/rubric.md)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-blue.svg)](https://nodejs.org/)
+[![Status](https://img.shields.io/badge/Status-Production--Ready-blueviolet.svg)](#)
 
 ---
 
-## The AI UI Convergence Crisis
+## What It Is
 
-Left to their own devices, LLMs generate virtually indistinguishable user interfaces:
-- **The Same Purple-to-Blue Gradients:** `linear-gradient(135deg, #6366f1, #a855f7)` plastered onto every call-to-action.
-- **The Same 3 Equal-Width KPI Cards:** Three identical boxes across the top (`250K / sec`, `< 48 ms`, `SOC2 Compliant`), confusing landing-page marketing claims with functional workspace consoles.
-- **The Same Font Monoculture:** Every AI defaults to `Inter`, `Roboto`, or `Plus Jakarta Sans`, erasing brand personality.
-- **Low-Contrast Grey Text:** `oklch(0.5 0 0)` or `#6b7280` that fails WCAG accessibility on dark canvas backgrounds.
-- **Cross-Page Styling Drift:** Generating Page 2 after Page 1 causes the agent to hallucinate new corner radiuses, new button paddings, and new colors, destroying UI coherence.
-- **Speculative Feature Creep:** Agents routinely inject unprompted dark mode toggles, notification bells with fake unread badges, and search bars when not requested.
+`agent-design-skills` is a developer tool and design governance compiler for modern frontend teams collaborating with AI coding agents (**Google Antigravity**, **Cursor**, **Claude Code**, **OpenAI Codex**, and **Web Builders** like Lovable, v0, Bolt, and Stitch).
 
-`agent-design-skills` solves this by injecting an **enforceable design governance layer** directly into your AI agent's prompt pipeline, pairing a **compressed (<1,500 token) Always-On Core Rule** with **deep on-demand architectural references**, token-wired starter kits, and a static analysis linter.
+With one terminal command, it compiles a complete design token contract (`tokens.css` and `tokens.json`), generates agent-specific rule and reference architectures, unpacks production starter blueprints (`starter-preview.html`), and enforces strict UI ergonomics through a zero-LLM static linter.
 
 ---
 
-## Architectural Highlights (v1.0)
+## Why It Exists: The Problem It Solves
 
-### 1. Two-Tier Context Routing
-- **Tier 1 (Always-On Core Rule):** Under 1,500 tokens. Loaded on every single inference pass. Enforces the Anti-Slop Firewall, 5 mandatory UI states, sentence case casing, concentric corner math, and the active design token contract.
-- **Tier 2 (On-Demand Deep Skills):** In modular mode, deep architectural modules (`00-contract-governance.md` through `06-component-recipes.md`) and the selected archetype specification are placed in `.agent/skills/design-system/references/` (or Cursor `.mdc` topic rules) and dynamically invoked only when needed.
+When developers prompt AI coding models (Gemini 2.5/3, Claude 3.5/3.7, GPT-4o, o3) to build frontends, the models commit predictable, pervasive aesthetic and ergonomic flaws:
+- **Unreadable Micro-Text & Dim Gray Copy:** AI models default to `10px–11px` font sizes and low-contrast dim zinc (`text-zinc-500`, `opacity-40`, or washed-out muted grays) that fail WCAG readability on dark or light canvases.
+- **Generic "Box-in-a-Box" Nesting:** Placing cards inside cards inside cards, trapping content in multiple visible border lines and suffocating whitespace.
+- **Decorative Dot & Badge Slop:** Slapping small green/amber circle dots (`w-2 h-2 rounded-full`) next to every word, inventing fake version chips (`[PRO v2.4]`, `[BETA]`), and roleplaying hardware telemetry (`SUB-10MS`, `60 FPS`).
+- **Corner Badges on Media & Art:** Sticking absolute-positioned floating stickers (`• PLAYING`, `NEW`, `HOT`, `BESTSELLER`, `HD 1080P`) onto the corners of album art, video thumbnails, and product photography.
+- **Broken Mobile Navigation & Hover Traps:** Designing desktop hover-dependent drop-downs that vanish on touch screens, or floating bottom buttons that slice into mobile content without safe-area clearance.
+- **Cross-Page Aesthetic Drift:** When asked to build a second page, the agent hallucinates new border radii, arbitrary hex colors, new font stacks, and conflicting layouts.
 
-### 2. Smart Non-Destructive `DESIGN.md` Merge
-Re-running the CLI compiler never wipes out your ongoing work:
-- **Sections 0–4** (Creative Direction, Token Manifest, Archetype DNA, Voice, State Budgets) are refreshed to reflect newly compiled configurations.
-- **Sections 5–8** (`Component Inventory`, `Active Revision Passes`, `Intentional Local Exceptions`, and `Polish Backlog`) are **cleanly preserved** from your existing `DESIGN.md`.
+### Solved at Three Levels
 
-### 3. Strict Scope Lock
-The Always-On Core Rule forbids agents from adding unrequested UI clutter. No speculative notification bells, no decorative status dots, no fake compliance claims, and no unprompted dark mode toggles.
+Markdown prompt instructions alone fail because LLMs get lazy, suffer attention decay, or prioritize generic training priors. `agent-design-skills` solves this through a **3-tier defense-in-depth architecture**:
 
-### 4. Mathematical Geometric Unity
-- **Concentric Corner Math:** Outer and inner borders strictly observe:
-  $$\text{Radius}_{\text{inner}} = \max(0\text{px}, \text{Radius}_{\text{outer}} - \text{Padding})$$
-- **3-Step Vertical Section Rhythm:** Standardized clamp values (`--section-py-tight`, `--section-py-normal`, `--section-py-breathing`) eliminate arbitrary margin guessing.
-- **True OKLCH Color Space:** Fully accessible surfaces with verified contrast ($\ge 7:1$ AAA for primary text, $\ge 4.5:1$ AA for muted text).
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│ 1. Browser-Level CSS Guardrails (tokens.css)                           │
+│    13px font floors, automatic anti-dimming overrides, :focus-within  │
+│    resets, open-oval tabular numerals, deterministic contrast flipping │
+├────────────────────────────────────────────────────────────────────────┤
+│ 2. Two-Tier Agent Context Architecture                                  │
+│    • Tier 1: Compressed Always-On Core Rule (<1,500 tokens)            │
+│    • Tier 2: Deep On-Demand Skills & Living Starter Blueprint          │
+├────────────────────────────────────────────────────────────────────────┤
+│ 3. Deterministic Static Linting (npx agent-design-skills lint)         │
+│    Zero-LLM regex static analysis & SHA-256 hash freeze verification   │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+1. **Browser-Level CSS Enforcement (`tokens.css`):** Even if an agent writes `text-[10px]` or `text-zinc-500`, `tokens.css` deterministically clamps font sizes to a readable `13px` floor and boosts gray classes to high-contrast WCAG-compliant tokens directly in the DOM.
+2. **Two-Tier Agent Context Architecture:** Agents receive a tight, compressed Tier 1 rule loaded on every inference pass, backed by deep on-demand reference skills and a living starter preview (`starter-preview.html`) that agents inspect for proven component markup before writing new views.
+3. **Deterministic Static Linting (`npx agent-design-skills lint`):** Fast, zero-LLM static analysis that scans markup and styling for hardcoded colors, AI tropes, fake telemetry, unreadable micro-text, and broken token contracts before code reaches production.
 
 ---
 
-## Quickstart
+## Core Features
 
-### Interactive Setup Wizard
-Run in any project root:
-```bash
-npx agent-design-skills
-```
-The interactive wizard guides you through selecting:
-1. Target AI Agent platform (Antigravity, Cursor, Claude Code, Windsurf, Generic Web)
-2. Frontend Framework (Tailwind CSS v4, Plain CSS / HTML, CSS Modules)
-3. Archetype feeling or family (18 canonical archetypes)
-4. Primary font pairing (curated with zero `Inter`/`Roboto` defaults)
-5. Context mode (`modular` multi-file skill or `single` compiled rule)
+### 1. Multi-Agent Governance in a Single Run
+`agent-design-skills` inspects your workspace and generates native rule files for all active coding agents simultaneously:
+- **Google Antigravity:** `.agent/rules/design-core.md` (Always-On Core Rule) + `.agent/skills/design-system/SKILL.md` with deep reference modules in `.agent/skills/design-system/references/`.
+- **Cursor:** `.cursor/rules/00-design-core.mdc` (Always-On Rule) + `.cursor/rules/` topic rules.
+- **Claude Code:** Project-level `CLAUDE.md` design governance instructions.
+- **OpenAI Codex:** Clean workspace `AGENTS.md` instruction file.
+- **Web Builders:** `WEB_BUILDER_PROMPT.md` designed for pasting into Lovable, v0, Bolt, and Stitch.
 
-### Express `--fast` Mode
-Scaffold a complete, production-ready workspace in seconds with pre-baked starter kits:
-```bash
-# Dashboard / Data Console
-npx agent-design-skills --fast --starter dashboard
+### 2. Deterministic OKLCH Token Compiler (`tokens.css` & `tokens.json`)
+- **Automatic WCAG Contrast Floors:** Computes mathematically guaranteed contrast for `--text-primary`, `--text-secondary`, and `--text-muted` in both Dark and Light modes (never dimmer than `oklch(0.75)` in dark mode, never lighter than `oklch(0.40)` in light mode).
+- **`shadcn/ui` & Tailwind Variable Compatibility:** Ships with built-in semantic aliases for standard UI component libraries (`--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--primary`, `--muted`, `--border`, `--input`, `--ring`, `--radius`) mapped seamlessly across `:root`, `[data-theme="light"]`, and `[data-theme="dark"]`.
+- **Dynamic `--accent-foreground` Calculation:** Evaluates accent lightness: if $L \ge 0.70$ (e.g., acid lime, electric chartreuse, light neutral), text flips to dark ink `oklch(0.12 0.01 H)`; otherwise, it uses crisp white `oklch(0.98 0.005 H)`.
+- **Automated Webfont `@import` Generation:** Generates optimized font imports for **Google Fonts** and **Fontshare** (`Satoshi`, `Cabinet Grotesk`, `General Sans`, `Clash Display`, `Clash Grotesk`, `Switzer`, `Ranade`, `Zodiak`, `Sentient`, `Bespoke Serif`), or cleanly binds custom font overrides.
+- **Anti-Dimming Overrides:** Emits CSS rules that remap low-contrast Tailwind classes (`text-zinc-500`, `text-slate-500`, `text-neutral-500`, `opacity-40`, `opacity-50`) to high-contrast semantic tokens (`var(--text-secondary)` / `var(--text-muted)`).
+- **Composite `<input>` Focus Reset:** Inner `input`, `textarea`, and `select` elements use `outline: none` so composite fields delegate focus outlines and border highlights cleanly to their outer rounded container via `:focus-within`.
+- **Open-Oval Tabular Numerals:** Configures `font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1, "zero" 0;` so numerical figures align with zero horizontal jitter and without unrequested slashed zeros (`0̸`).
+- **Tactile Motion Physics:** Provides collision-free `.spring-interactive` and button active press states with zero unnatural bounce or lingering oscillations.
 
-# High-Conversion Landing Page
-npx agent-design-skills --fast --starter landing-waitlist
+### 3. The 3-Tier Priority Hierarchy ("User Always in the Driver's Seat")
+Every rule, dial, and blueprint strictly obeys a 3-tier hierarchy:
+1. **Priority #1 (Highest) — User's Live Chat Prompt:** If you ask for a specific layout, color, badge, font, or component in chat, the agent executes it 100% faithfully with zero pushback.
+2. **Priority #2 — User's Custom Creative Direction (Section 0 of `DESIGN.md`):** Custom project-level directives override default archetype aesthetics or tone.
+3. **Priority #3 (Fallback Only) — Archetype Defaults & Domain Blueprints:** Governs **only where the user prompt is silent or vague** (e.g., "build an audio player"), providing high-craft structure without guessing arbitrary layouts.
 
-# Mobile App Interface
-npx agent-design-skills --fast --starter mobile-app
+### 4. Fallback Domain Blueprints & Calibration Dials
+When a prompt is brief, agents rely on 4 domain fallback blueprints (with the mandatory rule: *if the user specifies custom sections, ALWAYS use the user's structure instead*):
+- **E-Commerce & Retail Studio:** Asymmetric product hero with split gallery, sticky add-to-bag bar, curated single-row collection (<= 4 items), sticky mobile checkout dock.
+- **Media & Music Player / Streaming:** Edge-to-edge canvas with artwork focal point, fixed bottom player dock with scrubber & centered play trigger, asymmetric playlist split pane, centered artwork overlay (no corner pills).
+- **SaaS Workspace & Analytics Dashboard:** Clean command/filter bar, asymmetric 2-pane metric/activity split (never 3 equal cards), high-density data grid with right-aligned tabular numerals, empty state handoff.
+- **Product Launch & Waitlist / Editorial:** Balanced display headline on open canvas, minimalist single-field waitlist dock, asymmetric feature reveal with breathing room, zero ungrounded marketing claims.
+- **Calibration Dials (1–10 scale):** Generates `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY` to govern rhythm and density quantitatively.
+- **Mobile `100dvh` Viewport Law:** Mandates `min-h-[100dvh]` / `100dvh` for heroes and app shells, eliminating the mobile URL bar jump caused by raw `100vh`.
 
-# Complex Data & Analytics Tool
-npx agent-design-skills --fast --starter data-tool
-```
+### 5. Non-Destructive Redesign Law
+When asked to redesign or modernize existing applications:
+- **100% Business Logic Preservation:** All existing React/Vue/Svelte state hooks (`useState`, `useEffect`, `useQuery`), data fetching logic, API routes, event handlers, and form validation schemas remain 100% intact.
+- **In-Place Reskinning:** Audits existing DOM elements, swapping hardcoded hex values, generic grays (`bg-gray-100`), and nested card boxes for semantic `tokens.css` variables without breaking component hierarchy.
+
+### Anti-Drift: Tier 1 Invariants
+Agents obey rules on turn 1, then forget them by turn 10. To fight attention decay, generated rules include a short **Tier 1** block (8 non-negotiable invariants: tokens only, one look site-wide, zero dots, zero unrequested badges, no box-in-box, no decorative color/backgrounds, no unrequested elements, readable text) that is:
+- placed at the **top and bottom** of the always-on rule (primacy + recency),
+- also written as its own tiny always-on file (`.agent/rules/design-tier1.md`, `.cursor/rules/00-design-tier1.mdc`),
+- paired with a **Re-Anchor Protocol** (re-open `tokens.css` and a sibling page every UI turn so new pages copy the existing shell),
+- and a **Pre-Send Self-Audit** that makes the agent scan its own diff and end UI replies with a `Tier-1 audit:` line.
+
+The user's live prompt always outranks these defaults.
+
+### 6. Visual Restraint & Anti-Slop Firewall
+Enforces permanent engineering laws documented in `registry/core/02-anti-slop-firewall.md`:
+- **Open-Canvas Layout Discipline:** Ban on "box-in-a-box" card nesting. Workspaces use borderless rows divided by subtle 1px hairlines (`var(--border-hairline)`) or open canvas structures.
+- **Strict Dot & Bullet Discipline:** Banning decorative colored dot elements (`w-2 h-2 rounded-full`, static or animated) and prefix bullet characters (`•`, `●`, `▪`) on labels and status badges. Status is communicated through clean typography or text color alone.
+- **Clean Media & Artwork Law:** Banning floating corner badges, tags, and promotional pills (`• PLAYING`, `NOW PLAYING`, `NEW`, `HOT`, `BESTSELLER`, `HD 1080P`) overlaid on album art, video thumbnails, and product photography.
+- **Ban on Unrequested Keyboard Shortcuts (`⌘K`, `Ctrl+K`, `(⌘K)`):** Banning fake keyboard shortcut chips (`⌘K`, `Ctrl+K`, `(⌘K)`, `<kbd>` elements) inside search bars, inputs, headers, or navbars unless explicitly requested with functional keydown handlers.
+- **Zero Fake Telemetry Cosplay:** Strict ban on invented version badges (`[PRO v2.4]`, `[BETA]`), fake hardware readouts (`SUB-10MS`, `60 FPS`), and Unix `EPOCH` stamps.
+- **Sample Data Asset Uniqueness:** Flagging duplicated mock image URLs to ensure every sample record features a distinct visual asset.
+
+### 7. Mobile-First & Adaptive-Hybrid Ergonomics
+- **Fixed Bottom Dock Navigation:** On `<768px` viewports, navigation automatically collapses into a fixed bottom dock (`position: fixed; bottom: 0; left: 0; right: 0; z-index: 20`).
+- **Safe Scroll Clearance:** Content containers reserve `padding-bottom: calc(5.5rem + env(safe-area-inset-bottom))` so lists and interactive rows are never clipped or trapped beneath floating bottom bars.
+- **Touch-Friendly Targets:** All buttons, filter pills, and interactive list rows observe a `>=44px` minimum touch target.
+
+### 8. Zero-LLM Static Linter (`lint`) & Hash Lock (`freeze` / `unfreeze`)
+- **Fast Static Analysis:** Evaluates project code against token and anti-slop rules in milliseconds without calling LLM APIs.
+- **SHA-256 Token Lock:** `npx agent-design-skills freeze` computes cryptographic checksums across design tokens and governance rules into `.design-skills.lock`. Any unauthorized tampering or agent hallucination causes `lint` to immediately fail until `unfreeze` is explicitly run.
 
 ---
 
-## CLI Command Reference
+## Quick Start & CLI Commands
 
-### `init`
-Compile and scaffold the design governance layer.
+### 1. Interactive Setup Wizard
+Run in any project directory to launch the interactive prompt:
 ```bash
-npx agent-design-skills init [options]
+npx agent-design-skills@latest
 ```
-| Flag | Description | Options |
-| :--- | :--- | :--- |
-| `-a, --agent <type>` | Target AI agent platform | `antigravity`, `cursor`, `claude`, `windsurf`, `generic` |
-| `-f, --framework <type>` | CSS/styling framework | `tailwind-v4`, `plain-css`, `raw-html` |
-| `-t, --archetype <id>` | Canonical archetype ID | Any of the 18 archetype IDs |
-| `-s, --starter <id>` | Pre-baked starter kit | `dashboard`, `landing-waitlist`, `mobile-app`, `data-tool` |
-| `--fast` | Express mode using starter defaults | — |
-| `--mode <type>` | Architecture context mode | `modular` (Tier 1 + Tier 2), `single` (combined) |
-| `-y, --yes` | Skip prompts and accept defaults | — |
-
-### `lint`
-Run static analysis on your project templates and HTML/CSS to catch AI slop and token violations before committing or merging.
+*or explicitly:*
 ```bash
-npx agent-design-skills lint [path]
+npx agent-design-skills init
 ```
-Checks performed:
-- [x] Zero raw hex codes (`#111827`, `#6366f1`) or inline `oklch(...)` literals in templates
-- [x] Zero prohibited purple-to-blue linear gradients
-- [x] Zero 3-equal-card KPI rows in workspace views
-- [x] Zero static marketing/compliance claims in application consoles
-- [x] Zero decorative pill chips on section headers
-- [x] Zero fake colored status dots in footers
-- [x] Enforcement of sentence case casing on buttons and headings
-- [x] Concentric corner radius mathematical alignment
 
-### `freeze` & `unfreeze`
-Lock your design contract to protect against model hallucinations during long coding sessions:
+The CLI will:
+1. Detect active coding agents in your workspace.
+2. Prompt for your preferred **Design Archetype** (with standardized 4-part visual hints).
+3. Select a **Starter Kit** (`dashboard`, `landing-waitlist`, `mobile-app`, `data-tool`, or `none`).
+4. Select a **Font Pairing** (Pairing A, B, C, keep existing, or custom font input).
+5. Choose geometric corner radius scale (`sharp`, `subtle`, `medium`, `high`, `pill`) and surface blur.
+6. Compile all tokens, preview blueprints, and agent rule files.
+
+### 2. Express Mode (`--fast`)
+Scaffold complete design governance with production defaults (`dark-obsidian-linear`, dashboard starter kit, Antigravity) in under 2 seconds:
 ```bash
-# Lock the brief against unsolicited modifications
+npx agent-design-skills --fast
+```
+
+With specific starter kits:
+```bash
+npx agent-design-skills --fast -s mobile-app
+npx agent-design-skills --fast -s landing-waitlist
+npx agent-design-skills --fast -s data-tool
+```
+
+### 3. Static UI Linter (`lint`)
+Scan your project files (`.html`, `.jsx`, `.tsx`, `.vue`, `.svelte`, `.css`) for token leaks, raw hex colors, AI tropes, and micro-text:
+```bash
+npx agent-design-skills lint
+```
+Scan a specific subdirectory:
+```bash
+npx agent-design-skills lint ./src
+```
+
+### 4. Lock & Unlock Design Tokens (`freeze` / `unfreeze`)
+Protect your compiled tokens and agent rules against model drift during long coding sessions:
+```bash
+# Lock all tokens and rules with SHA-256 signatures (.design-skills.lock)
 npx agent-design-skills freeze
 
-# Unlock the brief for active redesign passes
+# Unlock files for intentional design updates
 npx agent-design-skills unfreeze
 ```
 
----
+### CLI Options Table
 
-## The 18 Canonical Archetypes
-
-All archetypes feature de-converged font pairings (zero `Inter`, `Roboto`, or `Plus Jakarta Sans`) and hand-tuned OKLCH palettes:
-
-### Family A: Technical & Precision
-| Archetype ID | Theme | Key Fonts | Aesthetic Profile |
-| :--- | :--- | :--- | :--- |
-| `dark-obsidian-technical` | Dark | Geist / Geist Mono | Sub-hairline borders, specular highlights, dense data tables |
-| `swiss-typographic-grid` | Light | Cabinet Grotesk / Space Grotesk | Pure 12-col mathematical grid, exposed 1px borders, zero radius |
-| `kinetic-industrial-mono` | Dark | JetBrains Mono / IBM Plex Sans | High-density telemetry, amber accents, tabular data readouts |
-| `bento-modular-system` | Adaptive | Satoshi / General Sans | Asymmetric 12-col bento cells, subtle inner borders, clean cards |
-| `spatial-glass-visionos` | Dark | Outfit / DM Sans | Translucent optical blur, specular rim lighting, floating layers |
-
-### Family B: Editorial, Luxury & Organic
-| Archetype ID | Theme | Key Fonts | Aesthetic Profile |
-| :--- | :--- | :--- | :--- |
-| `editorial-warm-serif` | Light/Warm | Fraunces / Newsreader / Plus Sans | Rich literary rhythm, warm alabaster canvas, refined serif titles |
-| `quiet-luxury-atelier` | Light/Warm | Cormorant Garamond / Instrument Serif | Extreme whitespace, champagne neutral surfaces, ultra-minimal |
-| `warm-artisan-craft` | Light/Earthy | Fraunces / Cabinet Grotesk | Terracotta & sage accents, linen texture, warm organic clay tones |
-| `japanese-minimal-zen` | Light/Mist | Noto Serif / Work Sans | Ma negative space, quiet asymmetric balance, washi mist surfaces |
-| `scandinavian-warm-minimal`| Light | Familjen Grotesk / Source Serif 4 | Oat/birch canvas, soft rounded edges, understated spruce accents |
-
-### Family C: Expressive, Tactile & Neo-Retro
-| Archetype ID | Theme | Key Fonts | Aesthetic Profile |
-| :--- | :--- | :--- | :--- |
-| `neo-brutalist-clean` | Light/Punchy | Syne / Space Grotesk | High-contrast 2px ink borders, unblurred offset drop shadows |
-| `retro-tactile-analog` | Adaptive | Space Mono / DM Sans | Physical bevels, recessed display slots, Teenage Engineering vibe |
-| `y2k-acid-cyber` | Dark | VT323 / Syne Mono | Pitch black canvas, electric chartreuse accents, raw 1px neon borders |
-| `playful-clay-consumer` | Light | Bricolage Grotesque / Plus Sans | Tactile dual-layer shadows, friendly rounded pills, warm microcopy |
-| `vaporwave-crt-terminal` | Dark | VT323 / Fira Code | Deep indigo void, phosphorescent cyan & magenta, scanline overlay |
-
-### Family D: Domain-Specialized
-| Archetype ID | Theme | Key Fonts | Aesthetic Profile |
-| :--- | :--- | :--- | :--- |
-| `high-trust-fintech-clarity`| Light | Sora / Public Sans | High-contrast enterprise navy canvas, tabular numbers, clear variance |
-| `clinical-biotech-precision`| Light | Geist / Space Mono | Sterile lab white, cold cyan indicators, dense multi-well telemetry |
-| `civic-govtech-accessible` | Light | Atkinson Hyperlegible / DM Sans | Ultra-accessible AAA contrast, 3px visible focus rings, clear forms |
+| Flag | Description | Options / Example |
+| :--- | :--- | :--- |
+| `-a, --agents <agents>` | Target agent platforms (comma-separated or `all`) | `antigravity`, `cursor`, `claude-codex`, `web-builders`, `all` |
+| `-f, --fast` | Fast express mode with sensible defaults | — |
+| `-t, --archetype <id>` | Canonical archetype ID | `dark-obsidian-linear`, `consumer-retail-studio`, etc. |
+| `-s, --starter-kit <kit>` | Pre-baked starter blueprint | `dashboard`, `landing-waitlist`, `mobile-app`, `data-tool`, `none` |
+| `-m, --mode <mode>` | Context structure mode | `modular` (default) or `single` |
+| `-F, --fonts <mode>` | Font selection mode or custom fonts | `A`, `B`, `C`, `keep`, or `"Display,Sans,Mono"` |
+| `-d, --dir <dir>` | Target output directory (default: `.`) | `-d ./my-app` |
+| `-y, --yes` | Accept defaults without interactive prompts | — |
 
 ---
 
-## The 4 Pre-Baked Starter Kits
+## The 21 Canonical Archetypes
 
-Each starter kit provides a self-contained, token-wired HTML/CSS template implementing all 5 mandatory UI states, realistic edge case data, and 100% linter compliance:
+Every archetype is configured with de-converged font pairings, hand-tuned OKLCH surface neutral tints, WCAG contrast tiers, and distinct physical devices:
 
-1. **Dashboard (`registry/starter-kits/dashboard/`):** High-density workspace shell with asymmetric summary strip, real batch variance calculations, and edge-case table data.
-2. **Landing Waitlist (`registry/starter-kits/landing-waitlist/`):** Conversion-focused page with hero value proposition, honest copy, and social validation with zero marketing slop.
-3. **Mobile App (`registry/starter-kits/mobile-app/`):** Mobile-first responsive container, bottom navigation bar, tactile card interactions, and instant empty/skeleton states.
-4. **Data Tool (`registry/starter-kits/data-tool/`):** Analytical workbench featuring multi-facet filter bars, dense telemetry readouts, inspect drawers, and inline error banners.
+### Family A: Modern SaaS, Developer & Observability (Dark-Mode Precision)
+
+| Archetype ID | Polarity | Key Fonts (Pairing A) | Default Accent | Signature Device |
+| :--- | :--- | :--- | :--- | :--- |
+| `dark-obsidian-linear` | Dark | Geist + Instrument Sans | Electric Indigo | Crisp 1px borders & subtle glass elevation |
+| `data-dense-observability` | Dark | JetBrains Mono + IBM Plex Sans | Telemetry Cyan | High-density metrics & tabular grids |
+| `atmospheric-aurora-launch` | Dark | Cabinet Grotesk + Satoshi | Luminous Aurora | Specular glass & spotlight meshes |
+| `kinetic-industrial-mono` | Dark | JetBrains Mono + IBM Plex Sans | Amber Glow | High-velocity tabular monospace telemetry |
+| `bento-modular-system` | Dark | Satoshi + General Sans | Cobalt Pulse | Structured asymmetric 12-col bento cells |
+| `spatial-glass-visionos` | Dark | Outfit + DM Sans | Cyan Specular | Translucent optical blur & 1px rim highlights |
+
+### Family B: Consumer, Retail & Expressive Studio
+
+| Archetype ID | Polarity | Key Fonts (Pairing A) | Default Accent | Signature Device |
+| :--- | :--- | :--- | :--- | :--- |
+| `consumer-retail-studio` | Light | Oswald + Plus Jakarta Sans | Stark Monochrome | Borderless `#f5f5f7` studio product tiles |
+| `neo-brutalist-studio` | Light | Space Grotesk + Syne | Acid Lime | Hard 2px black borders & offset drop shadows |
+| `retro-tactile-analog` | Dark | Space Mono + Chivo | Matte Industrial | Keycap tactile bevels & mechanical clicky toggles |
+| `y2k-acid-cyber` | Dark | Syne + Chakra Petch | Neon Chartreuse | Chrome wireframes & millennium cyber energy |
+| `playful-clay-consumer` | Light | Bricolage Grotesque + Fredoka | Lavender Joy | Soft marshmallow surfaces & puffy clay pill corners |
+| `vaporwave-crt-terminal` | Dark | VT323 + Fira Code | Phosphor Cyan | 1980s scanline overlays & terminal nostalgia |
+
+### Family C: Editorial, Artisan & Minimalist (Light-Mode Craft & Luxury)
+
+| Archetype ID | Polarity | Key Fonts (Pairing A) | Default Accent | Signature Device |
+| :--- | :--- | :--- | :--- | :--- |
+| `editorial-serif-paper` | Light | Newsreader + Work Sans | Warm Terracotta | High-contrast broadsheet editorial craft |
+| `quiet-luxury-atelier` | Light | Cormorant Garamond + DM Sans | Champagne Gold | Whisper-quiet ivory paper & haute couture restraint |
+| `warm-artisan-craft` | Light | Fraunces + Cabinet Grotesk | Terracotta Clay | Earthy raw linen canvas & tactile bevels |
+| `japanese-minimal-zen` | Light | Noto Serif Display + Work Sans | Sumi Charcoal | Tranquil Ma negative space & washi mist paper |
+| `scandinavian-warm-minimal`| Light | Familjen Grotesk + DM Sans | Nordic Spruce | Soft birch/oat canvas & functional humanism |
+| `swiss-typographic-grid` | Light | Cabinet Grotesk + Space Grotesk | International Orange | Mathematical exposed 1px grid hairlines |
+
+### Family D: Institutional, High-Trust & Accessible
+
+| Archetype ID | Polarity | Key Fonts (Pairing A) | Default Accent | Signature Device |
+| :--- | :--- | :--- | :--- | :--- |
+| `high-trust-fintech-clarity`| Light | Sora + Public Sans | Institution Navy | Institutional clarity & calm financial certainty |
+| `clinical-biotech-precision`| Light | Instrument Sans + Public Sans | Cold Clinical Cyan | Sterile lab-grade contrast & forensic data tables |
+| `civic-govtech-accessible` | Light | Atkinson Hyperlegible + Public Sans | Sovereign Blue | WCAG AAA 10:1 ultra-accessible public clarity |
+
+*(Note: Backwards-compatible aliases `dark-obsidian-technical` and `neo-brutalism` are automatically supported).*
 
 ---
 
-## Anti-Slop Firewall: Core Rules Summary
+## The 4 Starter Kits
 
-| Banned AI Pattern | Permitted Solution |
-| :--- | :--- |
-| **3 Equal-Width KPI Cards** | Inline horizontal summary strip with `1px` vertical dividers or asymmetric 2-pane split. |
-| **Static Marketing Badges in Apps** | Move compliance claims (`SOC2`, `ISO 27001`) to landing pages. Only show real live operational status. |
-| **Decorative Header Pill Tags** | Tag badges are reserved for record states in data tables (`Settled`, `Pending`), never header flair. |
-| **Decorative Status Dots** | Green/amber dots are banned in footers unless wired to a real, user-toggleable connection state. |
-| **Purple/Blue Linear Gradients** | Solid semantic accent tokens (`var(--accent-primary)`) with specular hairline borders. |
-| **Arbitrary Nested Radiuses** | Strict concentric radius formula: `inner = max(0px, outer - padding)`. |
-| **Capitalized Title Case UI** | Strict sentence case on all headings, buttons, and badges (`Create new invoice`, not `Create New Invoice`). |
-| **Low-Contrast Grey Text** | `--text-primary` must exceed $\ge 7:1$ (AAA); `--text-muted` must exceed $\ge 4.5:1$ (AA). |
+When initializing, select a domain-neutral, token-bound starter kit to give your AI agent an exact architectural reference:
+
+1. **`dashboard` (Workspace & Analytics Dashboard):** Desktop navigation rail switching to a fixed 4-tab mobile dock on `<768px`, top bar with composite search and primary action, asymmetric 2-column primary card + recent activity list (no 3-card KPI row slop), and a clean data table with row selection and slide-over inspector.
+2. **`mobile-app` (Mobile-First Application):** Centered 430px frame on desktop with device border, top app bar with composite search, hero featured card with pill CTA, touch-scrolling filter track, 4 interactive list rows (`>=52px` touch targets), fixed bottom dock (`Home`, `Explore`, `Saved`, `Profile`), and bottom sheet modal.
+3. **`landing-waitlist` (Product Launch & Waitlist):** Sticky single-row navbar, high-impact display headline, crisp `17px` secondary lead paragraph, composite email input + pill submit button (`:focus-within`), and an asymmetric 2-column product showcase below the fold.
+4. **`data-tool` (Data Explorer & Workbench):** Top command toolbar, composite query input bar, status filter tabs, split-pane layout with a high-density tabular records table on the left and a live sticky JSON inspector workbench on the right.
 
 ---
 
-## Cross-Agent Compatibility
+## Generated File Tree & How It Works
 
-`agent-design-skills` generates native configuration structures for all leading AI development tools:
+Scaffolding with default settings produces the following clean directory structure:
 
-- **Google Antigravity:** `.agent/rules/design-core.md` + `.agent/skills/design-system/SKILL.md` (and references).
-- **Cursor:** `.cursor/rules/00-design-core.mdc` (`alwaysApply: true`) + task-scoped `.mdc` topic rules.
-- **Claude Code:** Project-level instructions generated into `CLAUDE.md`.
-- **Windsurf:** Rules emitted directly into `.windsurfrules`.
-- **Web Builders (Bolt, v0, Lovable):** Unified `DESIGN-PROMPT.md` for copy-paste injection.
+```
+my-project/
+├── tokens.css                                 # Browser-level token contract & anti-slop CSS guardrails
+├── tokens.json                                # Machine-readable tokens for build tools and style dictionaries
+├── DESIGN.md                                  # Human-readable design specification & state budgets
+├── starter-preview.html                       # Living architectural HTML blueprint (agent inspection reference)
+├── .agent/                                    # Generated for Google Antigravity
+│   ├── rules/
+│   │   └── design-core.md                     # Always-On Core Rule (<1,500 tokens)
+│   └── skills/
+│       └── design-system/
+│           ├── SKILL.md                       # Skill declaration & tool metadata
+│           └── references/                    # Tier 2 on-demand deep architectural references
+│               ├── 00-workflow-and-scope.md
+│               ├── 01-override-protocol.md
+│               ├── 02-anti-slop-firewall.md
+│               ├── 03-cross-page-unity.md
+│               ├── 04-ux-and-ergonomics.md
+│               ├── 05-voice-and-copy.md
+│               ├── 06-iteration-discipline.md
+│               └── archetype.md               # Active archetype design DNA & palette
+├── .cursor/                                   # Generated for Cursor (when selected)
+│   └── rules/
+│       └── 00-design-core.mdc
+├── CLAUDE.md                                  # Generated for Claude Code (when selected)
+└── AGENTS.md                                  # Generated for OpenAI Codex (when selected)
+```
+
+### Non-Destructive `DESIGN.md` Merge
+Re-running `npx agent-design-skills` to change an archetype, tweak radius, or switch fonts **never wipes out your ongoing work**:
+- **Sections 0 through 4** (Creative Direction, DNA, Voice, Token Contract, Viewport Budgets) are refreshed to reflect your new configuration.
+- **Sections 5 through 8** (`Component Inventory`, `Active Revision Passes`, `Intentional Local Exceptions`, and `Polish Backlog`) are **cleanly preserved** from your existing `DESIGN.md`.
 
 ---
 
-## Empirical Benchmark Evaluation (`evals/`)
+## Static Linter Rules Summary
 
-The repository includes a rigorous 11-prompt evaluation suite and automated grading rubric:
-- **`evals/prompts.json`:** 11 empirical benchmark prompts covering complex multi-currency ledgers, genomic PCR assays, Swiss architectural studio monographs, XR spatial viewers, and a dedicated **"Page 2 after Page 1"** cross-page continuity test.
-- **`evals/rubric.md`:** 4 automated pass/fail gates and 40-point qualitative scoring matrix for Anti-Slop, Cross-Page Unity, Copy Honesty, and State Completeness.
+`npx agent-design-skills lint` verifies code against the following rules:
+
+| Rule Name | Severity | What It Checks |
+| :--- | :--- | :--- |
+| `freeze/hash-integrity` | `error` | Verifies files match SHA-256 signatures in `.design-skills.lock` |
+| `tokens/no-hardcoded-color-radius` | `error` | Flags raw hex colors (`#111827`, `#6366f1`) or raw color functions (`rgb()`, `hsl()`, `oklch()`) outside `tokens.css` without `@design-exception` |
+| `slop/no-animate-ping` | `error` | Flags attention-seeking `animate-ping` radar loops |
+| `slop/no-ai-gradient` | `error` | Flags purple/pink/cyan AI mesh gradients |
+| `copy/banned-phrases-and-leakage` | `error` | Flags cliché marketing copy (`ai-powered`, `supercharge`, `one-click`, `magical`, `say goodbye to`) and numbered slash eyebrows (`01 / ...`) |
+| `slop/no-decorative-badges` | `error` | Flags decorative badge/pill/chip elements placed inside `<header>` or `<nav>` |
+| `slop/no-fake-telemetry-cosplay` | `error` | Flags fake version badges (`[PRO v2.4]`, `[BETA]`) or hardware telemetry (`60 FPS`, `SUB-10MS`, `EPOCH`) |
+| `slop/no-image-corner-badges` | `error` | Flags floating corner status pills overlaid on images/cards (`• PLAYING`, `NOW PLAYING`, `HD 1080P`, `BESTSELLER`, `HOT SALE`, etc.) |
+| `slop/no-unprompted-cmd-k` | `error` | Flags unprompted keyboard shortcut badges (`⌘K`, `(⌘K)`, `Ctrl+K`, `<kbd>`) inside inputs or headers |
+| `tokens/no-raw-palette-classes` | `error` | Flags ad-hoc Tailwind palette classes (`bg-blue-500`, `text-emerald-400`, `border-rose-200`) that bypass `tokens.css` and cause cross-page drift |
+| `slop/no-decorative-dots` | `error` | Flags decorative small circle elements (`w-2 h-2 rounded-full`, inline `width: 6px/8px; height: 6px/8px; border-radius: 50%`) and prefix bullets (`•`, `●`, `▪`) on labels/badges |
+| `data/no-duplicate-image-urls` | `warning` | Flags identical image asset URLs copy-pasted across multiple distinct sample records |
+| `slop/no-slashed-zero` | `error` | Flags slashed-zero typography (`slashed-zero`, `"zero" 1`) instead of open-oval zeros (`"zero" 0`) |
+| `a11y/no-micro-text` | `error` | Flags font sizes below `13px` (`text-[10px]`, `font-size: 11px`) or low-contrast dim text classes (`text-zinc-500`, `opacity-40`) |
+| `slop/no-emoji-icons` | `error` | Flags emoji characters (🚀, 💡, 🔥, ✨) used as UI icons |
+| `slop/excessive-uppercase-labels` | `warning` | Flags excessive uppercase tracking micro-labels (> 3 occurrences per file) |
+
+*To intentionally bypass a rule for a verified brand signature or custom widget, annotate the line with `/* @design-exception: [reason] */`.*
 
 ---
 
-## License
+## Author & License
 
-MIT © Pranav Kukreja & the `agent-design-skills` contributors.
-
+- **Author:** Pranav Kukreja
+- **License:** [MIT](LICENSE)

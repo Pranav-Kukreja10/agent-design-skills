@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'pathe';
 import { GeneratorOptions } from '../types.js';
+import { buildTier1Content, buildProjectSnapshot } from '../tier1.js';
 
 export async function writeCursorAdapter(
   targetDir: string,
@@ -24,6 +25,15 @@ ${coreRuleContent}
 
   await fs.writeFile(coreFilePath, coreContent, 'utf-8');
   createdFiles.push(coreFilePath);
+
+  // 1b. Tiny standalone Tier 1 always-on rule (anti-drift)
+  const tier1FilePath = path.resolve(rulesDir, '00-design-tier1.mdc');
+  await fs.writeFile(
+    tier1FilePath,
+    `---\ndescription: "Tier 1 non-negotiable design invariants. Re-apply every UI turn."\nalwaysApply: true\n---\n\n${buildTier1Content(options)}\n\n---\n\n${buildProjectSnapshot(options)}\n`,
+    'utf-8'
+  );
+  createdFiles.push(tier1FilePath);
 
   // 2. Task-scoped modular .mdc rules if mode === 'modular'
   if (options.mode !== 'single') {

@@ -102,7 +102,7 @@ program
     }
 
     if (opts.fast || opts.yes) {
-      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.5 [EXPRESS MODE]')}`);
+      p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.7 [EXPRESS MODE]')}`);
       const s = p.spinner();
       s.start(`Compiling design system in ${targetDir}...`);
 
@@ -139,7 +139,7 @@ program
     }
 
     console.clear();
-    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.5')}`);
+    p.intro(`${pc.bgWhite(pc.black(' ⚡ agent-design-skills '))} ${pc.dim('v1.1.7')}`);
 
     const defaultAgents = await detectWorkspaceAgents(targetDir);
     const detectedFonts = await detectProjectFonts(targetDir);
@@ -221,7 +221,7 @@ program
               { value: 'dashboard', label: 'High-Density Workspace Dashboard', hint: 'Workspace shell, summary strip, data table, drawer' },
               { value: 'landing-waitlist', label: 'Editorial Landing & Waitlist', hint: 'Narrative hero, live preview artifact, waitlist form' },
               { value: 'mobile-app', label: 'Mobile-First Application', hint: '375px–430px frame, thumb nav, bottom sheet' },
-              { value: 'data-tool', label: 'Split-Pane Query Explorer & Tool', hint: 'Split query/inspector, ⌘K command bar, tabular nums' },
+              { value: 'data-tool', label: 'Split-Pane Query Explorer & Tool', hint: 'Split query/inspector, command bar, tabular nums' },
               { value: 'none', label: 'None (Blank Token Contract)', hint: 'Pure tokens and governance rules only' }
             ],
           }),
@@ -268,6 +268,11 @@ program
             message: 'Custom Creative Direction & Anti-Drift Mandate (Section 0):',
             placeholder: 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
             initialValue: 'Clean modern SaaS product interface, crisp 1px hairlines, subtle glass elevation, and high-contrast typography',
+          }),
+        productBrief: () =>
+          p.text({
+            message: 'What are you building? (one line, optional; leave blank to skip):',
+            placeholder: 'e.g. Sneaker store for limited-edition drops',
           }),
       },
       {
@@ -336,6 +341,7 @@ program
       mode: answers.mode as InstallMode,
       starterKit: answers.starterKit !== 'none' ? (answers.starterKit as StarterKitId) : undefined,
       customDirection: answers.customDirection as string,
+      productBrief: (answers.productBrief as string | undefined)?.trim() || undefined,
     };
 
     const result = await compileDesignSystem(options);
